@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -66,14 +67,15 @@ export default function Soporte() {
 
       {/* NAV */}
       <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
-        <Logo variant="color" />
-        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-          {["Arma tu viaje", "Vuelos", "Hoteles", "Soporte"].map(l => (
-            <a key={l} href="#" style={{ fontSize: "13px", color: l === "Soporte" ? "#1667E6" : "#0D0C56", textDecoration: "none", fontWeight: l === "Soporte" ? "700" : "600", background: l === "Soporte" ? "#f0f5ff" : "transparent", padding: "6px 14px", borderRadius: "50px" }}>{l}</a>
-          ))}
-        </div>
-        <a href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</a>
-      </nav>
+  <Link href="/"><Logo variant="color" /></Link>
+  <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+    <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
+    <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
+    <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
+    <Link href="/soporte" style={{ fontSize: "13px", color: "#1667E6", textDecoration: "none", fontWeight: "700", background: "#f0f5ff", padding: "6px 14px", borderRadius: "50px" }}>Soporte</Link>
+  </div>
+  <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+</nav>
 
       {/* HEADER */}
       <div style={{ background: "linear-gradient(135deg,#0D0C56,#1667E6)", padding: "40px 24px", textAlign: "center" }}>

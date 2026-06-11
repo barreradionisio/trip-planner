@@ -10,8 +10,8 @@ export default function Home() {
         <Link href="/"><Logo variant="color" /></Link>
         <div style={{position:"absolute", left:"50%", transform:"translateX(-50%)", display:"flex", gap:"28px", alignItems:"center"}}>
           <Link href="/destinos" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Arma tu viaje</Link>
-          <Link href="/vuelos" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Vuelos</Link>
-          <Link href="/hospedaje" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Hoteles</Link>
+          <Link href="/solo-vuelos" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Vuelos</Link>
+          <Link href="/solo-hoteles" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Hoteles</Link>
           <Link href="/soporte" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Soporte</Link>
         </div>
         <Link href="/login" style={{fontSize:"13px", background:"#1667E6", color:"#fff", textDecoration:"none", fontWeight:"700", padding:"8px 18px", borderRadius:"50px"}}>Iniciar sesión</Link>
@@ -104,8 +104,8 @@ export default function Home() {
             <div style={{fontSize:"11px", fontWeight:"700", color:"rgba(255,255,255,0.4)", textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:"12px"}}>Producto</div>
             <div style={{display:"flex", flexDirection:"column", gap:"8px"}}>
               <Link href="/destinos" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Arma tu viaje</Link>
-              <Link href="/vuelos" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Solo vuelos</Link>
-              <Link href="/hospedaje" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Solo hoteles</Link>
+              <Link href="/solo-vuelos" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Solo vuelos</Link>
+              <Link href="/solo-hoteles" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Solo hoteles</Link>
             </div>
           </div>
           <div>
