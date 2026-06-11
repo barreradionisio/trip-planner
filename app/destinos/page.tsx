@@ -80,15 +80,25 @@ export default function Destinos() {
         {/* IZQUIERDA */}
         <div>
           <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", marginBottom: "16px", overflow: "hidden" }}>
-            <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2fa" }}>
-              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "10px" }}>¿A dónde quieres ir?</div>
-              <input
-                placeholder="Buscar destino..."
-                value={busqueda}
-                onChange={e => setBusqueda(e.target.value)}
-                style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" }}
-              />
-            </div>
+  <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2fa" }}>
+    <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "12px" }}>¿A dónde quieres ir?</div>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
+      <div>
+        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de salida</div>
+        <input type="date" style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
+      </div>
+      <div>
+        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de regreso</div>
+        <input type="date" style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
+      </div>
+    </div>
+    <input
+      placeholder="Buscar destino..."
+      value={busqueda}
+      onChange={e => setBusqueda(e.target.value)}
+      style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }}
+    />
+  </div>
             <div style={{ padding: "16px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "10px" }}>
               {filtrados.map(d => {
                 const yaSeleccionado = seleccionados.find(s => s.ciudad === d.ciudad);
