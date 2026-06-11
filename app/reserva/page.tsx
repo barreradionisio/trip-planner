@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -18,14 +19,14 @@ export default function Reserva() {
 
       {/* NAV */}
       <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
-        <Logo variant="color" />
-        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-          {["Mis viajes", "Perfil", "Soporte"].map(l => (
-            <a key={l} href="#" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>{l}</a>
-          ))}
-        </div>
-        <a href="/mis-viajes" style={{ fontSize: "13px", background: "#f0f5ff", color: "#1667E6", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>‹ Mis viajes</a>
-      </nav>
+  <Logo variant="color" />
+  <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+    <Link href="/mis-viajes" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Mis viajes</Link>
+    <Link href="/perfil" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Perfil</Link>
+    <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+  </div>
+  <Link href="/mis-viajes" style={{ fontSize: "13px", background: "#f0f5ff", color: "#1667E6", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>‹ Mis viajes</Link>
+</nav>
 
       {/* HERO */}
       <div style={{ background: "linear-gradient(135deg,#0D0C56,#1667E6)", padding: "28px 32px" }}>

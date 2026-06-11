@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link"
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -24,14 +25,14 @@ export default function Perfil() {
 
       {/* NAV */}
       <nav style={{ background: "#1667E6", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
-        <Logo variant="naranja" />
-        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-          {["Mis viajes", "Perfil", "Soporte"].map(l => (
-            <a key={l} href="#" style={{ fontSize: "13px", color: l === "Perfil" ? "#fff" : "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: l === "Perfil" ? "700" : "600" }}>{l}</a>
-          ))}
-        </div>
-        <a href="/" style={{ fontSize: "13px", background: "rgba(255,255,255,0.15)", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>+ Nuevo viaje</a>
-      </nav>
+  <Logo variant="naranja" />
+  <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+    <Link href="/mis-viajes" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Mis viajes</Link>
+    <Link href="/perfil" style={{ fontSize: "13px", color: "#fff", textDecoration: "none", fontWeight: "700" }}>Perfil</Link>
+    <Link href="/soporte" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+  </div>
+  <Link href="/destinos" style={{ fontSize: "13px", background: "rgba(255,255,255,0.15)", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>+ Nuevo viaje</Link>
+</nav>
 
       {/* HEADER */}
       <div style={{ background: "#1667E6", padding: "28px 32px 48px", marginBottom: "-28px" }}>
