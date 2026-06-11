@@ -9,7 +9,7 @@ export default function Home() {
       <nav style={{background:"#fff", padding:"12px 32px", display:"flex", alignItems:"center", justifyContent:"space-between", borderBottom:"1px solid #e8edf8", position:"relative"}}>
         <Link href="/"><Logo variant="color" /></Link>
         <div style={{position:"absolute", left:"50%", transform:"translateX(-50%)", display:"flex", gap:"28px", alignItems:"center"}}>
-          <Link href="/destinos" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Destinos</Link>
+          <Link href="/destinos" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Arma tu viaje</Link>
           <Link href="/vuelos" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Vuelos</Link>
           <Link href="/hospedaje" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Hoteles</Link>
           <Link href="/soporte" style={{fontSize:"13px", color:"#0D0C56", textDecoration:"none", fontWeight:"600"}}>Soporte</Link>

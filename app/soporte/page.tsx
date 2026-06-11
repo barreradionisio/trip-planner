@@ -68,7 +68,7 @@ export default function Soporte() {
       <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
         <Logo variant="color" />
         <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-          {["Destinos", "Vuelos", "Hoteles", "Soporte"].map(l => (
+          {["Arma tu viaje", "Vuelos", "Hoteles", "Soporte"].map(l => (
             <a key={l} href="#" style={{ fontSize: "13px", color: l === "Soporte" ? "#1667E6" : "#0D0C56", textDecoration: "none", fontWeight: l === "Soporte" ? "700" : "600", background: l === "Soporte" ? "#f0f5ff" : "transparent", padding: "6px 14px", borderRadius: "50px" }}>{l}</a>
           ))}
         </div>
