@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Logo from "../components/Logo";
 
 const destinosDisponibles = [
@@ -29,6 +30,8 @@ interface Destino {
 export default function Destinos() {
   const [seleccionados, setSeleccionados] = useState<Destino[]>([]);
   const [busqueda, setBusqueda] = useState("");
+  const [fechaSalida, setFechaSalida] = useState("");
+  const [fechaRegreso, setFechaRegreso] = useState("");
 
   const agregar = (d: typeof destinosDisponibles[0]) => {
     if (seleccionados.find(s => s.ciudad === d.ciudad)) return;
@@ -53,6 +56,7 @@ export default function Destinos() {
   );
 
   const totalDias = seleccionados.reduce((a, b) => a + b.dias, 0);
+  const puedeContinuar = seleccionados.length > 0 && fechaSalida !== "" && fechaRegreso !== "";
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
@@ -80,25 +84,28 @@ export default function Destinos() {
         {/* IZQUIERDA */}
         <div>
           <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", marginBottom: "16px", overflow: "hidden" }}>
-  <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2fa" }}>
-    <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "12px" }}>¿A dónde quieres ir?</div>
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
-      <div>
-        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de salida</div>
-        <input type="date" style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
-      </div>
-      <div>
-        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de regreso</div>
-        <input type="date" style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
-      </div>
-    </div>
-    <input
-      placeholder="Buscar destino..."
-      value={busqueda}
-      onChange={e => setBusqueda(e.target.value)}
-      style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }}
-    />
-  </div>
+            <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2fa" }}>
+              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "12px" }}>¿A dónde quieres ir?</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
+                <div>
+                  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de salida</div>
+                  <input type="date" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} style={{ width: "100%", border: `1.5px solid ${fechaSalida ? "#3ED5A9" : "#e8edf8"}`, borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
+                </div>
+                <div>
+                  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de regreso</div>
+                  <input type="date" value={fechaRegreso} onChange={e => setFechaRegreso(e.target.value)} style={{ width: "100%", border: `1.5px solid ${fechaRegreso ? "#3ED5A9" : "#e8edf8"}`, borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
+                </div>
+              </div>
+              {(!fechaSalida || !fechaRegreso) && (
+                <div style={{ fontSize: "11px", color: "#F5A623", marginBottom: "10px" }}>⚠ Selecciona las fechas de tu viaje para continuar</div>
+              )}
+              <input
+                placeholder="Buscar destino..."
+                value={busqueda}
+                onChange={e => setBusqueda(e.target.value)}
+                style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }}
+              />
+            </div>
             <div style={{ padding: "16px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "10px" }}>
               {filtrados.map(d => {
                 const yaSeleccionado = seleccionados.find(s => s.ciudad === d.ciudad);
@@ -178,12 +185,19 @@ export default function Destinos() {
             )}
           </div>
 
-          <button
-            disabled={seleccionados.length === 0}
-            style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: seleccionados.length === 0 ? "not-allowed" : "pointer", opacity: seleccionados.length === 0 ? 0.4 : 1 }}
+          <Link
+            href={puedeContinuar ? "/vuelos" : "#"}
+            style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
           >
             Continuar → Vuelos
-          </button>
+          </Link>
+          {!puedeContinuar && (
+            <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>
+              {seleccionados.length === 0 && !fechaSalida && !fechaRegreso ? "Elige destinos y fechas para continuar" :
+               seleccionados.length === 0 ? "Elige al menos un destino" :
+               "Selecciona las fechas de tu viaje"}
+            </div>
+          )}
         </div>
       </div>
     </div>

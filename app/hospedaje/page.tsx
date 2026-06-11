@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -213,7 +214,9 @@ export default function Hospedaje() {
             disabled={ciudadesSeleccionadas < ciudades.length || totalHabitaciones === 0}
             style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: (ciudadesSeleccionadas < ciudades.length || totalHabitaciones === 0) ? "not-allowed" : "pointer", opacity: (ciudadesSeleccionadas < ciudades.length || totalHabitaciones === 0) ? 0.4 : 1 }}
           >
-            Continuar → Itinerario
+            <Link href="/itinerario" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: (ciudadesSeleccionadas < ciudades.length || totalHabitaciones === 0) ? "not-allowed" : "pointer", opacity: (ciudadesSeleccionadas < ciudades.length || totalHabitaciones === 0) ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}>
+  Continuar → Itinerario
+</Link>
           </button>
         </div>
       </div>

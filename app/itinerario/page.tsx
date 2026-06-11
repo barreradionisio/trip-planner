@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -235,7 +236,9 @@ export default function Itinerario() {
           {/* BOTÓN CONTINUAR */}
           <div style={{ marginTop: "16px" }}>
             <button style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}>
-              Continuar → Pago
+              <Link href="/pago" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}>
+  Continuar → Pago
+</Link>
             </button>
           </div>
         </div>

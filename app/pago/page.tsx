@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -270,7 +271,11 @@ export default function Pago() {
             onClick={() => setProcesando(true)}
             style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
           >
-            {procesando ? "⏳ Procesando pago..." : "Confirmar y pagar $3,716 USD"}
+            <Link href="/confirmacion" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
+  onClick={() => setProcesando(true)}
+>
+  {procesando ? "⏳ Procesando pago..." : "Confirmar y pagar $3,716 USD"}
+</Link>
           </button>
         </div>
       </div>

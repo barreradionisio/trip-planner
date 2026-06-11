@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -210,7 +211,9 @@ export default function Vuelos() {
             disabled={totalVuelos < tramos.length}
             style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: totalVuelos < tramos.length ? "not-allowed" : "pointer", opacity: totalVuelos < tramos.length ? 0.4 : 1 }}
           >
-            Continuar → Hospedaje
+            <Link href="/hospedaje" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: totalVuelos < tramos.length ? "not-allowed" : "pointer", opacity: totalVuelos < tramos.length ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}>
+  Continuar → Hospedaje
+</Link>
           </button>
         </div>
       </div>
