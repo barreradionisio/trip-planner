@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import Logo from "../../components/Logo";
 
@@ -66,7 +67,7 @@ export default function AdminReserva() {
         {/* TOPBAR */}
         <div style={{ background: "#fff", padding: "12px 24px", borderBottom: "1px solid #e8edf8", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <a href="/admin" style={{ fontSize: "12px", color: "#1667E6", fontWeight: "700", textDecoration: "none" }}>‹ Reservas</a>
+            <Link href="/admin?seccion=reservas" style={{ fontSize: "12px", color: "#1667E6", fontWeight: "700", textDecoration: "none" }}>‹ Reservas</Link>
             <span style={{ color: "#e8edf8" }}>|</span>
             <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56" }}>TP-2024-8847</div>
             <span style={{ fontSize: "10px", background: estadoConfig[estado].bg, color: estadoConfig[estado].color, padding: "2px 10px", borderRadius: "50px", fontWeight: "700" }}>{estadoConfig[estado].label}</span>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
@@ -32,8 +33,9 @@ const navItems = [
 ];
 
 export default function Admin() {
-  const [seccion, setSeccion] = useState("dashboard");
-  const [filtroEstado, setFiltroEstado] = useState("todos");
+  const searchParams = useSearchParams();
+const [seccion, setSeccion] = useState(searchParams.get("seccion") || "dashboard");
+const [filtroEstado, setFiltroEstado] = useState("todos");
 
   const reservasFiltradas = reservas.filter(r => filtroEstado === "todos" || r.estado === filtroEstado);
 
