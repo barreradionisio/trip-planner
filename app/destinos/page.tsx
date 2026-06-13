@@ -63,7 +63,7 @@ export default function Destinos() {
 
       {/* TOPBAR */}
       <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-        <Logo variant="teal" />
+        <Link href="/"><Logo variant="teal" /></Link>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
             <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>

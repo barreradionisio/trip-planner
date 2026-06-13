@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
@@ -29,6 +30,7 @@ export default function Hospedaje() {
   const [ciudadActiva, setCiudadActiva] = useState("París");
   const [seleccionados, setSeleccionados] = useState<{ [key: string]: number }>({});
   const [habitaciones, setHabitaciones] = useState<Habitaciones>({ sencilla: 0, doble: 1, suite: 0, familiar: 0 });
+  const router = useRouter();
 
   const hotelesCiudad = hotelesData.filter(h => h.ciudad === ciudadActiva);
   const ciudadesSeleccionadas = Object.keys(seleccionados).length;
@@ -55,6 +57,7 @@ export default function Hospedaje() {
       {/* TOPBAR */}
       <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
         <Logo variant="teal" />
+        <button onClick={() => router.back()} style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}>‹ Regresar</button>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
             <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>

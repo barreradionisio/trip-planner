@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
 export default function Pago() {
+  const router = useRouter();
   const [metodo, setMetodo] = useState("credito");
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
@@ -44,6 +46,7 @@ export default function Pago() {
       {/* TOPBAR */}
       <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
         <Logo variant="teal" />
+        <button onClick={() => router.back()} style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}>‹ Regresar</button>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
             <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
