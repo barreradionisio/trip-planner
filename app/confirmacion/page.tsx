@@ -1,10 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Logo from "../components/Logo";
 
-export default function Confirmacion() {
+function ConfirmacionContent() {
   const searchParams = useSearchParams();
   const tipo = searchParams.get("tipo") || "completo";
   return (
@@ -170,3 +171,12 @@ export default function Confirmacion() {
     </div>
   );
 }
+
+export default function Confirmacion() {
+  return (
+    <Suspense>
+      <ConfirmacionContent />
+    </Suspense>
+  );
+}
+

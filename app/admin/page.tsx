@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Logo from "../components/Logo";
@@ -32,7 +33,7 @@ const navItems = [
   { key: "reportes", label: "Reportes" },
 ];
 
-export default function Admin() {
+function AdminContent() {
   const searchParams = useSearchParams();
 const [seccion, setSeccion] = useState(searchParams.get("seccion") || "dashboard");
 const [filtroEstado, setFiltroEstado] = useState("todos");
@@ -266,4 +267,12 @@ const [filtroEstado, setFiltroEstado] = useState("todos");
       </div>
     </div>
   );
+} 
+export default function Admin() {
+  return (
+    <Suspense>
+      <AdminContent />
+    </Suspense>
+  );
 }
+

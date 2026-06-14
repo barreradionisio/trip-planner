@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
-export default function Pago() {
+function PagoContent() {
   const searchParams = useSearchParams();
   const tipo = searchParams.get("tipo") || "completo";
   const router = useRouter();
@@ -287,18 +288,19 @@ export default function Pago() {
             ))}
           </div>
 
-          <button
-            onClick={() => setProcesando(true)}
-            style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
-          >
-            <Link href={`/confirmacion?tipo=${tipo}`} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
-  onClick={() => setProcesando(true)}
->
-  {procesando ? "⏳ Procesando pago..." : "Confirmar y pagar $3,716 USD"}
-</Link>
-          </button>
+          <Link href={`/confirmacion?tipo=${tipo}`} onClick={() => setProcesando(true)} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}>
+            {procesando ? "⏳ Procesando pago..." : "Confirmar y pagar $3,716 USD"}
+          </Link>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Pago() {
+  return (
+    <Suspense>
+      <PagoContent />
+    </Suspense>
   );
 }
