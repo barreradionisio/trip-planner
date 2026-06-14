@@ -1,9 +1,12 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Logo from "../components/Logo";
 
 export default function Confirmacion() {
+  const searchParams = useSearchParams();
+  const tipo = searchParams.get("tipo") || "completo";
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
 
@@ -52,65 +55,73 @@ export default function Confirmacion() {
 
         {/* RESUMEN */}
         <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "16px" }}>
-          <div style={{ padding: "12px 18px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Resumen de tu reserva</div>
-            <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>12 – 17 Jul 2026 · 2 personas</div>
-          </div>
-          <div style={{ padding: "16px 18px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+  <div style={{ padding: "12px 18px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Resumen de tu reserva</div>
+    <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>
+      {tipo === "vuelo" ? "Solo vuelos" : tipo === "hotel" ? "Solo hospedaje" : "12 – 17 Jul 2026 · 2 personas"}
+    </div>
+  </div>
+  <div style={{ padding: "16px 18px", display: "grid", gridTemplateColumns: tipo === "completo" ? "1fr 1fr" : "1fr", gap: "16px" }}>
 
-            {/* VUELOS */}
+    {/* VUELOS — visible en tipo vuelo y completo */}
+    {(tipo === "vuelo" || tipo === "completo") && (
+      <div>
+        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Vuelos</div>
+        {[
+          { ruta: "CDMX → París", aerolinea: "Aeroméxico", fecha: "12 Jul · 06:30", precio: "$840" },
+          { ruta: "París → Roma", aerolinea: "Air France", fecha: "15 Jul · 09:15", precio: "$1,360" },
+          { ruta: "Roma → CDMX", aerolinea: "Iberia", fecha: "17 Jul · 11:00", precio: "$1,180" },
+        ].map(v => (
+          <div key={v.ruta} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
             <div>
-              <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Vuelos</div>
-              {[
-                { ruta: "CDMX → París", aerolinea: "Aeroméxico", fecha: "12 Jul · 06:30", precio: "$840" },
-                { ruta: "París → Roma", aerolinea: "Air France", fecha: "15 Jul · 09:15", precio: "$1,360" },
-                { ruta: "Roma → CDMX", aerolinea: "Iberia", fecha: "17 Jul · 11:00", precio: "$1,180" },
-              ].map(v => (
-                <div key={v.ruta} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
-                  <div>
-                    <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{v.ruta}</div>
-                    <div style={{ fontSize: "10px", color: "#888" }}>{v.aerolinea} · {v.fecha}</div>
-                  </div>
-                  <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{v.precio}</div>
-                </div>
-              ))}
+              <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{v.ruta}</div>
+              <div style={{ fontSize: "10px", color: "#888" }}>{v.aerolinea} · {v.fecha}</div>
             </div>
+            <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{v.precio}</div>
+          </div>
+        ))}
+      </div>
+    )}
 
-            {/* HOTELES */}
+    {/* HOTELES — visible en tipo hotel y completo */}
+    {(tipo === "hotel" || tipo === "completo") && (
+      <div>
+        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Hospedaje</div>
+        {[
+          { ciudad: "París", hotel: "Hotel Le Marais", noches: "3 noches", precio: "$540" },
+          { ciudad: "Roma", hotel: "Hotel Roma Centro", noches: "2 noches", precio: "$320" },
+        ].map(h => (
+          <div key={h.ciudad} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
             <div>
-              <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Hospedaje</div>
-              {[
-                { ciudad: "París", hotel: "Hotel Le Marais", noches: "3 noches", precio: "$540" },
-                { ciudad: "Roma", hotel: "Hotel Roma Centro", noches: "2 noches", precio: "$320" },
-              ].map(h => (
-                <div key={h.ciudad} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
-                  <div>
-                    <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{h.ciudad}</div>
-                    <div style={{ fontSize: "10px", color: "#888" }}>{h.hotel} · {h.noches}</div>
-                  </div>
-                  <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{h.precio}</div>
-                </div>
-              ))}
+              <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{h.ciudad}</div>
+              <div style={{ fontSize: "10px", color: "#888" }}>{h.hotel} · {h.noches}</div>
             </div>
+            <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{h.precio}</div>
           </div>
+        ))}
+      </div>
+    )}
+  </div>
+  </div>
 
-          {/* TOTAL */}
-          <div style={{ background: "#1667E6", padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div style={{ fontSize: "12px", fontWeight: "700", color: "rgba(255,255,255,0.8)" }}>Total pagado</div>
-            <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "20px", color: "#fff" }}>$3,716 USD</div>
-          </div>
-        </div>
+      {/* TOTAL */}
+<div style={{ background: "#1667E6", padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+  <div style={{ fontSize: "12px", fontWeight: "700", color: "rgba(255,255,255,0.8)" }}>Total pagado</div>
+  <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "20px", color: "#fff" }}>
+    {tipo === "vuelo" ? "$2,080 USD" : tipo === "hotel" ? "$860 USD" : "$3,716 USD"}
+  </div>
+</div>
 
         {/* TIMELINE */}
         <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px 18px", marginBottom: "16px" }}>
           <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#0D0C56", marginBottom: "14px" }}>¿Qué sigue?</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {[
-              { ico: "📧", titulo: "Correo de confirmación", desc: "Revisa tu bandeja de entrada en los próximos minutos.", done: true },
-{ ico: "🎫", titulo: "Boletos de vuelo", desc: "Recibirás tus boletos por correo. Mantente al pendiente de tu check-in en línea.", done: false },
-{ ico: "🏨", titulo: "Voucher de hotel", desc: "Tu reserva de hotel llegará por correo. Preséntala al momento del check-in.", done: false },
-{ ico: "🗺", titulo: "Itinerario editable", desc: "Ya puedes personalizar tu itinerario desde Mis viajes. También puedes consultar todo desde la app.", done: false },
-            ].map((t, i) => (
+  { ico: "📧", titulo: "Correo de confirmación", desc: "Revisa tu bandeja de entrada en los próximos minutos.", done: true },
+  ...(tipo !== "hotel" ? [{ ico: "🎫", titulo: "Boletos de vuelo", desc: "Recibirás tus boletos por correo. Mantente al pendiente de tu check-in en línea.", done: false }] : []),
+  ...(tipo !== "vuelo" ? [{ ico: "🏨", titulo: "Voucher de hotel", desc: "Tu reserva de hotel llegará por correo. Preséntala al momento del check-in.", done: false }] : []),
+  { ico: "🗺", titulo: "Todo en la app", desc: "Puedes consultar tu reserva completa desde Mis viajes.", done: false },
+].map((t, i, arr) => (
               <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
                 <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: t.done ? "#e8fff5" : "#f5f7ff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>{t.ico}</div>
                 <div>

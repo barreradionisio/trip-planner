@@ -1,11 +1,14 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import Logo from "../components/Logo";
 
 export default function Pago() {
+  const searchParams = useSearchParams();
+  const tipo = searchParams.get("tipo") || "completo";
   const router = useRouter();
   const [metodo, setMetodo] = useState("credito");
   const [cardNumber, setCardNumber] = useState("");
@@ -44,22 +47,36 @@ export default function Pago() {
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
 
       {/* TOPBAR */}
-      <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-        <Logo variant="teal" />
-        <button onClick={() => router.back()} style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}>‹ Regresar</button>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
-            <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 4 ? "#3ED5A9" : "#1667E6", color: "#0D0C56" }}>{i < 4 ? "✓" : "5"}</div>
-                <span style={{ fontSize: "11px", fontWeight: "600", color: i === 4 ? "#fff" : "#3ED5A9" }}>{s}</span>
-              </div>
-              {i < 4 && <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
-            </div>
-          ))}
+      {tipo === "completo" && (
+  <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
+    <Logo variant="teal" />
+    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+      {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
+        <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 4 ? "#3ED5A9" : "#1667E6", color: "#0D0C56" }}>{i < 4 ? "✓" : "5"}</div>
+            <span style={{ fontSize: "11px", fontWeight: "600", color: i === 4 ? "#fff" : "#3ED5A9" }}>{s}</span>
+          </div>
+          {i < 4 && <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
         </div>
-        <div style={{ width: "120px" }} />
-      </div>
+      ))}
+    </div>
+    <div style={{ width: "120px" }} />
+  </div>
+)}
+
+{tipo !== "completo" && (
+  <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
+    <Link href="/"><Logo variant="color" /></Link>
+    <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+      <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
+      <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
+      <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
+      <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+    </div>
+    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+  </nav>
+)}
 
       {/* BODY */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "20px", padding: "20px", flex: 1, maxWidth: "1000px", margin: "0 auto", width: "100%" }}>
@@ -235,18 +252,18 @@ export default function Pago() {
             </div>
             <div style={{ padding: "12px 14px" }}>
               {[
-                { label: "Destinos", value: "París · Roma" },
-                { label: "Vuelos · 3 tramos", value: "$2,080 USD" },
-                { label: "Hospedaje · 5 noches", value: "$1,636 USD" },
-                { label: "Pasajeros", value: "2 personas" },
-                { label: "Fechas", value: "12–17 Jul 2026" },
-                { label: "Comisión", value: "$0", green: true },
-              ].map(r => (
-                <div key={r.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "5px 0", borderBottom: "1px solid #f5f7ff" }}>
-                  <span style={{ color: "#888" }}>{r.label}</span>
-                  <span style={{ fontWeight: "600", color: (r as any).green ? "#3ED5A9" : "#0D0C56" }}>{r.value}</span>
-                </div>
-              ))}
+  { label: "Destinos", value: "París · Roma", mostrar: tipo === "completo" },
+  { label: "Vuelos · 3 tramos", value: "$2,080 USD", mostrar: tipo !== "hotel" },
+  { label: "Hospedaje · 5 noches", value: "$1,636 USD", mostrar: tipo !== "vuelo" },
+  { label: "Pasajeros", value: "2 personas", mostrar: true },
+  { label: "Fechas", value: "12–17 Jul 2026", mostrar: tipo === "completo" },
+  { label: "Comisión", value: "$0", green: true, mostrar: true },
+].filter(r => r.mostrar).map(r => (
+  <div key={r.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "5px 0", borderBottom: "1px solid #f5f7ff" }}>
+    <span style={{ color: "#888" }}>{r.label}</span>
+    <span style={{ fontWeight: "600", color: (r as any).green ? "#3ED5A9" : "#0D0C56" }}>{r.value}</span>
+  </div>
+))}
             </div>
             <div style={{ background: "#1667E6", padding: "11px 14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
@@ -274,7 +291,7 @@ export default function Pago() {
             onClick={() => setProcesando(true)}
             style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer" }}
           >
-            <Link href="/confirmacion" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
+            <Link href={`/confirmacion?tipo=${tipo}`} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
   onClick={() => setProcesando(true)}
 >
   {procesando ? "⏳ Procesando pago..." : "Confirmar y pagar $3,716 USD"}
