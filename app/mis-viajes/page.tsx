@@ -150,7 +150,7 @@ export default function MisViajes() {
                 <div style={{ padding: "10px 20px", borderTop: "1px solid #f5f7ff", display: "flex", gap: "8px" }}>
                   <Link href="/reserva" style={{ padding: "7px 16px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" }}>Ver detalle</Link>
                   {v.estado !== "completado" && (
-                    <Link href="/itinerario" style={{ padding: "7px 16px", background: "#f0f5ff", color: "#1667E6", border: "1.5px solid #e0eaff", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" }}>Editar itinerario</Link>
+                    <Link href="/mis-viajes/itinerario" style={{ padding: "7px 16px", background: "#f0f5ff", color: "#1667E6", border: "1.5px solid #e0eaff", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" }}>Editar itinerario</Link>
                   )}
                   <button style={{ padding: "7px 16px", background: "#f5f7ff", color: "#888", border: "1.5px solid #e8edf8", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}>Descargar docs</button>
                   {v.estado === "completado" && (
