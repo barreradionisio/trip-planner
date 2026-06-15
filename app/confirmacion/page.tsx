@@ -25,7 +25,12 @@ function ConfirmacionContent() {
 
       {/* HERO */}
       <div style={{ background: "linear-gradient(135deg,#085041,#3ED5A9)", padding: "48px 24px", textAlign: "center" }}>
-        <div style={{ width: "80px", height: "80px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "40px", margin: "0 auto 16px" }}>✅</div>
+        <div style={{ width: "80px", height: "80px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="20" fill="rgba(255,255,255,0.2)"/>
+    <path d="M10 20.5L16.5 27L30 13" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+</div>
         <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "32px", color: "#fff", marginBottom: "8px" }}>¡Reserva confirmada!</h1>
         <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", marginBottom: "16px" }}>Tu viaje a París y Roma está listo. Que lo disfrutes 🎉</p>
         <div style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", borderRadius: "50px", padding: "8px 24px", fontSize: "14px", fontWeight: "800", color: "#fff", letterSpacing: "1px" }}>
