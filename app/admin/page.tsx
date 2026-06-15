@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -192,7 +193,7 @@ const [filtroEstado, setFiltroEstado] = useState("todos");
                             </td>
                             <td style={{ padding: "12px 16px", color: "#aaa", fontSize: "11px" }}>{r.fecha}</td>
                             <td style={{ padding: "12px 16px" }}>
-                              <button style={{ padding: "5px 12px", background: "#f0f5ff", color: "#1667E6", border: "none", borderRadius: "6px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}>Ver</button>
+                              <Link href="/admin/reserva" style={{ padding: "5px 12px", background: "#f0f5ff", color: "#1667E6", border: "none", borderRadius: "6px", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" }}>Ver</Link>
                             </td>
                           </tr>
                         );
