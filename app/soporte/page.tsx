@@ -1,7 +1,8 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { useState } from "react";
 import Logo from "../components/Logo";
 
 const faqs = [
@@ -31,8 +32,15 @@ const faqs = [
   },
 ];
 
-export default function Soporte() {
-  const [tab, setTab] = useState("chat");
+function SoporteContent() {
+  const searchParams = useSearchParams();
+const [tab, setTab] = useState(searchParams.get("tab") || "chat");
+
+useEffect(() => {
+  const tabParam = searchParams.get("tab");
+  if (tabParam) setTab(tabParam);
+}, [searchParams]);
+
   const [faqAbierto, setFaqAbierto] = useState<number | null>(null);
   const [mensaje, setMensaje] = useState("");
   const [mensajes, setMensajes] = useState([
@@ -216,11 +224,18 @@ export default function Soporte() {
           <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", marginTop: "12px" }}>© 2026 Trip Planner · no-reply@tripplanner.mx</p>
         </div>
         <div style={{ display: "flex", gap: "24px" }}>
-          <a href="#" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Centro de ayuda</a>
-          <a href="#" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Contacto</a>
-          <a href="#" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Política de privacidad</a>
+          <Link href="/soporte?tab=faq" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Centro de ayuda</Link>
+<Link href="/soporte?tab=chat" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Contacto</Link>
+<Link href="/privacidad" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Política de privacidad</Link>
         </div>
       </footer>
     </div>
+  );
+  }
+export default function Soporte() {
+  return (
+    <Suspense>
+      <SoporteContent />
+    </Suspense>
   );
 }
