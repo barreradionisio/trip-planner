@@ -279,8 +279,8 @@ export default function SoloVuelos() {
             </div>
           )}
 
-          <Link href={seleccionado ? "/pago?tipo=vuelo" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !seleccionado ? "not-allowed" : "pointer", opacity: !seleccionado ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}>
-  Continuar → Pago
+          <Link href={seleccionado ? "/pasajeros?tipo=vuelo" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !seleccionado ? "not-allowed" : "pointer", opacity: !seleccionado ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}>
+  Continuar → Pasajeros
 </Link>
         </div>
       </div>

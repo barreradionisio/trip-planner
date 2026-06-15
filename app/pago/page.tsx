@@ -96,6 +96,7 @@ function PagoContent() {
                 { label: "Correo electrónico", placeholder: "juan@email.com", type: "email" },
                 { label: "Teléfono", placeholder: "+52 55 1234 5678", type: "tel" },
                 { label: "País de residencia", placeholder: "México", type: "text" },
+                { label: "Dirección", placeholder: "Calle, número, colonia", type: "text" },
               ].map(f => (
                 <div key={f.label}>
                   <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>{f.label}</div>
