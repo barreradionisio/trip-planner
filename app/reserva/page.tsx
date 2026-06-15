@@ -212,7 +212,7 @@ export default function Reserva() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <button style={{ width: "100%", padding: "11px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "12px", cursor: "pointer" }}>Descargar itinerario PDF</button>
+            <Link href="/mis-viajes/documentos" style={{ width: "100%", padding: "11px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "700", fontSize: "12px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center" }}>Descargar itinerario PDF</Link>
             <Link href="/mis-viajes/itinerario" style={{ width: "100%", padding: "11px", background: "#f0f5ff", color: "#1667E6", border: "1.5px solid #e0eaff", borderRadius: "10px", fontWeight: "700", fontSize: "12px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center" }}>Editar itinerario</Link>
             <button style={{ width: "100%", padding: "11px", background: "#fff", color: "#888", border: "1.5px solid #e8edf8", borderRadius: "10px", fontWeight: "700", fontSize: "12px", cursor: "pointer" }}>Contactar soporte</button>
           </div>

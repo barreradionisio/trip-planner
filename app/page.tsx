@@ -111,8 +111,8 @@ export default function Home() {
           <div>
             <div style={{fontSize:"11px", fontWeight:"700", color:"rgba(255,255,255,0.4)", textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:"12px"}}>Soporte</div>
             <div style={{display:"flex", flexDirection:"column", gap:"8px"}}>
-              <Link href="/soporte" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Centro de ayuda</Link>
-              <Link href="/soporte" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Contacto</Link>
+              <Link href="/soporte?tab=faq" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Centro de ayuda</Link>
+              <Link href="/soporte?tab=chat" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Contacto</Link>
               <Link href="/privacidad" style={{fontSize:"13px", color:"rgba(255,255,255,0.7)", textDecoration:"none"}}>Política de privacidad</Link>
             </div>
           </div>

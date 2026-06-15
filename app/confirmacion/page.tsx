@@ -38,21 +38,31 @@ function ConfirmacionContent() {
 
         {/* ACCIONES */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", marginBottom: "24px" }}>
-          {[
-            { emoji: "📧", label: "Enviamos tu confirmación a", sub: "juan@email.com" },
-            { emoji: "📄", label: "Descarga tu", sub: "Itinerario completo (PDF)" },
-            { emoji: "✈️", label: "Agrega tus vuelos a", sub: "Google Calendar" },
-          ].map(a => (
-            <div key={a.label} style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center", cursor: "pointer" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
-            >
-              <div style={{ fontSize: "28px", marginBottom: "8px" }}>{a.emoji}</div>
-              <div style={{ fontSize: "11px", color: "#888" }}>{a.label}</div>
-              <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>{a.sub}</div>
-            </div>
-          ))}
-        </div>
+  <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center" }}
+    onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+    onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+  >
+    <div style={{ fontSize: "28px", marginBottom: "8px" }}>📧</div>
+    <div style={{ fontSize: "11px", color: "#888" }}>Enviamos tu confirmación a</div>
+    <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>juan@email.com</div>
+  </div>
+  <Link href="/mis-viajes/documentos" style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center", textDecoration: "none", display: "block", cursor: "pointer" }}
+    onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+    onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+  >
+    <div style={{ fontSize: "28px", marginBottom: "8px" }}>📄</div>
+    <div style={{ fontSize: "11px", color: "#888" }}>Descarga tu</div>
+    <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>Itinerario completo (PDF)</div>
+  </Link>
+  <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center", cursor: "pointer" }}
+    onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+    onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+  >
+    <div style={{ fontSize: "28px", marginBottom: "8px" }}>✈️</div>
+    <div style={{ fontSize: "11px", color: "#888" }}>Agrega tus vuelos a</div>
+    <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>Google Calendar</div>
+  </div>
+</div>
 
         {/* RESUMEN */}
         <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "16px" }}>
