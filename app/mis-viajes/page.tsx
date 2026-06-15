@@ -154,7 +154,7 @@ export default function MisViajes() {
                   )}
                   <Link href="/mis-viajes/documentos" style={{ padding: "7px 16px", background: "#f5f7ff", color: "#888", border: "1.5px solid #e8edf8", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" }}>Descargar docs</Link>
                   {v.estado === "completado" && (
-                    <button style={{ padding: "7px 16px", background: "#f5f7ff", color: "#888", border: "1.5px solid #e8edf8", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}>Calificar viaje</button>
+                    <Link href="/mis-viajes/calificar" style={{ padding: "7px 16px", background: "#f5f7ff", color: "#888", border: "1.5px solid #e8edf8", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer", textDecoration: "none" }}>Calificar viaje</Link>
                   )}
                 </div>
               </div>
