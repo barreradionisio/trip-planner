@@ -56,21 +56,21 @@ export default function Hospedaje() {
 
       {/* TOPBAR */}
       <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-        <Logo variant="teal" />
-        <button onClick={() => router.back()} style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontWeight: "700", cursor: "pointer" }}>‹ Regresar</button>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
-            <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 2 ? "#3ED5A9" : i === 2 ? "#1667E6" : "rgba(255,255,255,0.15)", color: i < 3 ? "#0D0C56" : "rgba(255,255,255,0.4)" }}>{i < 2 ? "✓" : i + 1}</div>
-                <span style={{ fontSize: "11px", fontWeight: "600", color: i === 2 ? "#fff" : i < 2 ? "#3ED5A9" : "rgba(255,255,255,0.4)" }}>{s}</span>
-              </div>
-              {i < 4 && <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
-            </div>
-          ))}
+  <Logo variant="teal" />
+  <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+    <button onClick={() => router.back()} style={{ background: "transparent", border: "none", color: "rgba(255,255,255,0.6)", fontSize: "12px", fontWeight: "700", cursor: "pointer", marginRight: "8px" }}>‹ Regresar</button>
+    {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
+      <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+          <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 2 ? "#3ED5A9" : i === 2 ? "#1667E6" : "rgba(255,255,255,0.15)", color: i < 3 ? "#0D0C56" : "rgba(255,255,255,0.4)" }}>{i < 2 ? "✓" : i + 1}</div>
+          <span style={{ fontSize: "11px", fontWeight: "600", color: i === 2 ? "#fff" : i < 2 ? "#3ED5A9" : "rgba(255,255,255,0.4)" }}>{s}</span>
         </div>
-        <div style={{ width: "120px" }} />
+        {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
       </div>
+    ))}
+  </div>
+  <div style={{ width: "120px" }} />
+</div>
 
       {/* BODY */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "20px", padding: "20px", flex: 1, maxWidth: "1100px", margin: "0 auto", width: "100%" }}>

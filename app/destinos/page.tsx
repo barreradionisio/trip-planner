@@ -64,14 +64,14 @@ export default function Destinos() {
       {/* TOPBAR */}
       <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
         <Link href="/"><Logo variant="teal" /></Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pago"].map((s, i) => (
-            <div key={s} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+          {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
+            <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i === 0 ? "#1667E6" : "rgba(255,255,255,0.15)", color: i === 0 ? "#fff" : "rgba(255,255,255,0.4)" }}>{i + 1}</div>
                 <span style={{ fontSize: "11px", fontWeight: "600", color: i === 0 ? "#fff" : "rgba(255,255,255,0.4)" }}>{s}</span>
               </div>
-              {i < 4 && <div style={{ width: "24px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
+              {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
             </div>
           ))}
         </div>
