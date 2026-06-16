@@ -43,7 +43,7 @@ export default function Pasajeros() {
   };
 
   const pasajeroCompleto = (p: Pasajero) =>
-    p.nombre && p.apellido && p.fechaNacimiento && p.pasaporte;
+    p.nombre && p.apellido && p.fechaNacimiento && p.pasaporte && p.vencimientoPasaporte;
 
   const puedeContnuar = pasajeros.every(pasajeroCompleto) && contacto.correo && contacto.telefono;
 
