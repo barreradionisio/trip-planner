@@ -34,25 +34,38 @@ export default function Home() {
                </div>
       </section>
 
-      <section style={{background:"#f5f7ff", padding:"80px 24px", textAlign:"center"}}>
-        <h2 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"32px", color:"#0D0C56", marginBottom:"8px"}}>¿Cómo funciona?</h2>
-        <p style={{fontSize:"14px", color:"#888", marginBottom:"48px"}}>En 3 simples pasos tienes tu viaje listo</p>
+      <section style={{background:"#f5f7ff", padding:"56px 24px", textAlign:"center"}}>
+  <h2 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"32px", color:"#0D0C56", marginBottom:"8px"}}>¿Cómo funciona?</h2>
+  <p style={{fontSize:"14px", color:"#888", marginBottom:"32px"}}>En 3 simples pasos tienes tu viaje listo</p>
         <div style={{display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:"24px", maxWidth:"900px", margin:"0 auto"}}>
           <div style={{background:"#fff", borderRadius:"16px", padding:"32px 24px", border:"1.5px solid #e8edf8"}}>
-            <div style={{width:"56px", height:"56px", borderRadius:"50%", background:"#f0f5ff", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px", fontSize:"24px"}}>✈</div>
-            <h3 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"16px", color:"#0D0C56", marginBottom:"8px"}}>1. Elige tus destinos</h3>
-            <p style={{fontSize:"13px", color:"#888", lineHeight:"1.6"}}>Selecciona a dónde quieres ir, cuántos días y qué tipo de hospedaje prefieres.</p>
-          </div>
-          <div style={{background:"#fff", borderRadius:"16px", padding:"32px 24px", border:"1.5px solid #e8edf8"}}>
-            <div style={{width:"56px", height:"56px", borderRadius:"50%", background:"#f0f5ff", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px", fontSize:"24px"}}>🏨</div>
-            <h3 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"16px", color:"#0D0C56", marginBottom:"8px"}}>2. Armamos tu itinerario</h3>
-            <p style={{fontSize:"13px", color:"#888", lineHeight:"1.6"}}>Te mostramos vuelos, hoteles y actividades para que elijas lo que más te gusta.</p>
-          </div>
-          <div style={{background:"#fff", borderRadius:"16px", padding:"32px 24px", border:"1.5px solid #e8edf8"}}>
-            <div style={{width:"56px", height:"56px", borderRadius:"50%", background:"#f0f5ff", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px", fontSize:"24px"}}>💳</div>
-            <h3 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"16px", color:"#0D0C56", marginBottom:"8px"}}>3. Paga y listo</h3>
-            <p style={{fontSize:"13px", color:"#888", lineHeight:"1.6"}}>Confirma tu reserva y recibe todos los detalles en tu correo al instante.</p>
-          </div>
+  <div style={{width:"56px", height:"56px", borderRadius:"50%", background:"#f0f5ff", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px"}}>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3ED5A9" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    </svg>
+  </div>
+  <h3 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"16px", color:"#0D0C56", marginBottom:"8px"}}>1. Elige tus destinos</h3>
+  <p style={{fontSize:"13px", color:"#888", lineHeight:"1.6"}}>Selecciona a dónde quieres ir, cuántos días y qué tipo de hospedaje prefieres.</p>
+</div>
+<div style={{background:"#fff", borderRadius:"16px", padding:"32px 24px", border:"1.5px solid #e8edf8"}}>
+  <div style={{width:"56px", height:"56px", borderRadius:"50%", background:"#f0f5ff", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px"}}>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3ED5A9" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+  </div>
+  <h3 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"16px", color:"#0D0C56", marginBottom:"8px"}}>2. Armamos tu itinerario</h3>
+  <p style={{fontSize:"13px", color:"#888", lineHeight:"1.6"}}>Te mostramos vuelos, hoteles y actividades para que elijas lo que más te gusta.</p>
+</div>
+<div style={{background:"#fff", borderRadius:"16px", padding:"32px 24px", border:"1.5px solid #e8edf8"}}>
+  <div style={{width:"56px", height:"56px", borderRadius:"50%", background:"#f0f5ff", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 20px"}}>
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3ED5A9" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+    </svg>
+  </div>
+  <h3 style={{fontFamily:"sans-serif", fontWeight:"800", fontSize:"16px", color:"#0D0C56", marginBottom:"8px"}}>3. Paga y listo</h3>
+  <p style={{fontSize:"13px", color:"#888", lineHeight:"1.6"}}>Confirma tu reserva y recibe todos los detalles en tu correo al instante.</p>
+</div>
         </div>
       </section>
 

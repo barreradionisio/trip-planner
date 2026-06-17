@@ -5,34 +5,96 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Logo from "../components/Logo";
 
+const IconEmail = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+  </svg>
+);
+
+const IconEmailNaranja = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5C00" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+  </svg>
+);
+
+const IconTicket = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5C00" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v2z"/>
+    <line x1="9" y1="9" x2="9" y2="15"/>
+  </svg>
+);
+
+const IconHotel = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5C00" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+);
+
+const IconApp = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF5C00" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+    <line x1="12" y1="18" x2="12.01" y2="18"/>
+  </svg>
+);
+
+const IconDoc = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <line x1="16" y1="13" x2="8" y2="13"/>
+    <line x1="16" y1="17" x2="8" y2="17"/>
+    <polyline points="10 9 9 9 8 9"/>
+  </svg>
+);
+
+const IconCalendar = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+);
+
 function ConfirmacionContent() {
   const searchParams = useSearchParams();
   const tipo = searchParams.get("tipo") || "completo";
+
+  const pasosSiguientes = [
+    { ico: <IconEmailNaranja />, titulo: "Correo de confirmación", desc: "Revisa tu bandeja de entrada en los próximos minutos.", done: true },
+    ...(tipo !== "hotel" ? [{ ico: <IconTicket />, titulo: "Boletos de vuelo", desc: "Recibirás tus boletos por correo. Mantente al pendiente de tu check-in en línea.", done: false }] : []),
+    ...(tipo !== "vuelo" ? [{ ico: <IconHotel />, titulo: "Voucher de hotel", desc: "Tu reserva de hotel llegará por correo. Preséntala al momento del check-in.", done: false }] : []),
+    { ico: <IconApp />, titulo: "Todo en la app", desc: "Puedes consultar tu reserva completa desde Mis viajes.", done: false },
+  ];
+
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
 
       {/* NAV */}
       <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
-  <Link href="/"><Logo variant="color" /></Link>
-  <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-    <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
-    <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
-    <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
-    <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
-  </div>
-  <Link href="/mis-viajes" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Mi cuenta</Link>
-</nav>
+        <Link href="/"><Logo variant="color" /></Link>
+        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+          <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
+          <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
+          <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
+          <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+        </div>
+        <Link href="/mis-viajes" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Mi cuenta</Link>
+      </nav>
 
       {/* HERO */}
       <div style={{ background: "linear-gradient(135deg,#085041,#3ED5A9)", padding: "48px 24px", textAlign: "center" }}>
         <div style={{ width: "80px", height: "80px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="20" cy="20" r="20" fill="rgba(255,255,255,0.2)"/>
-    <path d="M10 20.5L16.5 27L30 13" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-</div>
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="20" fill="rgba(255,255,255,0.2)"/>
+            <path d="M10 20.5L16.5 27L30 13" stroke="white" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
         <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "32px", color: "#fff", marginBottom: "8px" }}>¡Reserva confirmada!</h1>
-        <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", marginBottom: "16px" }}>Tu viaje a París y Roma está listo. Que lo disfrutes 🎉</p>
+        <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", marginBottom: "16px" }}>Tu viaje está listo. ¡Que lo disfrutes!</p>
         <div style={{ display: "inline-block", background: "rgba(255,255,255,0.2)", borderRadius: "50px", padding: "8px 24px", fontSize: "14px", fontWeight: "800", color: "#fff", letterSpacing: "1px" }}>
           # TP-2024-8847
         </div>
@@ -43,103 +105,94 @@ function ConfirmacionContent() {
 
         {/* ACCIONES */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", marginBottom: "24px" }}>
-  <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center" }}
-    onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
-    onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
-  >
-    <div style={{ fontSize: "28px", marginBottom: "8px" }}>📧</div>
-    <div style={{ fontSize: "11px", color: "#888" }}>Enviamos tu confirmación a</div>
-    <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>juan@email.com</div>
-  </div>
-  <Link href="/mis-viajes/documentos" style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center", textDecoration: "none", display: "block", cursor: "pointer" }}
-    onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
-    onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
-  >
-    <div style={{ fontSize: "28px", marginBottom: "8px" }}>📄</div>
-    <div style={{ fontSize: "11px", color: "#888" }}>Descarga tu</div>
-    <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>Itinerario completo (PDF)</div>
-  </Link>
-  <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px", textAlign: "center", cursor: "pointer" }}
-    onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
-    onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
-  >
-    <div style={{ fontSize: "28px", marginBottom: "8px" }}>✈️</div>
-    <div style={{ fontSize: "11px", color: "#888" }}>Agrega tus vuelos a</div>
-    <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>Google Calendar</div>
-  </div>
-</div>
+          <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "20px 16px", textAlign: "center", transition: "border-color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+          >
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}><IconEmail /></div>
+            <div style={{ fontSize: "11px", color: "#888" }}>Enviamos tu confirmación a</div>
+            <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>juan@email.com</div>
+          </div>
+          <Link href="/mis-viajes/documentos" style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "20px 16px", textAlign: "center", textDecoration: "none", display: "block", transition: "border-color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+          >
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}><IconDoc /></div>
+            <div style={{ fontSize: "11px", color: "#888" }}>Descarga tu</div>
+            <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>Itinerario completo (PDF)</div>
+          </Link>
+          <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "20px 16px", textAlign: "center", cursor: "pointer", transition: "border-color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+          >
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "10px" }}><IconCalendar /></div>
+            <div style={{ fontSize: "11px", color: "#888" }}>Agrega tus vuelos a</div>
+            <div style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6", marginTop: "2px" }}>Google Calendar</div>
+          </div>
+        </div>
 
         {/* RESUMEN */}
         <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "16px" }}>
-  <div style={{ padding: "12px 18px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-    <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Resumen de tu reserva</div>
-    <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>
-      {tipo === "vuelo" ? "Solo vuelos" : tipo === "hotel" ? "Solo hospedaje" : "12 – 17 Jul 2026 · 2 personas"}
-    </div>
-  </div>
-  <div style={{ padding: "16px 18px", display: "grid", gridTemplateColumns: tipo === "completo" ? "1fr 1fr" : "1fr", gap: "16px" }}>
-
-    {/* VUELOS — visible en tipo vuelo y completo */}
-    {(tipo === "vuelo" || tipo === "completo") && (
-      <div>
-        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Vuelos</div>
-        {[
-          { ruta: "CDMX → París", aerolinea: "Aeroméxico", fecha: "12 Jul · 06:30", precio: "$840" },
-          { ruta: "París → Roma", aerolinea: "Air France", fecha: "15 Jul · 09:15", precio: "$1,360" },
-          { ruta: "Roma → CDMX", aerolinea: "Iberia", fecha: "17 Jul · 11:00", precio: "$1,180" },
-        ].map(v => (
-          <div key={v.ruta} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
-            <div>
-              <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{v.ruta}</div>
-              <div style={{ fontSize: "10px", color: "#888" }}>{v.aerolinea} · {v.fecha}</div>
+          <div style={{ padding: "12px 18px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Resumen de tu reserva</div>
+            <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>
+              {tipo === "vuelo" ? "Solo vuelos" : tipo === "hotel" ? "Solo hospedaje" : "12 – 17 Jul 2026 · 2 personas"}
             </div>
-            <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{v.precio}</div>
           </div>
-        ))}
-      </div>
-    )}
-
-    {/* HOTELES — visible en tipo hotel y completo */}
-    {(tipo === "hotel" || tipo === "completo") && (
-      <div>
-        <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Hospedaje</div>
-        {[
-          { ciudad: "París", hotel: "Hotel Le Marais", noches: "3 noches", precio: "$540" },
-          { ciudad: "Roma", hotel: "Hotel Roma Centro", noches: "2 noches", precio: "$320" },
-        ].map(h => (
-          <div key={h.ciudad} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
-            <div>
-              <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{h.ciudad}</div>
-              <div style={{ fontSize: "10px", color: "#888" }}>{h.hotel} · {h.noches}</div>
+          <div style={{ padding: "16px 18px", display: "grid", gridTemplateColumns: tipo === "completo" ? "1fr 1fr" : "1fr", gap: "16px" }}>
+            {(tipo === "vuelo" || tipo === "completo") && (
+              <div>
+                <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Vuelos</div>
+                {[
+                  { ruta: "CDMX → París", aerolinea: "Aeroméxico", fecha: "12 Jul · 06:30", precio: "$840" },
+                  { ruta: "París → Roma", aerolinea: "Air France", fecha: "15 Jul · 09:15", precio: "$1,360" },
+                  { ruta: "Roma → CDMX", aerolinea: "Iberia", fecha: "17 Jul · 11:00", precio: "$1,180" },
+                ].map(v => (
+                  <div key={v.ruta} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
+                    <div>
+                      <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{v.ruta}</div>
+                      <div style={{ fontSize: "10px", color: "#888" }}>{v.aerolinea} · {v.fecha}</div>
+                    </div>
+                    <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{v.precio}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {(tipo === "hotel" || tipo === "completo") && (
+              <div>
+                <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Hospedaje</div>
+                {[
+                  { ciudad: "París", hotel: "Hotel Le Marais", noches: "3 noches", precio: "$540" },
+                  { ciudad: "Roma", hotel: "Hotel Roma Centro", noches: "2 noches", precio: "$320" },
+                ].map(h => (
+                  <div key={h.ciudad} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f5f7ff" }}>
+                    <div>
+                      <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{h.ciudad}</div>
+                      <div style={{ fontSize: "10px", color: "#888" }}>{h.hotel} · {h.noches}</div>
+                    </div>
+                    <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{h.precio}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          <div style={{ background: "#1667E6", padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{ fontSize: "12px", fontWeight: "700", color: "rgba(255,255,255,0.8)" }}>Total pagado</div>
+            <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "20px", color: "#fff" }}>
+              {tipo === "vuelo" ? "$2,080 USD" : tipo === "hotel" ? "$860 USD" : "$3,716 USD"}
             </div>
-            <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>{h.precio}</div>
           </div>
-        ))}
-      </div>
-    )}
-  </div>
-  </div>
-
-      {/* TOTAL */}
-<div style={{ background: "#1667E6", padding: "12px 18px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-  <div style={{ fontSize: "12px", fontWeight: "700", color: "rgba(255,255,255,0.8)" }}>Total pagado</div>
-  <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "20px", color: "#fff" }}>
-    {tipo === "vuelo" ? "$2,080 USD" : tipo === "hotel" ? "$860 USD" : "$3,716 USD"}
-  </div>
-</div>
+        </div>
 
         {/* TIMELINE */}
         <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "16px 18px", marginBottom: "16px" }}>
           <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#0D0C56", marginBottom: "14px" }}>¿Qué sigue?</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {[
-  { ico: "📧", titulo: "Correo de confirmación", desc: "Revisa tu bandeja de entrada en los próximos minutos.", done: true },
-  ...(tipo !== "hotel" ? [{ ico: "🎫", titulo: "Boletos de vuelo", desc: "Recibirás tus boletos por correo. Mantente al pendiente de tu check-in en línea.", done: false }] : []),
-  ...(tipo !== "vuelo" ? [{ ico: "🏨", titulo: "Voucher de hotel", desc: "Tu reserva de hotel llegará por correo. Preséntala al momento del check-in.", done: false }] : []),
-  { ico: "🗺", titulo: "Todo en la app", desc: "Puedes consultar tu reserva completa desde Mis viajes.", done: false },
-].map((t, i, arr) => (
+            {pasosSiguientes.map((t, i) => (
               <div key={i} style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: t.done ? "#e8fff5" : "#f5f7ff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px", flexShrink: 0 }}>{t.ico}</div>
+                <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: t.done ? "#e8fff5" : "#f5f7ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {t.ico}
+                </div>
                 <div>
                   <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56", display: "flex", alignItems: "center", gap: "6px" }}>
                     {t.titulo}
@@ -154,20 +207,20 @@ function ConfirmacionContent() {
 
         {/* POLÍTICA */}
         <div style={{ background: "#fff8e0", border: "1.5px solid #F5A623", borderRadius: "13px", padding: "14px 18px", marginBottom: "24px" }}>
-  <div style={{ fontWeight: "700", fontSize: "12px", color: "#7a4800", marginBottom: "4px" }}>⚠️ Política de cancelación</div>
-  <div style={{ fontSize: "11px", color: "#7a4800", lineHeight: "1.6" }}>
-    Las condiciones de cancelación dependen de la tarifa contratada en cada vuelo y hotel. Consulta los detalles específicos de tu reserva en <strong>Mis viajes</strong> o escríbenos a <strong>no-reply@tripplanner.mx</strong> si tienes dudas.
-  </div>
-</div>
+          <div style={{ fontWeight: "700", fontSize: "12px", color: "#7a4800", marginBottom: "4px" }}>⚠️ Política de cancelación</div>
+          <div style={{ fontSize: "11px", color: "#7a4800", lineHeight: "1.6" }}>
+            Las condiciones de cancelación dependen de la tarifa contratada en cada vuelo y hotel. Consulta los detalles específicos de tu reserva en <strong>Mis viajes</strong> o escríbenos a <strong>no-reply@tripplanner.mx</strong> si tienes dudas.
+          </div>
+        </div>
 
         {/* BOTONES */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-          <a href="/mis-viajes" style={{ padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textAlign: "center", textDecoration: "none", display: "block" }}>
+          <Link href="/mis-viajes" style={{ padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textAlign: "center", textDecoration: "none", display: "block" }}>
             Ver en Mis viajes
-          </a>
-          <a href="/" style={{ padding: "13px", background: "#fff", color: "#0D0C56", border: "1.5px solid #e8edf8", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textAlign: "center", textDecoration: "none", display: "block" }}>
+          </Link>
+          <Link href="/" style={{ padding: "13px", background: "#fff", color: "#0D0C56", border: "1.5px solid #e8edf8", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textAlign: "center", textDecoration: "none", display: "block" }}>
             Volver al inicio
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -179,8 +232,8 @@ function ConfirmacionContent() {
         </div>
         <div style={{ display: "flex", gap: "24px" }}>
           <Link href="/soporte?tab=faq" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Centro de ayuda</Link>
-<Link href="/soporte?tab=chat" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Contacto</Link>
-<Link href="/privacidad" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Política de privacidad</Link>
+          <Link href="/soporte?tab=chat" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Contacto</Link>
+          <Link href="/privacidad" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none" }}>Política de privacidad</Link>
         </div>
       </footer>
     </div>
@@ -194,4 +247,3 @@ export default function Confirmacion() {
     </Suspense>
   );
 }
-
