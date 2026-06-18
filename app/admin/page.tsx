@@ -244,25 +244,41 @@ const [filtroEstado, setFiltroEstado] = useState("todos");
 
           {/* REPORTES */}
           {seccion === "reportes" && (
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
-              {[
-                { titulo: "Reporte de ventas", desc: "Ingresos por mes, destino y tipo de reserva", icono: "📊" },
-                { titulo: "Reservas por destino", desc: "Los destinos más populares del período", icono: "🗺" },
-                { titulo: "Clientes frecuentes", desc: "Usuarios con más de una reserva", icono: "👥" },
-                { titulo: "Cancelaciones", desc: "Análisis de cancelaciones y motivos", icono: "📋" },
-              ].map(r => (
-                <div key={r.titulo} style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "20px", cursor: "pointer" }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
-                >
-                  <div style={{ fontSize: "28px", marginBottom: "10px" }}>{r.icono}</div>
-                  <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "4px" }}>{r.titulo}</div>
-                  <div style={{ fontSize: "12px", color: "#888", marginBottom: "14px" }}>{r.desc}</div>
-                  <button style={{ padding: "7px 16px", background: "#f0f5ff", color: "#1667E6", border: "none", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}>Generar reporte</button>
-                </div>
-              ))}
-            </div>
-          )}
+  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+    {[
+      { titulo: "Reporte de ventas", desc: "Ingresos por mes, destino y tipo de reserva", icono: (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>
+        </svg>
+      )},
+      { titulo: "Reservas por destino", desc: "Los destinos más populares del período", icono: (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>
+        </svg>
+      )},
+      { titulo: "Clientes frecuentes", desc: "Usuarios con más de una reserva", icono: (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      )},
+      { titulo: "Cancelaciones", desc: "Análisis de cancelaciones y motivos", icono: (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+        </svg>
+      )},
+    ].map(r => (
+      <div key={r.titulo} style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "20px", cursor: "pointer" }}
+        onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"}
+        onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"}
+      >
+        <div style={{ marginBottom: "10px" }}>{r.icono}</div>
+        <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "4px" }}>{r.titulo}</div>
+        <div style={{ fontSize: "12px", color: "#888", marginBottom: "14px" }}>{r.desc}</div>
+        <button style={{ padding: "7px 16px", background: "#f0f5ff", color: "#1667E6", border: "none", borderRadius: "8px", fontSize: "11px", fontWeight: "700", cursor: "pointer" }}>Generar reporte</button>
+      </div>
+    ))}
+  </div>
+)}
 
         </div>
       </div>
