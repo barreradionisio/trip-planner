@@ -178,9 +178,14 @@ export default function PasajerosFlujo() {
           })}
 
           {/* NOTA */}
-          <div style={{ background: "#f0f5ff", border: "1.5px solid #e0eaff", borderRadius: "10px", padding: "12px 14px", marginBottom: "16px", fontSize: "11px", color: "#1667E6", lineHeight: "1.6" }}>
-            💡 Asegúrate de que los datos coincidan exactamente con el pasaporte. Errores en el nombre pueden causar problemas en el aeropuerto.
-          </div>
+          <div style={{ background: "#f0f5ff", border: "1.5px solid #e0eaff", borderRadius: "10px", padding: "12px 14px", marginBottom: "16px", fontSize: "11px", color: "#1667E6", lineHeight: "1.6", display: "flex", gap: "10px", alignItems: "flex-start" }}>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "1px" }}>
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" y1="16" x2="12" y2="12"/>
+    <line x1="12" y1="8" x2="12.01" y2="8"/>
+  </svg>
+  <span>Asegúrate de que los datos coincidan exactamente con el pasaporte. Errores en el nombre pueden causar problemas en el aeropuerto.</span>
+</div>
 
           {/* BOTONES */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
