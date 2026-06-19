@@ -73,35 +73,43 @@ function PagoContent() {
 
       {/* TOPBAR */}
       {tipo === "completo" && (
-        <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-          <Logo variant="teal" />
+  <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
+    <Logo variant="teal" />
+    <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+      <button onClick={() => router.back()} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", color: "rgba(255,255,255,0.8)", cursor: "pointer", marginRight: "8px", display: "flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px" }}
+        onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.18)"}
+        onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)"}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
+        <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
-              <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 5 ? "#3ED5A9" : "#1667E6", color: "#0D0C56" }}>{i < 5 ? "✓" : "6"}</div>
-                  <span style={{ fontSize: "11px", fontWeight: "600", color: i === 5 ? "#fff" : "#3ED5A9" }}>{s}</span>
-                </div>
-                {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
-              </div>
-            ))}
+            <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 5 ? "#3ED5A9" : "#1667E6", color: "#0D0C56" }}>{i < 5 ? "✓" : "6"}</div>
+            <span style={{ fontSize: "11px", fontWeight: "600", color: i === 5 ? "#fff" : "#3ED5A9" }}>{s}</span>
           </div>
-          <div style={{ width: "120px" }} />
+          {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
         </div>
-      )}
+      ))}
+    </div>
+    <div style={{ width: "120px" }} />
+  </div>
+)}
 
-      {tipo !== "completo" && (
-        <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
-          <Link href="/"><Logo variant="color" /></Link>
-          <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-            <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
-            <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
-            <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
-            <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
-          </div>
-          <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
-        </nav>
-      )}
+{tipo !== "completo" && (
+  <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
+    <Link href="/"><Logo variant="color" /></Link>
+    <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+      <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
+      <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
+      <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
+      <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+    </div>
+    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+  </nav>
+)}
 
       {/* BODY */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "20px", padding: "20px", flex: 1, maxWidth: "1000px", margin: "0 auto", width: "100%" }}>
