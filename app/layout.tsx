@@ -18,8 +18,9 @@ export const metadata: Metadata = {
   description: "Arma tu viaje ideal, sin complicaciones",
   manifest: "/manifest.json",
   icons: {
-    apple: "/icons/icon-192x192.png",
-  },
+  icon: "/icons/icon-192x192.png",
+  apple: "/icons/icon-192x192.png",
+},
 };
 
 export default function RootLayout({
