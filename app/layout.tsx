@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import SplashWrapper from "./components/SplashWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,12 +17,6 @@ export const metadata: Metadata = {
   title: "Trip Planner",
   description: "Arma tu viaje ideal, sin complicaciones",
   manifest: "/manifest.json",
-  themeColor: "#1667E6",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Trip Planner",
-  },
   icons: {
     apple: "/icons/icon-192x192.png",
   },
@@ -42,7 +37,10 @@ export default function RootLayout({
         <meta name="theme-color" content="#1667E6" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <SplashWrapper />
+        {children}
+      </body>
     </html>
   );
 }
