@@ -1,0 +1,22 @@
+{
+  "name": "Trip Planner",
+  "short_name": "Trip Planner",
+  "description": "Arma tu viaje ideal, sin complicaciones",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0C56",
+  "theme_color": "#1667E6",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
