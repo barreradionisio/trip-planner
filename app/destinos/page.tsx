@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Logo from "../components/Logo";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const destinosDisponibles = [
   { ciudad: "París", pais: "Francia", emoji: "🗼" },
@@ -28,10 +29,12 @@ interface Destino {
 }
 
 export default function Destinos() {
+  const isMobile = useIsMobile();
   const [seleccionados, setSeleccionados] = useState<Destino[]>([]);
   const [busqueda, setBusqueda] = useState("");
   const [fechaSalida, setFechaSalida] = useState("");
   const [fechaRegreso, setFechaRegreso] = useState("");
+  const [mostrarResumen, setMostrarResumen] = useState(false);
 
   const agregar = (d: typeof destinosDisponibles[0]) => {
     if (seleccionados.find(s => s.ciudad === d.ciudad)) return;
@@ -64,22 +67,38 @@ export default function Destinos() {
       {/* TOPBAR */}
       <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
         <Link href="/"><Logo variant="teal" /></Link>
-        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-          {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
-            <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i === 0 ? "#1667E6" : "rgba(255,255,255,0.15)", color: i === 0 ? "#fff" : "rgba(255,255,255,0.4)" }}>{i + 1}</div>
-                <span style={{ fontSize: "11px", fontWeight: "600", color: i === 0 ? "#fff" : "rgba(255,255,255,0.4)" }}>{s}</span>
+        {!isMobile && (
+          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+            {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
+              <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i === 0 ? "#1667E6" : "rgba(255,255,255,0.15)", color: i === 0 ? "#fff" : "rgba(255,255,255,0.4)" }}>{i + 1}</div>
+                  <span style={{ fontSize: "11px", fontWeight: "600", color: i === 0 ? "#fff" : "rgba(255,255,255,0.4)" }}>{s}</span>
+                </div>
+                {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
               </div>
-              {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
-            </div>
-          ))}
-        </div>
-        <div style={{ width: "120px" }} />
+            ))}
+          </div>
+        )}
+        {isMobile && (
+          <div style={{ fontSize: "11px", fontWeight: "700", color: "#fff" }}>Paso 1 de 6 · Destinos</div>
+        )}
+        <div style={{ width: isMobile ? "0px" : "120px" }} />
       </div>
 
       {/* BODY */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "20px", padding: "20px", flex: 1, maxWidth: "1100px", margin: "0 auto", width: "100%" }}>
+      <div style={{
+        display: isMobile ? "flex" : "grid",
+        flexDirection: isMobile ? "column" : undefined,
+        gridTemplateColumns: isMobile ? undefined : "1fr 340px",
+        gap: "20px",
+        padding: isMobile ? "16px" : "20px",
+        flex: 1,
+        maxWidth: "1100px",
+        margin: "0 auto",
+        width: "100%",
+        boxSizing: "border-box"
+      }}>
 
         {/* IZQUIERDA */}
         <div>
@@ -106,21 +125,19 @@ export default function Destinos() {
                 style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }}
               />
             </div>
-            <div style={{ padding: "16px", display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: "10px" }}>
+            <div style={{ padding: "16px", display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr 1fr" : "1fr 1fr 1fr 1fr", gap: "10px" }}>
               {filtrados.map(d => {
                 const yaSeleccionado = seleccionados.find(s => s.ciudad === d.ciudad);
                 return (
                   <div
                     key={d.ciudad}
                     onClick={() => agregar(d)}
-                    style={{ borderRadius: "12px", border: `1.5px solid ${yaSeleccionado ? "#1667E6" : "#e8edf8"}`, background: yaSeleccionado ? "#f0f5ff" : "#fff", padding: "14px 10px", textAlign: "center", cursor: yaSeleccionado ? "default" : "pointer", transition: "all 0.2s" }}
-                    onMouseEnter={e => { if (!yaSeleccionado) (e.currentTarget as HTMLElement).style.borderColor = "#1667E6"; }}
-                    onMouseLeave={e => { if (!yaSeleccionado) (e.currentTarget as HTMLElement).style.borderColor = "#e8edf8"; }}
+                    style={{ borderRadius: "12px", border: `1.5px solid ${yaSeleccionado ? "#1667E6" : "#e8edf8"}`, background: yaSeleccionado ? "#f0f5ff" : "#fff", padding: "12px 8px", textAlign: "center", cursor: yaSeleccionado ? "default" : "pointer", transition: "all 0.2s" }}
                   >
-                    <div style={{ fontSize: "28px", marginBottom: "6px" }}>{d.emoji}</div>
-                    <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
+                    <div style={{ fontSize: isMobile ? "24px" : "28px", marginBottom: "6px" }}>{d.emoji}</div>
+                    <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56" }}>{d.ciudad}</div>
                     <div style={{ fontSize: "10px", color: "#888" }}>{d.pais}</div>
-                    {yaSeleccionado && <div style={{ fontSize: "10px", color: "#1667E6", fontWeight: "700", marginTop: "4px" }}>✓ Agregado</div>}
+                    {yaSeleccionado && <div style={{ fontSize: "10px", color: "#1667E6", fontWeight: "700", marginTop: "4px" }}>✓</div>}
                   </div>
                 );
               })}
@@ -128,63 +145,103 @@ export default function Destinos() {
           </div>
         </div>
 
-        {/* SIDEBAR */}
-        <div>
+        {/* SIDEBAR / RESUMEN MÓVIL */}
+        {isMobile && seleccionados.length > 0 && (
           <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-            <div style={{ padding: "12px 16px", background: "#0D0C56" }}>
-              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Tu itinerario</div>
+            <div style={{ padding: "10px 14px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+              onClick={() => setMostrarResumen(!mostrarResumen)}
+            >
+              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu itinerario · {seleccionados.length} destinos · {totalDias} días</div>
+              <span style={{ color: "#3ED5A9", fontSize: "12px" }}>{mostrarResumen ? "▲" : "▼"}</span>
             </div>
-            <div style={{ padding: "12px 14px" }}>
-              {seleccionados.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "24px 0", fontSize: "12px", color: "#aaa" }}>
-                  <div style={{ fontSize: "28px", marginBottom: "8px" }}>🗺</div>
-                  Selecciona destinos para armar tu viaje
-                </div>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                  {seleccionados.map((d, i) => (
-                    <div key={d.ciudad} style={{ background: "#f5f7ff", borderRadius: "10px", padding: "12px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ fontSize: "18px" }}>{d.emoji}</span>
-                          <div>
-                            <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
-                            <div style={{ fontSize: "10px", color: "#888" }}>Parada {i + 1}</div>
-                          </div>
-                        </div>
-                        <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
+            {mostrarResumen && (
+              <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {seleccionados.map((d, i) => (
+                  <div key={d.ciudad} style={{ background: "#f5f7ff", borderRadius: "10px", padding: "12px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span style={{ fontSize: "18px" }}>{d.emoji}</span>
+                        <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
                       </div>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
-                        <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>−</button>
-                          <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56", minWidth: "20px", textAlign: "center" }}>{d.dias}</span>
-                          <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
-                        </div>
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <span style={{ fontSize: "11px", color: "#888" }}>Hospedaje</span>
-                        <select value={d.hospedaje} onChange={e => actualizarHospedaje(d.ciudad, e.target.value)} style={{ border: "1.5px solid #e8edf8", borderRadius: "6px", padding: "3px 6px", fontSize: "11px", outline: "none", background: "#fff" }}>
-                          <option>Cualquier tipo</option>
-                          <option>Hotel</option>
-                          <option>Airbnb</option>
-                          <option>Hostal</option>
-                          <option>Sin hospedaje</option>
-                        </select>
+                      <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>−</button>
+                        <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56" }}>{d.dias}</span>
+                        <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>+</button>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-            {seleccionados.length > 0 && (
-              <div style={{ padding: "10px 14px", borderTop: "1px solid #f0f2fa", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "11px", color: "#888" }}>Total: <strong style={{ color: "#0D0C56" }}>{totalDias} días</strong></span>
-                <span style={{ fontSize: "11px", color: "#888" }}>{seleccionados.length} destinos</span>
+                  </div>
+                ))}
               </div>
             )}
           </div>
+        )}
 
+        {/* SIDEBAR DESKTOP */}
+        {!isMobile && (
+          <div>
+            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
+              <div style={{ padding: "12px 16px", background: "#0D0C56" }}>
+                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Tu itinerario</div>
+              </div>
+              <div style={{ padding: "12px 14px" }}>
+                {seleccionados.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "24px 0", fontSize: "12px", color: "#aaa" }}>
+                    <div style={{ fontSize: "28px", marginBottom: "8px" }}>🗺</div>
+                    Selecciona destinos para armar tu viaje
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {seleccionados.map((d, i) => (
+                      <div key={d.ciudad} style={{ background: "#f5f7ff", borderRadius: "10px", padding: "12px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span style={{ fontSize: "18px" }}>{d.emoji}</span>
+                            <div>
+                              <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
+                              <div style={{ fontSize: "10px", color: "#888" }}>Parada {i + 1}</div>
+                            </div>
+                          </div>
+                          <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
+                          <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>−</button>
+                            <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56", minWidth: "20px", textAlign: "center" }}>{d.dias}</span>
+                            <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <span style={{ fontSize: "11px", color: "#888" }}>Hospedaje</span>
+                          <select value={d.hospedaje} onChange={e => actualizarHospedaje(d.ciudad, e.target.value)} style={{ border: "1.5px solid #e8edf8", borderRadius: "6px", padding: "3px 6px", fontSize: "11px", outline: "none", background: "#fff" }}>
+                            <option>Cualquier tipo</option>
+                            <option>Hotel</option>
+                            <option>Airbnb</option>
+                            <option>Hostal</option>
+                            <option>Sin hospedaje</option>
+                          </select>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {seleccionados.length > 0 && (
+                <div style={{ padding: "10px 14px", borderTop: "1px solid #f0f2fa", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ fontSize: "11px", color: "#888" }}>Total: <strong style={{ color: "#0D0C56" }}>{totalDias} días</strong></span>
+                  <span style={{ fontSize: "11px", color: "#888" }}>{seleccionados.length} destinos</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* BOTÓN CONTINUAR */}
+        <div style={{ marginTop: isMobile ? "0" : undefined }}>
           <Link
             href={puedeContinuar ? "/vuelos" : "#"}
             style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
