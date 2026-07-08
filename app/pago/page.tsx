@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { useIsMobile } from "../hooks/useIsMobile";
 import Logo from "../components/Logo";
 
 function PagoContent() {
@@ -15,6 +16,7 @@ function PagoContent() {
   const [cardNumber, setCardNumber] = useState("");
   const [cardName, setCardName] = useState("");
   const [cardExp, setCardExp] = useState("");
+  const isMobile = useIsMobile();
   const [procesando, setProcesando] = useState(false);
 
   const getCardBrand = (num: string) => {
@@ -72,7 +74,7 @@ function PagoContent() {
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
 
       {/* TOPBAR */}
-      {tipo === "completo" && (
+{tipo === "completo" && (
   <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
     <Logo variant="teal" />
     <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
@@ -84,7 +86,7 @@ function PagoContent() {
           <polyline points="15 18 9 12 15 6"/>
         </svg>
       </button>
-      {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
+      {!isMobile ? ["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
         <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 5 ? "#3ED5A9" : "#1667E6", color: "#0D0C56" }}>{i < 5 ? "✓" : "6"}</div>
@@ -92,27 +94,29 @@ function PagoContent() {
           </div>
           {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
         </div>
-      ))}
+      )) : <div style={{ fontSize: "11px", fontWeight: "700", color: "#fff" }}>Paso 6 de 6 · Pago</div>}
     </div>
-    <div style={{ width: "120px" }} />
+    <div style={{ width: isMobile ? "0" : "120px" }} />
   </div>
 )}
 
 {tipo !== "completo" && (
-  <nav style={{ background: "#fff", padding: "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
+  <nav style={{ background: "#fff", padding: isMobile ? "12px 16px" : "12px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8", position: "relative" }}>
     <Link href="/"><Logo variant="color" /></Link>
-    <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
-      <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
-      <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
-      <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
-      <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
-    </div>
-    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+    {!isMobile && (
+      <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "28px", alignItems: "center" }}>
+        <Link href="/destinos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Arma tu viaje</Link>
+        <Link href="/solo-vuelos" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Vuelos</Link>
+        <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
+        <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+      </div>
+    )}
+    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>{isMobile ? "Entrar" : "Iniciar sesión"}</Link>
   </nav>
 )}
 
       {/* BODY */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "20px", padding: "20px", flex: 1, maxWidth: "1000px", margin: "0 auto", width: "100%" }}>
+      <div style={{ display: isMobile ? "flex" : "grid", flexDirection: isMobile ? "column" : undefined, gridTemplateColumns: isMobile ? undefined : "1fr 320px", gap: "20px", padding: isMobile ? "16px" : "20px", flex: 1, maxWidth: "1000px", margin: "0 auto", width: "100%", boxSizing: "border-box" as const }}>
 
         {/* IZQUIERDA */}
         <div>
@@ -122,7 +126,7 @@ function PagoContent() {
             <div style={{ padding: "12px 16px", borderBottom: "1px solid #f0f2fa" }}>
               <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#0D0C56" }}>Datos de contacto</div>
             </div>
-            <div style={{ padding: "16px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+            <div style={{ padding: "16px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "12px" }}>
               {[
                 { label: "Nombre completo", placeholder: "Juan García López", type: "text" },
                 { label: "Correo electrónico", placeholder: "juan@email.com", type: "email" },
@@ -146,7 +150,7 @@ function PagoContent() {
             <div style={{ padding: "16px" }}>
 
               {/* SELECTOR MÉTODOS */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "20px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "10px", marginBottom: "20px" }}>
                 {metodos.map(m => (
                   <div
                     key={m.key}
@@ -162,7 +166,7 @@ function PagoContent() {
                           <img src={`data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iODAwIiB3aWR0aD0iMTIwMCIgaWQ9InN2Zzg5NSIgdmVyc2lvbj0iMS4xIiB2aWV3Qm94PSItOTYgLTk4LjkwOCA4MzIgNTkzLjQ0OCI+PGRlZnMgaWQ9ImRlZnM4NzkiPjxzdHlsZSBpZD0ic3R5bGU4NzciIHR5cGU9InRleHQvY3NzIj4uZXtmaWxsOiNmNzllMWJ9PC9zdHlsZT48L2RlZnM+PHBhdGggaWQ9InJlY3Q4ODciIGRpc3BsYXk9ImlubGluZSIgZmlsbD0iI2ZmNWYwMCIgc3Ryb2tlLXdpZHRoPSI1LjQ5NCIgZD0iTTIyNC44MzMgNDIuMjk4aDE5MC40MTZ2MzExLjAwNUgyMjQuODMzeiIvPjxwYXRoIGlkPSJwYXRoODg5IiBkPSJNMjQ0LjQ0NiAxOTcuODI4YTE5Ny40NDggMTk3LjQ0OCAwIDAxNzUuNTQtMTU1LjQ3NSAxOTcuNzc3IDE5Ny43NzcgMCAxMDAgMzExLjAwNCAxOTcuNDQ4IDE5Ny40NDggMCAwMS03NS41NC0xNTUuNTN6IiBmaWxsPSIjZWIwMDFiIiBzdHJva2Utd2lkdGg9IjUuNDk0Ii8+PHBhdGggaWQ9InBhdGg4OTEiIGQ9Ik02MjEuMTAxIDMyMC4zOTR2LTYuMzcyaDIuNzQ3di0xLjMxOWgtNi41Mzd2MS4zMTloMi41ODJ2Ni4zNzN6bTEyLjY5MSAwdi03LjY5aC0xLjk3OGwtMi4zMDcgNS40OTMtMi4zMDgtNS40OTRoLTEuOTc3djcuNjkxaDEuNDI4di01LjgyM2wyLjE0MyA1aDEuNDgzbDIuMTQzLTV2NS44MjN6IiBjbGFzcz0iZSIgZmlsbD0iI2Y3OWUxYiIgc3Ryb2tlLXdpZHRoPSI1LjQ5NCIvPjxwYXRoIGlkPSJwYXRoODkzIiBkPSJNNjQwIDE5Ny44MjhhMTk3Ljc3NyAxOTcuNzc3IDAgMDEtMzIwLjAxNSAxNTUuNDc0IDE5Ny43NzcgMTk3Ljc3NyAwIDAwMC0zMTEuMDA0QTE5Ny43NzcgMTk3Ljc3NyAwIDAxNjQwIDE5Ny43NzN6IiBjbGFzcz0iZSIgZmlsbD0iI2Y3OWUxYiIgc3Ryb2tlLXdpZHRoPSI1LjQ5NCIvPjwvc3ZnPg==`} style={{height:"20px", width:"auto"}} alt="Mastercard"/>
                         </div>
                       ) : m.key === "spei" ? (
-                        <img src={`data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSI4MzMiIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdmlld0JveD0iMTExLjg0IDQ4Ljg1IDc4NzQuMDMgMjY1OS41NSIgd2lkdGg9IjI1MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTE1OTAuNDUgODUzLjI4YzIzOS44LTEyLjIxIDQ2Ny42MS0zMC41MyA3MDMuODItNDEuMDQtNjcuOS00OTguOTgtMzA4Ljg4LTc2My4zOS0xMDM3LjYzLTc2My4zOS03MTUuNTkgMC0xMDI2LjMxIDM2Ny44NS0xMDY3LjM1IDcwNS44Mi00Ni4xOCAzODAuMzMgMjQwLjExIDYyMy45NSA2OTcuODMgNzU3LjA0IDM5NS4zNSAxMTUuODQgNzI2LjY3IDE5Ni4zNCA3MzYuOTkgMzkwLjUgMTEuMTEgMjA4LjgxLTIyNy40MyAzMjYuMTUtMzQ1LjU5IDMyNi4xNS0yMTEuMTggMC00NDAuOTItMjMzLjkzLTQ2OC40MS00NDguMzQtMjI5Ljg0IDE4LjI0LTQ2OC40MyAxOS4yMi02OTguMjcgMzcuNDYgMCA1ODIuNDQgNDczLjM3IDg5MC45MiAxMTAxLjAxIDg5MC45MiA1ODUuMyAwIDExNjAuMTMtMjQ2LjEzIDExNjAuMTMtODc1LjU3IDAtNzY0LjIxLTgyNi44Ny03NjMuOTgtMTM2OC4wOC05NTIuMTktMTg5LjI1LTEwNC40OC05MC41Ni0zMzMuMDggODcuNTYtMzUzLjE2IDM1OS42MS00My42NSA0MjEuMzUgMTYwLjkzIDQ5Ny45OCAzMjUuOHptMjI1My4xMi03NDIuNTRjNDY5LjAxIDAgODAxLjExIDI1OC40MyA4MDEuMTEgNzgyLjMxIDAgNDgwLjEyLTMzMC40MiA3ODYuNjEtODEwLjA1IDc4Ni42MWgtNTk5LjAzdjkxOS4zOGMwIDYzLjE2IDAgNjMuMTYtNTUuNzggNjMuMTZoLTYyNC45OGMtNzguMjUgMC03OC4yNSAwLTc4LjI1LTU4Ljc3di0yMzgzLjU0YzAtMTA5LjE1IDAtMTA5LjE1IDEwOS44My0xMDkuMTV6bS01NDcuNzMgMTA4My4xYy00NC4zMSAwLTYwLjI0LTE4LjE5LTYwLjI0LTQ1LjY5di00OTMuODljMC0zNi4yMiAyOS41Ni01Ni41NyA1Ni41Ny01Ni41N2gyNjIuNThjMjI2LjAxIDMzLjM1IDMwOC43NCAxNTUuODEgMzA4Ljc0IDMxNS40OCAwIDIyOC40Ni0yMDMuNjUgMjgwLjY3LTM4MC41NCAyODAuNjdoLTE4Ny4xMnoiIGZpbGw9IiMzNDMwODQiLz48cGF0aCBkPSJtNDgxNS4yNiAxODEuM2MwLTMyIDIyLjk3LTU2LjQ5IDQ4LjI5LTU2LjQ5aDE5OTIuMTljNDMuOTYtMS45OSA0OC43NSAxNi4wOSA0OC43NSAzMy4ydjQ1NS4yNmMyLjA1IDIxLjEzLTE1LjM0IDMwLjc5LTMwLjc5IDMwLjc5aC0xMjYxLjQ3Yy0yNi4zNiAwLTM1LjA4IDI3LjAyLTM1LjA4IDU2LjU0djMwNy4zOWMwIDMzLjE1IDIzLjY0IDYzLjQ2IDYzLjQ2IDYzLjQ2aDExMTYuMTZsMjUuNDcgMjUuNDd2NDI2Ljg3Yy0xMi43NiAxOC4zMS0yNS41MiAzNi42MS0zOC4yOCA1NC45M2gtMTEyNC43NWMtMjYuMDIgMC00Mi4wNyAxNi4wNi00Mi4wNyA0Mi4wN3Y0MDkuNDljMCAyMi41OCAyNi45MSA0Ny43MiA1OC4zNyA0Ny43MmgxMjQzLjUxYzE2LjQ0IDAgMjUuNDYgMTUuNjUgMjUuNDYgMjUuNDZ2NDk3LjM0YzAgMTEuNy0xMy4yMyAyNC40OC0yNC40OCAyNC40OGgtMjA0NC40Yy0xMC44NCAwLTIwLjM0LTEwLjctMjAuMzQtMjAuMzR2LTI0MjMuNjN6IiBmaWxsPSIjZmY5NDAwIi8+PHBhdGggZD0ibTc5ODUuODYgMTUzNS4yNHYxMDkwLjA0aC03MDkuMzljLTEwLjg0IDAtMjAuMzQtMTAuNy0yMC4zNC0yMC4zNHYtOTczLjhjMC0yNi4wOCAxOC4wMi00MS4wOSAzMS40OC00MS4wOWgyMDMuNjZjMjAuNDEgMCAyNS41NyAxNy40NiAyNS41NyAzMi44N3Y0NTUuMDhjMCA1Ny40OSA0OC4yIDMyLjcyIDczLjk4IDAgMTMxLjY5LTE4MC45MiAyNjMuMzctMzYxLjg0IDM5NS4wNS01NDIuNzZ6IiBmaWxsPSIjMzQzMDg0Ii8+PHBhdGggZD0ibTcyMjUuMTIgMTgxLjNjMC0zMiAyMi45Ny01Ni40OSA0OC4yOS01Ni40OWg2NTEuMTdjNDUuMTEgMCA2MS4yOCAyNy42MiA2MS4yOCA0OS40MnY5MzAuNzhsLTM5OC43LTU1Ny45NGMtOC42MS0xMi4wNy0yOC4zMS0xMS4yOS0yOC4zMSAxMy43djQwMS44NWMwIDIyLjM4LTExLjA2IDY0Ljg0LTQyLjkzIDY0Ljg0aC0yNTkuODJjLTE0LjE2IDAtMzEuMDEtMzEuOTUtMzEuMDEtNTAuMjN2LTc5NS45M3oiIGZpbGw9IiNmZjk0MDAiLz48L3N2Zz4=`} style={{height:"12px", width:"auto"}} alt="SPEI"/>
+                        <img src={`data:image/svg+xml;base64,PHN2ZyBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSI4MzMiIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdmlld0JveD0iMTExLjg0IDQ4Ljg1IDc4NzQuMDMgMjY1OS41NSIgd2lkdGg9IjI1MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTE1OTAuNDUgODUzLjI4YzIzOS44LTEyLjIxIDQ2Ny42MS0zMC41MyA3MDMuODItNDEuMDQtNjcuOS00OTguOTgtMzA4Ljg4LTc2My4zOS0xMDM3LjYzLTc2My4zOS03MTUuNTkgMC0xMDI2LjMxIDM2Ny44NS0xMDY3LjM1IDcwNS44Mi00Ni4xOCAzODAuMzMgMjQwLjExIDYyMy45NSA2OTcuODMgNzU3LjA0IDM5NS4zNSAxMTUuODQgNzI2LjY3IDE5Ni4zNCA3MzYuOTkgMzkwLjUgMTEuMTEgMjA4LjgxLTIyNy40MyAzMjYuMTUtMzQ1LjU5IDMyNi4xNS0yMTEuMTggMC00NDAuOTItMjMzLjkzLTQ2OC40MS00NDguMzQtMjI5Ljg0IDE4LjI0LTQ2OC40MyAxOS4yMi02OTguMjcgMzcuNDYgMCA1ODIuNDQgNDczLjM3IDg5MC45MiAxMTAxLjAxIDg5MC45MiA1ODUuMyAwIDExNjAuMTMtMjQ2LjEzIDExNjAuMTMtODc1LjU3IDAtNzY0LjIxLTgyNi44Ny03NjMuOTgtMTM2OC4wOC05NTIuMTktMTg5LjI1LTEwNC40OC05MC41Ni0zMzMuMDggODcuNTYtMzUzLjE2IDM1OS42MS00My42NSA0MjEuMzUgMTYwLjkzIDQ5Ny45OCAzMjUuOHptMjI1My4xMi03NDIuNTRjNDY5LjAxIDAgODAxLjExIDI1OC40MyA4MDEuMTEgNzgyLjMxIDAgNDgwLjEyLTMzMC40MiA3ODYuNjEtODEwLjA1IDc4Ni42MWgtNTk5LjAzdjkxOS4zOGMwIDYzLjE2IDAgNjMuMTYtNTUuNzggNjMuMTZoLTYyNC45OGMtNzguMjUgMC03OC4yNSAwLTc4LjI1LTU4Ljc3di0yMzgzLjU0YzAtMTA5LjE1IDAtMTA5LjE1IDEwOS44My0xMDkuMTV6bS01NDcuNzMgMTA4My4xYy00NC4zMSAwLTYwLjI0LTE4LjE5LTYwLjI0LTQ1LjY5di00OTMuODljMC0zNi4yMiAyOS41Ni01Ni41NyA1Ni41Ny01Ni41N2gyNjIuNThjMjI2LjAxIDMzLjM1IDMwOC43NCAxNTUuODEgMzA4Ljc0IDMxNS40OCAwIDIyOC40Ni0yMDMuNjUgMjgwLjY3LTM4MC41NCAyODAuNjdoLTE4Ny4xMnoiIGZpbGw9IiMzNDMwODQiLz48cGF0aCBkPSJtNDgxNS4yNiAxODEuM2MwLTMyIDIyLjk3LTU2LjQ5IDQ4LjI5LTU2LjQ5aDE5OTIuMTljNDMuOTYtMS45OSA0OC43NSAxNi4wOSA0OC43NSAzMy4ydjQ1NS4yNmMyLjA1IDIxLjEzLTE1LjM0IDMwLjc5LTMwLjc5IDMwLjc5aC0xMjYxLjQ3Yy0yNi4zNiAwLTM1LjA4IDI3LjAyLTM1LjA4IDU2LjU0djMwNy4zOWMwIDMzLjE1IDIzLjY0IDYzLjQ2IDYzLjQ2IDYzLjQ2aDExMTYuMTZsMjUuNDcgMjUuNDd2NDI2Ljg3Yy0xMi43NiAxOC4zMS0yNS41MiAzNi42MS0zOC4yOCA1NC45M2gtMTEyNC43NWMtMjYuMDIgMC00Mi4wNyAxNi4wNi00Mi4wNyA0Mi4wN3Y0MDkuNDljMCAyMi41OCAyNi45MSA0Ny43MiA1OC4zNyA0Ny43MmgxMjQzLjUxYzE2LjQ0IDAgMjUuNDYgMTUuNjUgMjUuNDYgMjUuNDZ2NDk3LjM0YzAgMTEuNy0xMy4yMyAyNC40OC0yNC40OCAyNC40OGgtMjA0NC40Yy0xMC44NCAwLTIwLjM0LTEwLjctMjAuMzQtMjAuMzR2LTI0MjMuNjN6IiBmaWxsPSIjZmY5NDAwIi8+PHBhdGggZD0ibTc5ODUuODYgMTUzNS4yNHYxMDkwLjA0aC03MDkuMzljLTEwLjg0IDAtMjAuMzQtMTAuNy0yMC4zNC0yMC4zNHYtOTczLjhjMC0yNi4wOCAxOC4wMi00MS4wOSAzMS40OC00MS4wOWgyMDMuNjZjMjAuNDEgMCAyNS41NyAxNy40NiAyNS41NyAzMi44N3Y0NTUuMDhjMCA1Ny40OSA0OC4yIDMyLjcyIDczLjk4IDAgMTMxLjY5LTE4MC45MiAyNjMuMzctMzYxLjg0IDM5NS4wNS01NDIuNzZ6IiBmaWxsPSIjMzQzMDg0Ii8+PHBhdGggZD0ibTcyMjUuMTIgMTgxLjNjMC0zMiAyMi45Ny01Ni40OSA0OC4yOS01Ni40OWg2NTEuMTdjNDUuMTEgMCA2MS4yOCAyNy42MiA2MS4yOCA0OS40MnY5MzAuNzhsLTM5OC43LTU1Ny45NGMtOC42MS0xMi4wNy0yOC4zMS0xMS4yOS0yOC4zMSAxMy43djQwMS44NWMwIDIyLjM4LTExLjA2IDY0Ljg0LTQyLjkzIDY0Ljg0aC0yNTkuODJjLTE0LjE2IDAtMzEuMDEtMzEuOTUtMzEuMDEtNTAuMjN2LTc5NS45M3oiIGZpbGw9IiNmZjk0MDAiLz48L3N2Zz4=`} style={{height:"22px", width:"auto"}} alt="SPEI"/>
                       ) : (
                         <IconBank />
                       )}
@@ -210,7 +214,7 @@ function PagoContent() {
                   </div>
 
                   {/* CAMPOS */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "12px" }}>
                     <div style={{ gridColumn: "1/-1" }}>
                       <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Número de tarjeta</div>
                       <input
