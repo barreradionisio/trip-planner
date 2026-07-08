@@ -3,7 +3,15 @@
 import { useEffect, useState } from "react";
 
 export default function SplashWrapper() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+
+useEffect(() => {
+  const yaVisto = sessionStorage.getItem("splash");
+  if (!yaVisto) {
+    setVisible(true);
+    sessionStorage.setItem("splash", "1");
+  }
+}, []);
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
