@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Logo from "../components/Logo";
 
@@ -27,12 +27,23 @@ interface Destino {
   hospedaje: string;
 }
 
+const IconCalendar = ({ color = "#888" }: { color?: string }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+);
+
 export default function Destinos() {
   const [seleccionados, setSeleccionados] = useState<Destino[]>([]);
   const [busqueda, setBusqueda] = useState("");
   const [fechaSalida, setFechaSalida] = useState("");
   const [fechaRegreso, setFechaRegreso] = useState("");
   const [mostrarResumen, setMostrarResumen] = useState(false);
+  const salidaRef = useRef<HTMLInputElement>(null);
+  const regresoRef = useRef<HTMLInputElement>(null);
 
   const agregar = (d: typeof destinosDisponibles[0]) => {
     if (seleccionados.find(s => s.ciudad === d.ciudad)) return;
@@ -59,6 +70,13 @@ export default function Destinos() {
   const totalDias = seleccionados.reduce((a, b) => a + b.dias, 0);
   const puedeContinuar = seleccionados.length > 0 && fechaSalida !== "" && fechaRegreso !== "";
 
+  const formatFecha = (fecha: string) => {
+    if (!fecha) return "";
+    const [y, m, d] = fecha.split("-");
+    const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+    return `${d} ${meses[parseInt(m)-1]} ${y}`;
+  };
+
   return (
     <>
       <style>{`
@@ -82,7 +100,7 @@ export default function Destinos() {
           position: relative;
         }
         .dest-pasos { display: flex; align-items: center; gap: 4px; }
-        .dest-paso-mobile { display: none; font-size: 11px; font-weight: 700; color: #fff; }
+        .dest-paso-mobile { display: none; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; }
         .dest-body {
           display: grid;
           grid-template-columns: 1fr 340px;
@@ -122,33 +140,65 @@ export default function Destinos() {
           gap: 12px;
           margin-bottom: 12px;
         }
-        .dest-input {
+        .dest-fecha-wrap {
+          position: relative;
+          width: 100%;
+        }
+        .dest-fecha-display {
+          width: 100%;
+          border: 1.5px solid #e8edf8;
+          border-radius: 8px;
+          padding: 9px 36px 9px 12px;
+          font-size: 12px;
+          color: #0D0C56;
+          background: #fff;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          min-height: 38px;
+          font-family: 'Montserrat', sans-serif;
+        }
+        .dest-fecha-display.active {
+          border-color: #3ED5A9;
+        }
+        .dest-fecha-display.placeholder {
+          color: #bbb;
+        }
+        .dest-fecha-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+        }
+        .dest-fecha-input {
+          position: absolute;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          opacity: 0;
+          cursor: pointer;
+          font-size: 16px;
+        }
+        .dest-buscar {
           width: 100%;
           border: 1.5px solid #e8edf8;
           border-radius: 8px;
           padding: 9px 12px;
-          font-size: 12px;
+          font-size: 13px;
           outline: none;
           color: #0D0C56;
           background: #fff;
-          -webkit-text-fill-color: #0D0C56;
-          min-width: 0;
+          font-family: 'Montserrat', sans-serif;
         }
 
         @media (max-width: 768px) {
           .dest-pasos { display: none; }
-          .dest-paso-mobile { 
-            display: block; 
-            position: absolute; 
-            right: 16px;
-            text-align: right;
-          }
+          .dest-paso-mobile { display: block; }
           .dest-body { grid-template-columns: 1fr; padding: 12px; }
           .dest-sidebar { display: none; }
           .dest-sidebar-mobile { display: flex; }
           .dest-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px; }
-          .dest-fechas { gap: 8px; margin-bottom: 10px; }
-          .dest-input { font-size: 13px; padding: 8px 8px; }
+          .dest-fechas { gap: 8px; }
         }
       `}</style>
 
@@ -182,17 +232,45 @@ export default function Destinos() {
                 <div className="dest-fechas">
                   <div>
                     <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de salida</div>
-                    <input type="date" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} className="dest-input" style={{ border: `1.5px solid ${fechaSalida ? "#3ED5A9" : "#e8edf8"}` }} />
+                    <div className="dest-fecha-wrap">
+                      <div className={`dest-fecha-display ${fechaSalida ? "active" : "placeholder"}`}>
+                        {fechaSalida ? formatFecha(fechaSalida) : "dd/mm/aaaa"}
+                      </div>
+                      <div className="dest-fecha-icon">
+                        <IconCalendar color={fechaSalida ? "#3ED5A9" : "#888"} />
+                      </div>
+                      <input
+                        ref={salidaRef}
+                        type="date"
+                        value={fechaSalida}
+                        onChange={e => setFechaSalida(e.target.value)}
+                        className="dest-fecha-input"
+                      />
+                    </div>
                   </div>
                   <div>
                     <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de regreso</div>
-                    <input type="date" value={fechaRegreso} onChange={e => setFechaRegreso(e.target.value)} className="dest-input" style={{ border: `1.5px solid ${fechaRegreso ? "#3ED5A9" : "#e8edf8"}` }} />
+                    <div className="dest-fecha-wrap">
+                      <div className={`dest-fecha-display ${fechaRegreso ? "active" : "placeholder"}`}>
+                        {fechaRegreso ? formatFecha(fechaRegreso) : "dd/mm/aaaa"}
+                      </div>
+                      <div className="dest-fecha-icon">
+                        <IconCalendar color={fechaRegreso ? "#3ED5A9" : "#888"} />
+                      </div>
+                      <input
+                        ref={regresoRef}
+                        type="date"
+                        value={fechaRegreso}
+                        onChange={e => setFechaRegreso(e.target.value)}
+                        className="dest-fecha-input"
+                      />
+                    </div>
                   </div>
                 </div>
                 {(!fechaSalida || !fechaRegreso) && (
                   <div style={{ fontSize: "11px", color: "#F5A623", marginBottom: "10px" }}>⚠ Selecciona las fechas de tu viaje para continuar</div>
                 )}
-                <input placeholder="Buscar destino..." value={busqueda} onChange={e => setBusqueda(e.target.value)} className="dest-input" />
+                <input placeholder="Buscar destino..." value={busqueda} onChange={e => setBusqueda(e.target.value)} className="dest-buscar" />
               </div>
 
               <div className="dest-grid">
