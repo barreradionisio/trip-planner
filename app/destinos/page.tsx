@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import Logo from "../components/Logo";
-import { useIsMobile } from "../hooks/useIsMobile";
 
 const destinosDisponibles = [
   { ciudad: "París", pais: "Francia", emoji: "🗼" },
@@ -29,7 +28,6 @@ interface Destino {
 }
 
 export default function Destinos() {
-  const isMobile = useIsMobile();
   const [seleccionados, setSeleccionados] = useState<Destino[]>([]);
   const [busqueda, setBusqueda] = useState("");
   const [fechaSalida, setFechaSalida] = useState("");
@@ -62,13 +60,78 @@ export default function Destinos() {
   const puedeContinuar = seleccionados.length > 0 && fechaSalida !== "" && fechaRegreso !== "";
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
+    <>
+      <style>{`
+  .dest-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Montserrat', sans-serif;
+    background: #f5f7ff;
+    overflow-x: hidden;
+  }
+  .dest-topbar {
+    background: #0D0C56;
+    padding: 11px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .dest-pasos { display: flex; align-items: center; gap: 4px; }
+  .dest-paso-mobile { display: none; font-size: 11px; font-weight: 700; color: #fff; }
+  .dest-body {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .dest-sidebar { display: flex; flex-direction: column; }
+  .dest-sidebar-mobile { display: none; flex-direction: column; }
+  .dest-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; padding: 16px; }
+  .dest-fechas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .dest-input {
+    width: 100%;
+    border: 1.5px solid #e8edf8;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+    color: #0D0C56;
+    background: #fff;
+  }
+  .dest-input::placeholder { color: #999; }
 
-      {/* TOPBAR */}
-      <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-        <Link href="/"><Logo variant="teal" /></Link>
-        {!isMobile && (
-          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+  @media (max-width: 768px) {
+    .dest-pasos { display: none; }
+    .dest-paso-mobile { display: block; }
+    .dest-topbar { justify-content: flex-start; gap: 12px; }
+    .dest-body { grid-template-columns: 1fr; padding: 12px; }
+    .dest-sidebar { display: none; }
+    .dest-sidebar-mobile { display: flex; }
+    .dest-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px; }
+    .dest-fechas { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dest-input { font-size: 14px; color: #0D0C56; -webkit-text-fill-color: #0D0C56; }
+    * {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+}
+    }
+`}</style>
+
+      <div className="dest-container">
+
+        {/* TOPBAR */}
+        <div className="dest-topbar">
+          <Link href="/"><Logo variant="teal" /></Link>
+          <div className="dest-pasos">
             {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
               <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
@@ -79,110 +142,51 @@ export default function Destinos() {
               </div>
             ))}
           </div>
-        )}
-        {isMobile && (
-          <div style={{ fontSize: "11px", fontWeight: "700", color: "#fff" }}>Paso 1 de 6 · Destinos</div>
-        )}
-        <div style={{ width: isMobile ? "0px" : "120px" }} />
-      </div>
-
-      {/* BODY */}
-      <div style={{
-        display: isMobile ? "flex" : "grid",
-        flexDirection: isMobile ? "column" : undefined,
-        gridTemplateColumns: isMobile ? undefined : "1fr 340px",
-        gap: "20px",
-        padding: isMobile ? "16px" : "20px",
-        flex: 1,
-        maxWidth: "1100px",
-        margin: "0 auto",
-        width: "100%",
-        boxSizing: "border-box"
-      }}>
-
-        {/* IZQUIERDA */}
-        <div>
-          <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", marginBottom: "16px", overflow: "hidden" }}>
-            <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2fa" }}>
-              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "12px" }}>¿A dónde quieres ir?</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "12px" }}>
-                <div>
-                  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de salida</div>
-                  <input type="date" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} style={{ width: "100%", border: `1.5px solid ${fechaSalida ? "#3ED5A9" : "#e8edf8"}`, borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
-                </div>
-                <div>
-                  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de regreso</div>
-                  <input type="date" value={fechaRegreso} onChange={e => setFechaRegreso(e.target.value)} style={{ width: "100%", border: `1.5px solid ${fechaRegreso ? "#3ED5A9" : "#e8edf8"}`, borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }} />
-                </div>
-              </div>
-              {(!fechaSalida || !fechaRegreso) && (
-                <div style={{ fontSize: "11px", color: "#F5A623", marginBottom: "10px" }}>⚠ Selecciona las fechas de tu viaje para continuar</div>
-              )}
-              <input
-                placeholder="Buscar destino..."
-                value={busqueda}
-                onChange={e => setBusqueda(e.target.value)}
-                style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 12px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const }}
-              />
-            </div>
-            <div style={{ padding: "16px", display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr 1fr" : "1fr 1fr 1fr 1fr", gap: "10px" }}>
-              {filtrados.map(d => {
-                const yaSeleccionado = seleccionados.find(s => s.ciudad === d.ciudad);
-                return (
-                  <div
-                    key={d.ciudad}
-                    onClick={() => agregar(d)}
-                    style={{ borderRadius: "12px", border: `1.5px solid ${yaSeleccionado ? "#1667E6" : "#e8edf8"}`, background: yaSeleccionado ? "#f0f5ff" : "#fff", padding: "12px 8px", textAlign: "center", cursor: yaSeleccionado ? "default" : "pointer", transition: "all 0.2s" }}
-                  >
-                    <div style={{ fontSize: isMobile ? "24px" : "28px", marginBottom: "6px" }}>{d.emoji}</div>
-                    <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56" }}>{d.ciudad}</div>
-                    <div style={{ fontSize: "10px", color: "#888" }}>{d.pais}</div>
-                    {yaSeleccionado && <div style={{ fontSize: "10px", color: "#1667E6", fontWeight: "700", marginTop: "4px" }}>✓</div>}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <div className="dest-paso-mobile">Paso 1 de 6 · Destinos</div>
+          <div style={{ width: "120px" }} />
         </div>
 
-        {/* SIDEBAR / RESUMEN MÓVIL */}
-        {isMobile && seleccionados.length > 0 && (
-          <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-            <div style={{ padding: "10px 14px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-              onClick={() => setMostrarResumen(!mostrarResumen)}
-            >
-              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu itinerario · {seleccionados.length} destinos · {totalDias} días</div>
-              <span style={{ color: "#3ED5A9", fontSize: "12px" }}>{mostrarResumen ? "▲" : "▼"}</span>
-            </div>
-            {mostrarResumen && (
-              <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {seleccionados.map((d, i) => (
-                  <div key={d.ciudad} style={{ background: "#f5f7ff", borderRadius: "10px", padding: "12px" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ fontSize: "18px" }}>{d.emoji}</span>
-                        <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
-                      </div>
-                      <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>−</button>
-                        <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56" }}>{d.dias}</span>
-                        <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>+</button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        {/* BODY */}
+        <div className="dest-body">
 
-        {/* SIDEBAR DESKTOP */}
-        {!isMobile && (
+          {/* IZQUIERDA */}
           <div>
+            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", marginBottom: "16px", overflow: "hidden" }}>
+              <div style={{ padding: "14px 16px", borderBottom: "1px solid #f0f2fa" }}>
+                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", color: "#0D0C56", marginBottom: "12px" }}>¿A dónde quieres ir?</div>
+                <div className="dest-fechas">
+                  <div>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de salida</div>
+                    <input type="date" value={fechaSalida} onChange={e => setFechaSalida(e.target.value)} className="dest-input" style={{ border: `1.5px solid ${fechaSalida ? "#3ED5A9" : "#e8edf8"}` }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>Fecha de regreso</div>
+                    <input type="date" value={fechaRegreso} onChange={e => setFechaRegreso(e.target.value)} className="dest-input" style={{ border: `1.5px solid ${fechaRegreso ? "#3ED5A9" : "#e8edf8"}` }} />
+                  </div>
+                </div>
+                {(!fechaSalida || !fechaRegreso) && (
+                  <div style={{ fontSize: "11px", color: "#F5A623", marginBottom: "10px" }}>⚠ Selecciona las fechas de tu viaje para continuar</div>
+                )}
+                <input placeholder="Buscar destino..." value={busqueda} onChange={e => setBusqueda(e.target.value)} className="dest-input" />
+              </div>
+              <div className="dest-grid">
+                {filtrados.map(d => {
+                  const yaSeleccionado = seleccionados.find(s => s.ciudad === d.ciudad);
+                  return (
+                    <button key={d.ciudad} onClick={() => agregar(d)} style={{ borderRadius: "12px", border: `1.5px solid ${yaSeleccionado ? "#1667E6" : "#e8edf8"}`, background: yaSeleccionado ? "#f0f5ff" : "#fff", padding: "12px 8px", textAlign: "center", cursor: yaSeleccionado ? "default" : "pointer", transition: "all 0.2s", width: "100%", fontFamily: "'Montserrat', sans-serif", WebkitTapHighlightColor: "transparent", touchAction: "manipulation", userSelect: "none" as const }}>
+                      <div style={{ fontSize: "28px", marginBottom: "6px" }}>{d.emoji}</div>
+                      <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56" }}>{d.ciudad}</div>
+                      <div style={{ fontSize: "10px", color: "#888" }}>{d.pais}</div>
+                      {yaSeleccionado && <div style={{ fontSize: "10px", color: "#1667E6", fontWeight: "700", marginTop: "4px" }}>✓</div>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* SIDEBAR DESKTOP */}
+          <div className="dest-sidebar">
             <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
               <div style={{ padding: "12px 16px", background: "#0D0C56" }}>
                 <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#fff" }}>Tu itinerario</div>
@@ -237,26 +241,63 @@ export default function Destinos() {
                 </div>
               )}
             </div>
+            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" }}>
+              Continuar → Vuelos
+            </Link>
+            {!puedeContinuar && (
+              <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>
+                {seleccionados.length === 0 && !fechaSalida && !fechaRegreso ? "Elige destinos y fechas para continuar" : seleccionados.length === 0 ? "Elige al menos un destino" : "Selecciona las fechas de tu viaje"}
+              </div>
+            )}
           </div>
-        )}
 
-        {/* BOTÓN CONTINUAR */}
-        <div style={{ marginTop: isMobile ? "0" : undefined }}>
-          <Link
-            href={puedeContinuar ? "/vuelos" : "#"}
-            style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
-          >
-            Continuar → Vuelos
-          </Link>
-          {!puedeContinuar && (
-            <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>
-              {seleccionados.length === 0 && !fechaSalida && !fechaRegreso ? "Elige destinos y fechas para continuar" :
-               seleccionados.length === 0 ? "Elige al menos un destino" :
-               "Selecciona las fechas de tu viaje"}
-            </div>
-          )}
+          {/* SIDEBAR MÓVIL */}
+          <div className="dest-sidebar-mobile">
+            {seleccionados.length > 0 && (
+              <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
+                <div onClick={() => setMostrarResumen(!mostrarResumen)} style={{ padding: "10px 14px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}>
+                  <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu itinerario · {seleccionados.length} destinos · {totalDias} días</div>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={mostrarResumen ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}/>
+                  </svg>
+                </div>
+                {mostrarResumen && (
+                  <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                    {seleccionados.map(d => (
+                      <div key={d.ciudad} style={{ background: "#f5f7ff", borderRadius: "10px", padding: "12px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span style={{ fontSize: "18px" }}>{d.emoji}</span>
+                            <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
+                          </div>
+                          <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>−</button>
+                            <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56" }}>{d.dias}</span>
+                            <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>+</button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" }}>
+              Continuar → Vuelos
+            </Link>
+            {!puedeContinuar && (
+              <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>
+                {seleccionados.length === 0 && !fechaSalida && !fechaRegreso ? "Elige destinos y fechas para continuar" : seleccionados.length === 0 ? "Elige al menos un destino" : "Selecciona las fechas de tu viaje"}
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
-    </div>
+    </>
   );
 }

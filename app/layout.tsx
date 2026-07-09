@@ -34,10 +34,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#1667E6" />
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-      </head>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#1667E6" />
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+</head>
       <body className="min-h-full flex flex-col">
         <SplashWrapper />
         {children}
