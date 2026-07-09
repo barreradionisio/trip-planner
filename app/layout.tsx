@@ -37,7 +37,7 @@ export default function RootLayout({
   <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#1667E6" />
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 </head>
       <body className="min-h-full flex flex-col">
         <SplashWrapper />

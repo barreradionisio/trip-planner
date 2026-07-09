@@ -36,19 +36,19 @@ export default function Destinos() {
 
   const agregar = (d: typeof destinosDisponibles[0]) => {
     if (seleccionados.find(s => s.ciudad === d.ciudad)) return;
-    setSeleccionados([...seleccionados, { ...d, dias: 3, hospedaje: "Cualquier tipo" }]);
+    setSeleccionados(prev => [...prev, { ...d, dias: 3, hospedaje: "Cualquier tipo" }]);
   };
 
   const quitar = (ciudad: string) => {
-    setSeleccionados(seleccionados.filter(s => s.ciudad !== ciudad));
+    setSeleccionados(prev => prev.filter(s => s.ciudad !== ciudad));
   };
 
   const actualizarDias = (ciudad: string, dias: number) => {
-    setSeleccionados(seleccionados.map(s => s.ciudad === ciudad ? { ...s, dias } : s));
+    setSeleccionados(prev => prev.map(s => s.ciudad === ciudad ? { ...s, dias } : s));
   };
 
   const actualizarHospedaje = (ciudad: string, hospedaje: string) => {
-    setSeleccionados(seleccionados.map(s => s.ciudad === ciudad ? { ...s, hospedaje } : s));
+    setSeleccionados(prev => prev.map(s => s.ciudad === ciudad ? { ...s, hospedaje } : s));
   };
 
   const filtrados = destinosDisponibles.filter(d =>
@@ -62,71 +62,97 @@ export default function Destinos() {
   return (
     <>
       <style>{`
-  .dest-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Montserrat', sans-serif;
-    background: #f5f7ff;
-    overflow-x: hidden;
-  }
-  .dest-topbar {
-    background: #0D0C56;
-    padding: 11px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-  .dest-pasos { display: flex; align-items: center; gap: 4px; }
-  .dest-paso-mobile { display: none; font-size: 11px; font-weight: 700; color: #fff; }
-  .dest-body {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 20px;
-    padding: 20px;
-    flex: 1;
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  .dest-sidebar { display: flex; flex-direction: column; }
-  .dest-sidebar-mobile { display: none; flex-direction: column; }
-  .dest-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; padding: 16px; }
-  .dest-fechas { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-  .dest-input {
-    width: 100%;
-    border: 1.5px solid #e8edf8;
-    border-radius: 8px;
-    padding: 9px 12px;
-    font-size: 12px;
-    outline: none;
-    box-sizing: border-box;
-    color: #0D0C56;
-    background: #fff;
-  }
-  .dest-input::placeholder { color: #999; }
+        * { box-sizing: border-box; }
+        .dest-wrap {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          font-family: 'Montserrat', sans-serif;
+          background: #f5f7ff;
+          width: 100%;
+          max-width: 100vw;
+        }
+        .dest-topbar {
+          background: #0D0C56;
+          padding: 11px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-shrink: 0;
+          position: relative;
+        }
+        .dest-pasos { display: flex; align-items: center; gap: 4px; }
+        .dest-paso-mobile { display: none; font-size: 11px; font-weight: 700; color: #fff; }
+        .dest-body {
+          display: grid;
+          grid-template-columns: 1fr 340px;
+          gap: 20px;
+          padding: 20px;
+          flex: 1;
+          max-width: 1100px;
+          margin: 0 auto;
+          width: 100%;
+        }
+        .dest-sidebar { display: flex; flex-direction: column; }
+        .dest-sidebar-mobile { display: none; flex-direction: column; }
+        .dest-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+          gap: 10px;
+          padding: 16px;
+        }
+        .dest-card {
+          border-radius: 12px;
+          padding: 12px 8px;
+          text-align: center;
+          width: 100%;
+          font-family: 'Montserrat', sans-serif;
+          cursor: pointer;
+          transition: all 0.2s;
+          background: #fff;
+          border: 1.5px solid #e8edf8;
+          -webkit-appearance: none;
+          appearance: none;
+          display: block;
+        }
+        .dest-card:active { opacity: 0.7; }
+        .dest-fechas {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-bottom: 12px;
+        }
+        .dest-input {
+          width: 100%;
+          border: 1.5px solid #e8edf8;
+          border-radius: 8px;
+          padding: 9px 12px;
+          font-size: 12px;
+          outline: none;
+          color: #0D0C56;
+          background: #fff;
+          -webkit-text-fill-color: #0D0C56;
+          min-width: 0;
+        }
 
-  @media (max-width: 768px) {
-    .dest-pasos { display: none; }
-    .dest-paso-mobile { display: block; }
-    .dest-topbar { justify-content: flex-start; gap: 12px; }
-    .dest-body { grid-template-columns: 1fr; padding: 12px; }
-    .dest-sidebar { display: none; }
-    .dest-sidebar-mobile { display: flex; }
-    .dest-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px; }
-    .dest-fechas { grid-template-columns: 1fr 1fr; gap: 8px; }
-    .dest-input { font-size: 14px; color: #0D0C56; -webkit-text-fill-color: #0D0C56; }
-    * {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-}
-    }
-`}</style>
+        @media (max-width: 768px) {
+          .dest-pasos { display: none; }
+          .dest-paso-mobile { 
+            display: block; 
+            position: absolute; 
+            right: 16px;
+            text-align: right;
+          }
+          .dest-body { grid-template-columns: 1fr; padding: 12px; }
+          .dest-sidebar { display: none; }
+          .dest-sidebar-mobile { display: flex; }
+          .dest-grid { grid-template-columns: 1fr 1fr 1fr; gap: 8px; padding: 12px; }
+          .dest-fechas { gap: 8px; margin-bottom: 10px; }
+          .dest-input { font-size: 13px; padding: 8px 8px; }
+        }
+      `}</style>
 
-      <div className="dest-container">
+      <div className="dest-wrap">
 
         {/* TOPBAR */}
         <div className="dest-topbar">
@@ -143,7 +169,6 @@ export default function Destinos() {
             ))}
           </div>
           <div className="dest-paso-mobile">Paso 1 de 6 · Destinos</div>
-          <div style={{ width: "120px" }} />
         </div>
 
         {/* BODY */}
@@ -169,11 +194,20 @@ export default function Destinos() {
                 )}
                 <input placeholder="Buscar destino..." value={busqueda} onChange={e => setBusqueda(e.target.value)} className="dest-input" />
               </div>
+
               <div className="dest-grid">
                 {filtrados.map(d => {
-                  const yaSeleccionado = seleccionados.find(s => s.ciudad === d.ciudad);
+                  const yaSeleccionado = !!seleccionados.find(s => s.ciudad === d.ciudad);
                   return (
-                    <button key={d.ciudad} onClick={() => agregar(d)} style={{ borderRadius: "12px", border: `1.5px solid ${yaSeleccionado ? "#1667E6" : "#e8edf8"}`, background: yaSeleccionado ? "#f0f5ff" : "#fff", padding: "12px 8px", textAlign: "center", cursor: yaSeleccionado ? "default" : "pointer", transition: "all 0.2s", width: "100%", fontFamily: "'Montserrat', sans-serif", WebkitTapHighlightColor: "transparent", touchAction: "manipulation", userSelect: "none" as const }}>
+                    <button
+                      key={d.ciudad}
+                      className="dest-card"
+                      onClick={() => agregar(d)}
+                      style={{
+                        border: `1.5px solid ${yaSeleccionado ? "#1667E6" : "#e8edf8"}`,
+                        background: yaSeleccionado ? "#f0f5ff" : "#fff",
+                      }}
+                    >
                       <div style={{ fontSize: "28px", marginBottom: "6px" }}>{d.emoji}</div>
                       <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56" }}>{d.ciudad}</div>
                       <div style={{ fontSize: "10px", color: "#888" }}>{d.pais}</div>
@@ -209,14 +243,14 @@ export default function Destinos() {
                               <div style={{ fontSize: "10px", color: "#888" }}>Parada {i + 1}</div>
                             </div>
                           </div>
-                          <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
+                          <button onClick={() => quitar(d.ciudad)} style={{ background: "none", border: "none", fontSize: "16px", cursor: "pointer", color: "#aaa", padding: "4px" }}>×</button>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
                           <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
                           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>−</button>
+                            <button onClick={() => actualizarDias(d.ciudad, Math.max(1, d.dias - 1))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>−</button>
                             <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56", minWidth: "20px", textAlign: "center" }}>{d.dias}</span>
-                            <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center" }}>+</button>
+                            <button onClick={() => actualizarDias(d.ciudad, d.dias + 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px" }}>+</button>
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -235,32 +269,28 @@ export default function Destinos() {
                 )}
               </div>
               {seleccionados.length > 0 && (
-                <div style={{ padding: "10px 14px", borderTop: "1px solid #f0f2fa", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ padding: "10px 14px", borderTop: "1px solid #f0f2fa", display: "flex", justifyContent: "space-between" }}>
                   <span style={{ fontSize: "11px", color: "#888" }}>Total: <strong style={{ color: "#0D0C56" }}>{totalDias} días</strong></span>
                   <span style={{ fontSize: "11px", color: "#888" }}>{seleccionados.length} destinos</span>
                 </div>
               )}
             </div>
-            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" }}>
+            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
               Continuar → Vuelos
             </Link>
-            {!puedeContinuar && (
-              <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>
-                {seleccionados.length === 0 && !fechaSalida && !fechaRegreso ? "Elige destinos y fechas para continuar" : seleccionados.length === 0 ? "Elige al menos un destino" : "Selecciona las fechas de tu viaje"}
-              </div>
-            )}
+            {!puedeContinuar && <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>Elige destinos y fechas para continuar</div>}
           </div>
 
           {/* SIDEBAR MÓVIL */}
           <div className="dest-sidebar-mobile">
             {seleccionados.length > 0 && (
               <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-                <div onClick={() => setMostrarResumen(!mostrarResumen)} style={{ padding: "10px 14px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}>
+                <button onClick={() => setMostrarResumen(!mostrarResumen)} style={{ width: "100%", padding: "10px 14px", background: "#0D0C56", border: "none", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}>
                   <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu itinerario · {seleccionados.length} destinos · {totalDias} días</div>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d={mostrarResumen ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}/>
                   </svg>
-                </div>
+                </button>
                 {mostrarResumen && (
                   <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
                     {seleccionados.map(d => (
@@ -270,7 +300,7 @@ export default function Destinos() {
                             <span style={{ fontSize: "18px" }}>{d.emoji}</span>
                             <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{d.ciudad}</div>
                           </div>
-                          <span onClick={() => quitar(d.ciudad)} style={{ fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</span>
+                          <button onClick={() => quitar(d.ciudad)} style={{ background: "none", border: "none", fontSize: "16px", cursor: "pointer", color: "#aaa" }}>×</button>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                           <span style={{ fontSize: "11px", color: "#888" }}>Días</span>
@@ -286,14 +316,10 @@ export default function Destinos() {
                 )}
               </div>
             )}
-            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: !puedeContinuar ? "not-allowed" : "pointer", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" }}>
+            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
               Continuar → Vuelos
             </Link>
-            {!puedeContinuar && (
-              <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>
-                {seleccionados.length === 0 && !fechaSalida && !fechaRegreso ? "Elige destinos y fechas para continuar" : seleccionados.length === 0 ? "Elige al menos un destino" : "Selecciona las fechas de tu viaje"}
-              </div>
-            )}
+            {!puedeContinuar && <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>Elige destinos y fechas para continuar</div>}
           </div>
 
         </div>
