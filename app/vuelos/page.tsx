@@ -46,14 +46,15 @@ export default function Vuelos() {
       <style>{`
         * { box-sizing: border-box; }
         .vuelos-wrap {
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          font-family: 'Montserrat', sans-serif;
-          background: #f5f7ff;
-          width: 100%;
-          max-width: 100vw;
-        }
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Montserrat', sans-serif;
+  background: #f5f7ff;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
         .vuelos-topbar {
           background: #0D0C56;
           padding: 11px 24px;
