@@ -77,7 +77,7 @@ export default function Vuelos() {
           width: 100%;
         }
         .vuelos-sidebar { display: flex; flex-direction: column; }
-        .vuelos-sidebar-mobile { display: none; flex-direction: column; }
+        .vuelos-sidebar-mobile { display: none; flex-direction: column; width: 100%; overflow: hidden; }
         .vuelos-tabs {
           display: flex;
           gap: 8px;
