@@ -106,8 +106,7 @@ export default function Vuelos() {
         @media (max-width: 768px) {
   .vuelos-pasos { display: none; }
   .vuelos-paso-mobile { display: flex; }
-  .vuelos-body { grid-template-columns: 1fr; padding: 12px; }
-  .vuelos-sidebar { display: none; }
+.vuelos-body { grid-template-columns: 1fr; padding: 12px; overflow: hidden; }  .vuelos-sidebar { display: none; }
   .vuelos-sidebar-mobile { display: flex; }
   .vuelos-card { padding: 14px; max-width: 100%; box-sizing: border-box; }
 }
@@ -143,7 +142,7 @@ export default function Vuelos() {
         <div className="vuelos-body">
 
           {/* IZQUIERDA */}
-          <div>
+<div style={{ overflow: "hidden", width: "100%" }}>
             {/* TABS TRAMOS */}
             <div className="vuelos-tabs">
               {tramos.map((t, i) => (
