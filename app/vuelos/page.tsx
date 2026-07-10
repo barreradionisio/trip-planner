@@ -80,11 +80,13 @@ export default function Vuelos() {
         .vuelos-sidebar { display: flex; flex-direction: column; }
         .vuelos-sidebar-mobile { display: none; flex-direction: column; width: 100%; overflow: hidden; }
         .vuelos-tabs {
-          display: flex;
-          gap: 8px;
-          margin-bottom: 16px;
-          overflow-x: auto;
-        }
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  overflow-x: scroll;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
         .vuelos-card {
           background: #fff;
           border-radius: 13px;
@@ -107,7 +109,7 @@ export default function Vuelos() {
   .vuelos-body { grid-template-columns: 1fr; padding: 12px; }
   .vuelos-sidebar { display: none; }
   .vuelos-sidebar-mobile { display: flex; }
-  .vuelos-card { padding: 14px; }
+  .vuelos-card { padding: 14px; max-width: 100%; box-sizing: border-box; }
 }
       `}</style>
 
