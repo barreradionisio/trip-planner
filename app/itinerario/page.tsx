@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "../components/Logo";
-import { useIsMobile } from "../hooks/useIsMobile";
 
 const itinerario = [
   {
@@ -53,31 +52,77 @@ const tipoColores: { [key: string]: { bg: string; color: string; emoji: string }
 
 export default function Itinerario() {
   const router = useRouter();
-  const isMobile = useIsMobile();
   const [ciudadActiva, setCiudadActiva] = useState("París");
   const [diaActivo, setDiaActivo] = useState(1);
-  const [vista, setVista] = useState("dia");
 
   const ciudadData = itinerario.find(c => c.ciudad === ciudadActiva)!;
   const diaData = ciudadData.dias.find(d => d.dia === diaActivo)!;
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Montserrat',sans-serif", background: "#f5f7ff" }}>
+    <>
+      <style>{`
+        * { box-sizing: border-box; }
+        .itin-wrap {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          font-family: 'Montserrat', sans-serif;
+          background: #f5f7ff;
+          width: 100%;
+          max-width: 100vw;
+          overflow-x: hidden;
+        }
+        .itin-topbar {
+          background: #0D0C56;
+          padding: 11px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-shrink: 0;
+        }
+        .itin-pasos { display: flex; align-items: center; gap: 4px; }
+        .itin-paso-mobile { display: none; font-size: 11px; font-weight: 700; color: #fff; white-space: nowrap; align-items: center; gap: 8px; }
+        .itin-body {
+          display: grid;
+          grid-template-columns: 1fr 300px;
+          gap: 20px;
+          padding: 20px;
+          flex: 1;
+          max-width: 1100px;
+          margin: 0 auto;
+          width: 100%;
+        }
+        .itin-sidebar { display: flex; flex-direction: column; }
+        .itin-sidebar-mobile { display: none; flex-direction: column; width: 100%; }
+        .itin-tabs {
+          display: flex;
+          gap: 6px;
+          margin-bottom: 12px;
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
 
-      {/* TOPBAR */}
-      <div style={{ background: "#0D0C56", padding: "11px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-        <Logo variant="teal" />
-        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-          <button onClick={() => router.back()} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", color: "rgba(255,255,255,0.8)", cursor: "pointer", marginRight: "8px", display: "flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px" }}
-            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.18)"}
-            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)"}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"/>
-            </svg>
-          </button>
-          {!isMobile ? (
-            ["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
+        @media (max-width: 768px) {
+          .itin-pasos { display: none; }
+          .itin-paso-mobile { display: flex; }
+          .itin-body { grid-template-columns: 1fr; padding: 12px; overflow: hidden; }
+          .itin-sidebar { display: none; }
+          .itin-sidebar-mobile { display: flex; }
+        }
+      `}</style>
+
+      <div className="itin-wrap">
+
+        {/* TOPBAR */}
+        <div className="itin-topbar">
+          <Logo variant="teal" />
+          <div className="itin-pasos">
+            <button onClick={() => router.back()} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", color: "rgba(255,255,255,0.8)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px", marginRight: "8px" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
               <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                   <div style={{ width: "22px", height: "22px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", fontWeight: "800", background: i < 3 ? "#3ED5A9" : i === 3 ? "#1667E6" : "rgba(255,255,255,0.15)", color: i < 4 ? "#0D0C56" : "rgba(255,255,255,0.4)" }}>{i < 3 ? "✓" : i + 1}</div>
@@ -85,108 +130,126 @@ export default function Itinerario() {
                 </div>
                 {i < 5 && <div style={{ width: "16px", height: "1px", background: "rgba(255,255,255,0.15)" }} />}
               </div>
-            ))
-          ) : (
-            <div style={{ fontSize: "11px", fontWeight: "700", color: "#fff" }}>Paso 4 de 6 · Itinerario</div>
-          )}
+            ))}
+          </div>
+          <div className="itin-paso-mobile">
+            <button onClick={() => router.back()} style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", color: "rgba(255,255,255,0.8)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", width: "30px", height: "30px", flexShrink: 0 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            Paso 4 de 6 · Itinerario
+          </div>
         </div>
-        <div style={{ width: isMobile ? "0" : "120px" }} />
-      </div>
 
-      {/* BODY */}
-      <div style={{ display: isMobile ? "flex" : "grid", flexDirection: isMobile ? "column" : undefined, gridTemplateColumns: isMobile ? undefined : "1fr 300px", gap: "20px", padding: isMobile ? "16px" : "20px", flex: 1, maxWidth: "1100px", margin: "0 auto", width: "100%", boxSizing: "border-box" }}>
+        {/* BODY */}
+        <div className="itin-body">
 
-        {/* IZQUIERDA */}
-        <div>
-          {/* TABS CIUDADES */}
-          <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
-            {itinerario.map(c => (
-              <button
-                key={c.ciudad}
-                onClick={() => { setCiudadActiva(c.ciudad); setDiaActivo(1); }}
-                style={{ padding: "8px 16px", border: `1.5px solid ${ciudadActiva === c.ciudad ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "12px", fontWeight: "700", cursor: "pointer", background: ciudadActiva === c.ciudad ? "#1667E6" : "#fff", color: ciudadActiva === c.ciudad ? "#fff" : "#0D0C56" }}
-              >
-                {c.ciudad}
-              </button>
-            ))}
-          </div>
+          {/* IZQUIERDA */}
+          <div style={{ overflow: "hidden", width: "100%" }}>
 
-          {/* TABS DÍAS */}
-          <div style={{ display: "flex", gap: "6px", marginBottom: "16px", overflowX: "auto" }}>
-            {ciudadData.dias.map(d => (
-              <button
-                key={d.dia}
-                onClick={() => setDiaActivo(d.dia)}
-                style={{ padding: "6px 12px", border: `1.5px solid ${diaActivo === d.dia ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "11px", fontWeight: "700", cursor: "pointer", background: diaActivo === d.dia ? "#f0f5ff" : "#fff", color: diaActivo === d.dia ? "#1667E6" : "#888", whiteSpace: "nowrap", flexShrink: 0 }}
-              >
-                Día {d.dia} · {d.fecha}
-              </button>
-            ))}
-          </div>
+            {/* TABS CIUDADES */}
+            <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
+              {itinerario.map(c => (
+                <button key={c.ciudad} onClick={() => { setCiudadActiva(c.ciudad); setDiaActivo(1); }} style={{ padding: "8px 16px", border: `1.5px solid ${ciudadActiva === c.ciudad ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "12px", fontWeight: "700", cursor: "pointer", background: ciudadActiva === c.ciudad ? "#1667E6" : "#fff", color: ciudadActiva === c.ciudad ? "#fff" : "#0D0C56", fontFamily: "Montserrat, sans-serif" }}>
+                  {c.ciudad}
+                </button>
+              ))}
+            </div>
 
-          {/* ACTIVIDADES */}
-          <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden" }}>
-            <div style={{ padding: "12px 16px", borderBottom: "1px solid #f0f2fa", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
+            {/* TABS DÍAS */}
+            <div className="itin-tabs">
+              {ciudadData.dias.map(d => (
+                <button key={d.dia} onClick={() => setDiaActivo(d.dia)} style={{ padding: "6px 12px", border: `1.5px solid ${diaActivo === d.dia ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "11px", fontWeight: "700", cursor: "pointer", background: diaActivo === d.dia ? "#f0f5ff" : "#fff", color: diaActivo === d.dia ? "#1667E6" : "#888", whiteSpace: "nowrap", flexShrink: 0, fontFamily: "Montserrat, sans-serif" }}>
+                  Día {d.dia} · {d.fecha}
+                </button>
+              ))}
+            </div>
+
+            {/* ACTIVIDADES */}
+            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden" }}>
+              <div style={{ padding: "12px 16px", borderBottom: "1px solid #f0f2fa" }}>
                 <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "13px", color: "#0D0C56" }}>{ciudadActiva} · Día {diaActivo}</div>
                 <div style={{ fontSize: "11px", color: "#888", marginTop: "2px" }}>{diaData.fecha} · {diaData.actividades.length} actividades</div>
               </div>
-            </div>
 
-            <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
-              {diaData.actividades.map(a => {
-                const tipo = tipoColores[a.tipo] || tipoColores.cultura;
-                return (
-                  <div key={a.id} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                    <div style={{ fontWeight: "700", fontSize: "11px", color: "#888", width: "44px", flexShrink: 0, paddingTop: "10px" }}>{a.hora}</div>
-                    <div style={{ flex: 1, background: tipo.bg, borderRadius: "10px", padding: "10px 12px" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
-                        <span style={{ fontSize: "14px" }}>{tipo.emoji}</span>
-                        <span style={{ fontWeight: "800", fontSize: "12px", color: "#0D0C56" }}>{a.titulo}</span>
+              <div style={{ padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {diaData.actividades.map(a => {
+                  const tipo = tipoColores[a.tipo] || tipoColores.cultura;
+                  return (
+                    <div key={a.id} style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                      <div style={{ fontWeight: "700", fontSize: "11px", color: "#888", width: "44px", flexShrink: 0, paddingTop: "10px" }}>{a.hora}</div>
+                      <div style={{ flex: 1, background: tipo.bg, borderRadius: "10px", padding: "10px 12px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
+                          <span style={{ fontSize: "14px" }}>{tipo.emoji}</span>
+                          <span style={{ fontWeight: "800", fontSize: "12px", color: "#0D0C56" }}>{a.titulo}</span>
+                        </div>
+                        <div style={{ fontSize: "11px", color: "#666" }}>{a.desc}</div>
                       </div>
-                      <div style={{ fontSize: "11px", color: "#666" }}>{a.desc}</div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div style={{ padding: "12px 16px", borderTop: "1px solid #f0f2fa" }}>
-              <div style={{ background: "#f0f5ff", border: "1.5px solid #e0eaff", borderRadius: "10px", padding: "10px 12px", fontSize: "11px", color: "#1667E6" }}>
-                ✨ <strong>Itinerario automático.</strong> Podrás editar actividades desde <strong>Mis viajes</strong> después de tu compra.
+                  );
+                })}
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* SIDEBAR */}
-        <div>
-          <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-            <div style={{ padding: "10px 14px", background: "#0D0C56" }}>
-              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu viaje</div>
-            </div>
-            <div style={{ padding: "12px 14px" }}>
-              {itinerario.map(c => (
-                <div key={c.ciudad} style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "5px 0", borderBottom: "1px solid #f5f7ff" }}>
-                  <span style={{ color: "#888" }}>{c.ciudad}</span>
-                  <span style={{ fontWeight: "600", color: "#0D0C56" }}>{c.dias.length} días</span>
+              <div style={{ padding: "12px 16px", borderTop: "1px solid #f0f2fa" }}>
+                <div style={{ background: "#f0f5ff", border: "1.5px solid #e0eaff", borderRadius: "10px", padding: "10px 12px", fontSize: "11px", color: "#1667E6", display: "flex", gap: "8px", alignItems: "flex-start" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "1px" }}>
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="16" x2="12" y2="12"/>
+                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                  </svg>
+                  <span><strong>Itinerario automático.</strong> Podrás editar actividades desde <strong>Mis viajes</strong> después de tu compra.</span>
                 </div>
-              ))}
-              <div style={{ display: "flex", justifyContent: "space-between", paddingTop: "8px" }}>
-                <span style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>Total</span>
-                <span style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>5 días</span>
               </div>
             </div>
           </div>
 
-          <Link
-            href="/pasajeros-flujo"
-            style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", cursor: "pointer", textDecoration: "none", display: "block", textAlign: "center", boxSizing: "border-box" as const }}
-          >
-            Continuar → Pasajeros
-          </Link>
+          {/* SIDEBAR DESKTOP */}
+          <div className="itin-sidebar">
+            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
+              <div style={{ padding: "10px 14px", background: "#0D0C56" }}>
+                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu viaje</div>
+              </div>
+              <div style={{ padding: "12px 14px" }}>
+                {itinerario.map(c => (
+                  <div key={c.ciudad} style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "5px 0", borderBottom: "1px solid #f5f7ff" }}>
+                    <span style={{ color: "#888" }}>{c.ciudad}</span>
+                    <span style={{ fontWeight: "600", color: "#0D0C56" }}>{c.dias.length} días</span>
+                  </div>
+                ))}
+                <div style={{ display: "flex", justifyContent: "space-between", paddingTop: "8px" }}>
+                  <span style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>Total</span>
+                  <span style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6" }}>5 días</span>
+                </div>
+              </div>
+            </div>
+            <Link href="/pasajeros-flujo" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", textDecoration: "none", display: "block", textAlign: "center" }}>
+              Continuar → Pasajeros
+            </Link>
+          </div>
+
+          {/* SIDEBAR MÓVIL */}
+          <div className="itin-sidebar-mobile">
+            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
+              <div style={{ padding: "10px 14px", background: "#0D0C56" }}>
+                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Tu viaje · 5 días</div>
+              </div>
+              <div style={{ padding: "12px 14px" }}>
+                {itinerario.map(c => (
+                  <div key={c.ciudad} style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "5px 0", borderBottom: "1px solid #f5f7ff" }}>
+                    <span style={{ color: "#888" }}>{c.ciudad}</span>
+                    <span style={{ fontWeight: "600", color: "#0D0C56" }}>{c.dias.length} días</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Link href="/pasajeros-flujo" style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", textDecoration: "none", display: "block", textAlign: "center" }}>
+              Continuar → Pasajeros
+            </Link>
+          </div>
+
         </div>
       </div>
-    </div>
+    </>
   );
 }
