@@ -53,7 +53,7 @@ export default function Vuelos() {
   background: #f5f7ff;
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
         .vuelos-topbar {
           background: #0D0C56;
