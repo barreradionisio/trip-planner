@@ -42,6 +42,8 @@ export default function Destinos() {
   const [fechaSalida, setFechaSalida] = useState("");
   const [fechaRegreso, setFechaRegreso] = useState("");
   const [mostrarResumen, setMostrarResumen] = useState(false);
+  const [pasajeros, setPasajeros] = useState({ adultos: 1, ninos: 0, bebes: 0 });
+const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
   const salidaRef = useRef<HTMLInputElement>(null);
   const regresoRef = useRef<HTMLInputElement>(null);
 
@@ -277,6 +279,29 @@ export default function Destinos() {
   Selecciona las fechas de tu viaje para continuar
 </div>
                 )}
+                {/* PASAJEROS */}
+<div style={{ marginBottom: "12px" }}>
+  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>Pasajeros · Total: {totalPasajeros}</div>
+  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+    {[
+      { label: "Adultos", sub: "12+ años", key: "adultos", min: 1 },
+      { label: "Niños", sub: "2-11 años", key: "ninos", min: 0 },
+      { label: "Bebés", sub: "0-23 meses", key: "bebes", min: 0 },
+    ].map(p => (
+      <div key={p.key} style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f5f7ff", borderRadius: "8px", padding: "8px 12px" }}>
+        <div>
+          <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{p.label}</div>
+          <div style={{ fontSize: "10px", color: "#888" }}>{p.sub}</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <button onClick={() => setPasajeros(prev => ({ ...prev, [p.key]: Math.max(p.min, (prev as any)[p.key] - 1) }))} style={{ width: "26px", height: "26px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>−</button>
+          <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56", minWidth: "16px", textAlign: "center" }}>{(pasajeros as any)[p.key]}</span>
+          <button onClick={() => setPasajeros(prev => ({ ...prev, [p.key]: (prev as any)[p.key] + 1 }))} style={{ width: "26px", height: "26px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>+</button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>                
                 <input placeholder="Buscar destino..." value={busqueda} onChange={e => setBusqueda(e.target.value)} className="dest-buscar" />
               </div>
 
