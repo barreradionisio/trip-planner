@@ -286,7 +286,7 @@ const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
                 {/* PASAJEROS */}
 <div style={{ marginBottom: "12px" }}>
   <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>Pasajeros · Total: {totalPasajeros}</div>
-  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
     {[
       { label: "Adultos", sub: "12+ años", key: "adultos", min: 1 },
       { label: "Niños", sub: "2-11 años", key: "ninos", min: 0 },
