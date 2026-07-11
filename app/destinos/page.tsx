@@ -71,6 +71,10 @@ const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
 
   const totalDias = seleccionados.reduce((a, b) => a + b.dias, 0);
   const puedeContinuar = seleccionados.length > 0 && fechaSalida !== "" && fechaRegreso !== "";
+  const irAVuelos = () => {
+  sessionStorage.setItem("pasajeros", JSON.stringify(pasajeros));
+  window.location.href = "/vuelos";
+};
 
   const formatFecha = (fecha: string) => {
     if (!fecha) return "";
@@ -385,7 +389,7 @@ const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
                 </div>
               )}
             </div>
-            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
+            <Link href="#" onClick={(e) => { e.preventDefault(); if(puedeContinuar) irAVuelos(); }} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
               Continuar → Vuelos
             </Link>
             {!puedeContinuar && <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>Elige destinos y fechas para continuar</div>}
@@ -426,7 +430,7 @@ const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
                 )}
               </div>
             )}
-            <Link href={puedeContinuar ? "/vuelos" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
+            <Link href="#" onClick={(e) => { e.preventDefault(); if(puedeContinuar) irAVuelos(); }} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !puedeContinuar ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
               Continuar → Vuelos
             </Link>
             {!puedeContinuar && <div style={{ fontSize: "11px", color: "#888", textAlign: "center", marginTop: "8px" }}>Elige destinos y fechas para continuar</div>}

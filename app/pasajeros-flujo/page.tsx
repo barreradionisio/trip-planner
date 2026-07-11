@@ -36,7 +36,20 @@ const resumenViaje = {
 
 export default function PasajerosFlujo() {
   const router = useRouter();
-  const [pasajeros, setPasajeros] = useState<Pasajero[]>([pasajeroVacio(), pasajeroVacio()]);
+  const [pasajeros, setPasajeros] = useState<Pasajero[]>(() => {
+  try {
+    const guardado = sessionStorage.getItem("pasajeros");
+    if (guardado) {
+      const { adultos, ninos, bebes } = JSON.parse(guardado);
+      const lista: Pasajero[] = [];
+      for (let i = 0; i < adultos; i++) lista.push(pasajeroVacio("Adulto"));
+      for (let i = 0; i < ninos; i++) lista.push(pasajeroVacio("Niño"));
+      for (let i = 0; i < bebes; i++) lista.push(pasajeroVacio("Bebé"));
+      return lista.length > 0 ? lista : [pasajeroVacio(), pasajeroVacio()];
+    }
+  } catch {}
+  return [pasajeroVacio(), pasajeroVacio()];
+});
   const [guardado, setGuardado] = useState(false);
   const [mostrarResumen, setMostrarResumen] = useState(false);
 
