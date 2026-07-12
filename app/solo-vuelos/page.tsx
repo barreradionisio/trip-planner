@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Logo from "../components/Logo";
 
 const vuelosData = [
@@ -12,15 +13,44 @@ const vuelosData = [
   { id: 5, aerolinea: "British Airways", codigo: "BA", salida: "22:00", llegada: "15:30+1", duracion: "17h 30m", escala: "1 escala", precio: 750 },
 ];
 
+const IconCalendar = ({ color = "#888" }: { color?: string }) => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+    <line x1="16" y1="2" x2="16" y2="6"/>
+    <line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
+  </svg>
+);
+
 export default function SoloVuelos() {
+  const router = useRouter();
   const [seleccionado, setSeleccionado] = useState<number | null>(null);
   const [tipo, setTipo] = useState("ida-vuelta");
   const [clase, setClase] = useState("Económica");
   const [equipaje, setEquipaje] = useState("maleta-mano");
   const [pasajeros, setPasajeros] = useState({ adultos: 1, ninos: 0, bebes: 0 });
+  const [fechaIda, setFechaIda] = useState("");
+  const [fechaVuelta, setFechaVuelta] = useState("");
+
+  const idaRef = useRef<HTMLInputElement>(null);
+  const vueltaRef = useRef<HTMLInputElement>(null);
 
   const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
   const vueloSeleccionado = vuelosData.find(v => v.id === seleccionado);
+
+  const formatFecha = (fecha: string) => {
+    if (!fecha) return "";
+    const [y, m, d] = fecha.split("-");
+    const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+    return `${d} ${meses[parseInt(m)-1]} ${y}`;
+  };
+
+  const irAPasajeros = () => {
+    if (!seleccionado) return;
+    sessionStorage.setItem("pasajeros", JSON.stringify(pasajeros));
+    sessionStorage.setItem("vuelo_seleccionado", JSON.stringify(vueloSeleccionado));
+    router.push("/pasajeros?tipo=vuelo");
+  };
 
   return (
     <>
@@ -85,6 +115,7 @@ export default function SoloVuelos() {
           margin-left: auto;
           margin-right: auto;
           overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
         }
         .sv-card {
           background: #fff;
@@ -99,8 +130,49 @@ export default function SoloVuelos() {
           font-family: 'Montserrat', sans-serif;
           -webkit-appearance: none;
           display: block;
+          max-width: 100%;
         }
         .sv-card:active { opacity: 0.8; }
+        .sv-label {
+          font-size: 10px;
+          font-weight: 700;
+          color: rgba(255,255,255,0.6);
+          text-transform: uppercase;
+          letter-spacing: 0.4px;
+          margin-bottom: 4px;
+          display: block;
+        }
+        .sv-fecha-wrap { position: relative; width: 100%; }
+        .sv-fecha-display {
+          width: 100%;
+          border: 1.5px solid rgba(255,255,255,0.3);
+          border-radius: 8px;
+          padding: 9px 36px 9px 12px;
+          font-size: 12px;
+          color: #0D0C56;
+          background: #f0f5ff;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          min-height: 38px;
+          font-family: 'Montserrat', sans-serif;
+        }
+        .sv-fecha-display.placeholder { color: #aaa; }
+        .sv-fecha-icon {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          pointer-events: none;
+        }
+        .sv-fecha-input {
+          position: absolute;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          opacity: 0;
+          cursor: pointer;
+          font-size: 16px;
+        }
         .sv-input {
           width: 100%;
           border: 1.5px solid rgba(255,255,255,0.3);
@@ -112,21 +184,13 @@ export default function SoloVuelos() {
           font-family: 'Montserrat', sans-serif;
           color: #0D0C56;
         }
-        .sv-label {
-          font-size: 10px;
-          font-weight: 700;
-          color: rgba(255,255,255,0.6);
-          text-transform: uppercase;
-          letter-spacing: 0.4px;
-          margin-bottom: 4px;
-          display: block;
-        }
 
         @media (max-width: 768px) {
           .sv-nav { padding: 12px 16px; }
           .sv-nav-links { display: none; }
           .sv-buscador { padding: 16px; }
-          .sv-buscador-grid { grid-template-columns: 1fr; }
+          .sv-buscador-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+          .sv-buscador-grid > *:last-child { grid-column: 1 / -1; }
           .sv-body { grid-template-columns: 1fr; padding: 12px; overflow: hidden; }
           .sv-sidebar { display: none; }
           .sv-sidebar-mobile { display: flex; }
@@ -172,12 +236,24 @@ export default function SoloVuelos() {
             </div>
             <div>
               <label className="sv-label">Fecha de ida</label>
-              <input type="date" className="sv-input" />
+              <div className="sv-fecha-wrap">
+                <div className={`sv-fecha-display ${!fechaIda ? "placeholder" : ""}`}>
+                  {fechaIda ? formatFecha(fechaIda) : "dd/mm/aaaa"}
+                </div>
+                <div className="sv-fecha-icon"><IconCalendar color={fechaIda ? "#1667E6" : "#888"} /></div>
+                <input ref={idaRef} type="date" value={fechaIda} onChange={e => setFechaIda(e.target.value)} className="sv-fecha-input" />
+              </div>
             </div>
             {tipo === "ida-vuelta" && (
               <div>
                 <label className="sv-label">Fecha de vuelta</label>
-                <input type="date" className="sv-input" />
+                <div className="sv-fecha-wrap">
+                  <div className={`sv-fecha-display ${!fechaVuelta ? "placeholder" : ""}`}>
+                    {fechaVuelta ? formatFecha(fechaVuelta) : "dd/mm/aaaa"}
+                  </div>
+                  <div className="sv-fecha-icon"><IconCalendar color={fechaVuelta ? "#1667E6" : "#888"} /></div>
+                  <input ref={vueltaRef} type="date" value={fechaVuelta} onChange={e => setFechaVuelta(e.target.value)} className="sv-fecha-input" />
+                </div>
               </div>
             )}
             <button style={{ padding: "10px 24px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "800", fontSize: "13px", cursor: "pointer", height: "40px", whiteSpace: "nowrap", fontFamily: "Montserrat, sans-serif" }}>
@@ -191,24 +267,49 @@ export default function SoloVuelos() {
 
           {/* IZQUIERDA */}
           <div style={{ overflow: "hidden", width: "100%" }}>
-            {/* FILTROS */}
-            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "14px 16px", marginBottom: "16px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
-              <div>
-                <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "6px" }}>Clase</div>
-                <select value={clase} onChange={e => setClase(e.target.value)} style={{ border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "8px 12px", fontSize: "12px", outline: "none", background: "#fff", fontFamily: "Montserrat, sans-serif" }}>
-                  <option>Económica</option>
-                  <option>Premium Economy</option>
-                  <option>Business</option>
-                  <option>Primera clase</option>
-                </select>
+
+            {/* FILTROS + PASAJEROS */}
+            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "14px 16px", marginBottom: "16px" }}>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "14px" }}>
+                <div>
+                  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "6px" }}>Clase</div>
+                  <select value={clase} onChange={e => setClase(e.target.value)} style={{ border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "8px 12px", fontSize: "12px", outline: "none", background: "#fff", fontFamily: "Montserrat, sans-serif" }}>
+                    <option>Económica</option>
+                    <option>Premium Economy</option>
+                    <option>Business</option>
+                    <option>Primera clase</option>
+                  </select>
+                </div>
+                <div>
+                  <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "6px" }}>Equipaje</div>
+                  <select value={equipaje} onChange={e => setEquipaje(e.target.value)} style={{ border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "8px 12px", fontSize: "12px", outline: "none", background: "#fff", fontFamily: "Montserrat, sans-serif" }}>
+                    <option value="sin-equipaje">Sin equipaje</option>
+                    <option value="maleta-mano">Maleta de mano</option>
+                    <option value="equipaje-extra">Con equipaje extra</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "6px" }}>Equipaje</div>
-                <select value={equipaje} onChange={e => setEquipaje(e.target.value)} style={{ border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "8px 12px", fontSize: "12px", outline: "none", background: "#fff", fontFamily: "Montserrat, sans-serif" }}>
-                  <option value="sin-equipaje">Sin equipaje</option>
-                  <option value="maleta-mano">Maleta de mano</option>
-                  <option value="equipaje-extra">Con equipaje extra</option>
-                </select>
+
+              {/* PASAJEROS */}
+              <div style={{ borderTop: "1px solid #f0f2fa", paddingTop: "12px" }}>
+                <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "10px" }}>Pasajeros · Total: {totalPasajeros}</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+                  {[
+                    { label: "Adultos", sub: "12+ años", key: "adultos", min: 1 },
+                    { label: "Niños", sub: "2-11 años", key: "ninos", min: 0 },
+                    { label: "Bebés", sub: "0-23 meses", key: "bebes", min: 0 },
+                  ].map(p => (
+                    <div key={p.key} style={{ background: "#f5f7ff", borderRadius: "8px", padding: "8px", textAlign: "center" }}>
+                      <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56", marginBottom: "2px" }}>{p.label}</div>
+                      <div style={{ fontSize: "10px", color: "#888", marginBottom: "6px" }}>{p.sub}</div>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                        <button onClick={() => setPasajeros(prev => ({ ...prev, [p.key]: Math.max(p.min, (prev as any)[p.key] - 1) }))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>−</button>
+                        <span style={{ fontWeight: "700", fontSize: "13px", color: "#0D0C56" }}>{(pasajeros as any)[p.key]}</span>
+                        <button onClick={() => setPasajeros(prev => ({ ...prev, [p.key]: (prev as any)[p.key] + 1 }))} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>+</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -243,35 +344,6 @@ export default function SoloVuelos() {
 
           {/* SIDEBAR DESKTOP */}
           <div className="sv-sidebar">
-            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-              <div style={{ padding: "10px 14px", background: "#0D0C56" }}>
-                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Pasajeros</div>
-              </div>
-              <div style={{ padding: "12px 14px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                {[
-                  { label: "Adultos", sub: "12+ años", key: "adultos" },
-                  { label: "Niños", sub: "2-11 años", key: "ninos" },
-                  { label: "Bebés", sub: "0-23 meses", key: "bebes" },
-                ].map(p => (
-                  <div key={p.key} style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div>
-                      <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{p.label}</div>
-                      <div style={{ fontSize: "10px", color: "#888" }}>{p.sub}</div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                      <button onClick={() => setPasajeros(prev => ({ ...prev, [p.key]: Math.max(p.key === "adultos" ? 1 : 0, (prev as any)[p.key] - 1) }))} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>−</button>
-                      <span style={{ fontWeight: "700", fontSize: "14px", color: "#0D0C56", minWidth: "20px", textAlign: "center" }}>{(pasajeros as any)[p.key]}</span>
-                      <button onClick={() => setPasajeros(prev => ({ ...prev, [p.key]: (prev as any)[p.key] + 1 }))} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "16px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>+</button>
-                    </div>
-                  </div>
-                ))}
-                <div style={{ borderTop: "1px solid #f0f2fa", paddingTop: "10px", display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "11px", color: "#888" }}>Total</span>
-                  <span style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{totalPasajeros} pasajeros</span>
-                </div>
-              </div>
-            </div>
-
             {vueloSeleccionado && (
               <div style={{ background: "#f0f5ff", borderRadius: "13px", border: "1.5px solid #e0eaff", padding: "14px", marginBottom: "12px" }}>
                 <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6", marginBottom: "8px" }}>Vuelo seleccionado</div>
@@ -283,10 +355,9 @@ export default function SoloVuelos() {
                 </div>
               </div>
             )}
-
-            <Link href={seleccionado ? "/pasajeros?tipo=vuelo" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !seleccionado ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
+            <button onClick={irAPasajeros} disabled={!seleccionado} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !seleccionado ? 0.4 : 1, cursor: !seleccionado ? "not-allowed" : "pointer" }}>
               Continuar → Pasajeros
-            </Link>
+            </button>
           </div>
 
           {/* SIDEBAR MÓVIL */}
@@ -301,9 +372,9 @@ export default function SoloVuelos() {
                 </div>
               </div>
             )}
-            <Link href={seleccionado ? "/pasajeros?tipo=vuelo" : "#"} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !seleccionado ? 0.4 : 1, textDecoration: "none", display: "block", textAlign: "center" }}>
+            <button onClick={irAPasajeros} disabled={!seleccionado} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: !seleccionado ? 0.4 : 1, cursor: !seleccionado ? "not-allowed" : "pointer" }}>
               Continuar → Pasajeros
-            </Link>
+            </button>
           </div>
 
         </div>
