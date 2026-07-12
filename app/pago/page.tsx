@@ -35,7 +35,15 @@ function PagoContent() {
   } catch {}
 }, []);
 
-  const totalMostrar = tipo === "vuelo"
+const totalPasajeros = (() => {
+  try {
+    const pas = sessionStorage.getItem("pasajeros");
+    if (pas) return Object.values(JSON.parse(pas)).reduce((a: any, b: any) => a + b, 0) as number;
+  } catch {}
+  return 1;
+})();
+  
+const totalMostrar = tipo === "vuelo"
     ? (precioVuelo > 0 ? `$${precioVuelo} USD` : "$2,080 USD")
     : tipo === "hotel"
     ? (precioHotel > 0 ? `$${precioHotel} USD` : "$860 USD")
@@ -207,9 +215,9 @@ function PagoContent() {
                 </div>
                 <div style={{ padding: "10px 14px" }}>
                   {tipo !== "hotel" && <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "4px 0", borderBottom: tipo !== "vuelo" ? "1px solid #f5f7ff" : "none" }}>
-                    <span style={{ color: "#888" }}>Vuelos · 3 tramos</span>
-                    <span style={{ fontWeight: "600", color: "#0D0C56" }}>{precioVuelo > 0 ? `$${precioVuelo} USD` : "$2,080 USD"}</span>
-                  </div>}
+  <span style={{ color: "#888" }}>Vuelos · {precioVuelo > 0 ? `$${precioVuelo / totalPasajeros} × ${totalPasajeros} pas.` : "3 tramos"}</span>
+  <span style={{ fontWeight: "600", color: "#0D0C56" }}>{precioVuelo > 0 ? `$${precioVuelo} USD` : "$2,080 USD"}</span>
+</div>}
                   {tipo !== "vuelo" && <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "4px 0" }}>
                     <span style={{ color: "#888" }}>Hospedaje · 5 noches</span>
                     <span style={{ fontWeight: "600", color: "#0D0C56" }}>{precioHotel > 0 ? `$${precioHotel} USD` : "$1,636 USD"}</span>
