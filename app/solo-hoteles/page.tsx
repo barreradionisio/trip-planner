@@ -65,7 +65,10 @@ export default function SoloHoteles() {
 
   const irAPasajeros = () => {
     if (!seleccionado || totalHabitaciones === 0) return;
-    sessionStorage.setItem("hotel_seleccionado", JSON.stringify(hotelSeleccionado));
+    sessionStorage.setItem("hotel_seleccionado", JSON.stringify({
+  ...hotelSeleccionado,
+  noches: checkin && checkout ? Math.max(1, Math.round((new Date(checkout).getTime() - new Date(checkin).getTime()) / (1000 * 60 * 60 * 24))) : 1
+}));
     sessionStorage.setItem("habitaciones", JSON.stringify(habitaciones));
     router.push("/pasajeros?tipo=hotel");
   };
