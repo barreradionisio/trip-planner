@@ -77,6 +77,81 @@ export default function SoloHoteles() {
     return `${d} ${meses[parseInt(m)-1]} ${y}`;
   };
 
+  // Componente reutilizable para habitaciones + filtros
+  const HabitacionesYFiltros = () => (
+    <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
+      <div style={{ padding: "10px 14px", background: "#0D0C56" }}>
+        <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Habitaciones · Total: {totalHabitaciones}</div>
+      </div>
+      <div className="sh-hab-grid">
+        {tiposHabitacion.map(t => (
+          <div key={t.key} style={{ border: `1.5px solid ${habitaciones[t.key] > 0 ? "#1667E6" : "#e8edf8"}`, borderRadius: "10px", padding: "10px 8px", background: habitaciones[t.key] > 0 ? "#f0f5ff" : "#fff", textAlign: "center" }}>
+            <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56", marginBottom: "2px" }}>{t.label}</div>
+            <div style={{ fontSize: "10px", color: "#888", marginBottom: "4px" }}>{t.desc}</div>
+            {t.extra > 0 && <div style={{ fontSize: "10px", color: "#1667E6", marginBottom: "4px" }}>+${t.extra}/noche</div>}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+              <button onClick={() => actualizarHab(t.key, -1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>−</button>
+              <span style={{ fontWeight: "800", fontSize: "13px", color: "#0D0C56" }}>{habitaciones[t.key]}</span>
+              <button onClick={() => actualizarHab(t.key, 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>+</button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ borderTop: "1px solid #f0f2fa" }}>
+        <button onClick={() => setMostrarFiltros(!mostrarFiltros)} style={{ width: "100%", padding: "10px 14px", background: "none", border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "Montserrat, sans-serif" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+            </svg>
+            <span style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6" }}>Filtros</span>
+            {filtrosActivos > 0 && <span style={{ background: "#1667E6", color: "#fff", borderRadius: "50%", width: "18px", height: "18px", fontSize: "10px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center" }}>{filtrosActivos}</span>}
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d={mostrarFiltros ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}/>
+          </svg>
+        </button>
+        {mostrarFiltros && (
+          <div style={{ padding: "12px 14px", borderTop: "1px solid #f0f2fa" }}>
+            <div style={{ marginBottom: "14px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                <span style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px" }}>Precio máximo</span>
+                <span style={{ fontSize: "11px", fontWeight: "700", color: "#0D0C56" }}>${precioMax} USD</span>
+              </div>
+              <input type="range" min={50} max={600} step={10} value={precioMax} onChange={e => setPrecioMax(Number(e.target.value))} style={{ width: "100%", accentColor: "#1667E6" }} />
+            </div>
+            <div style={{ marginBottom: "14px" }}>
+              <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>Mínimo de estrellas</div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {[{ v: 0, l: "Todos" }, { v: 3, l: "3★+" }, { v: 4, l: "4★+" }, { v: 5, l: "5★+" }].map(e => (
+                  <button key={e.v} onClick={() => setFiltroEstrellas(e.v)} style={{ padding: "5px 10px", border: `1.5px solid ${filtroEstrellas === e.v ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "11px", fontWeight: "600", cursor: "pointer", background: filtroEstrellas === e.v ? "#1667E6" : "#fff", color: filtroEstrellas === e.v ? "#fff" : "#888", fontFamily: "Montserrat, sans-serif" }}>
+                    {e.l}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div style={{ marginBottom: "14px" }}>
+              <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>
+                Servicios {serviciosSeleccionados.length > 0 && `· ${serviciosSeleccionados.length}`}
+              </div>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                {serviciosDisponibles.map(s => (
+                  <button key={s} onClick={() => toggleServicio(s)} style={{ padding: "4px 10px", border: `1.5px solid ${serviciosSeleccionados.includes(s) ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "10px", fontWeight: "600", cursor: "pointer", background: serviciosSeleccionados.includes(s) ? "#1667E6" : "#fff", color: serviciosSeleccionados.includes(s) ? "#fff" : "#888", fontFamily: "Montserrat, sans-serif" }}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {filtrosActivos > 0 && (
+              <button onClick={limpiarFiltros} style={{ padding: "8px 16px", background: "#fff", color: "#FF5C00", border: "1.5px solid #FF5C00", borderRadius: "8px", fontSize: "12px", fontWeight: "700", cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>
+                Limpiar filtros
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <>
       <style>{`
@@ -131,7 +206,7 @@ export default function SoloHoteles() {
           width: 100%;
         }
         .sh-sidebar { display: flex; flex-direction: column; }
-        .sh-sidebar-mobile { display: none; flex-direction: column; width: 100%; }
+        .sh-mobile-only { display: none; }
         .sh-hab-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -215,7 +290,7 @@ export default function SoloHoteles() {
           .sh-buscador-grid > *:last-child { grid-column: 1 / -1; }
           .sh-body { grid-template-columns: 1fr; padding: 12px; overflow: hidden; }
           .sh-sidebar { display: none; }
-          .sh-sidebar-mobile { display: flex; }
+          .sh-mobile-only { display: block; }
           .sh-card { padding: 14px; }
         }
       `}</style>
@@ -281,6 +356,11 @@ export default function SoloHoteles() {
           {/* IZQUIERDA */}
           <div style={{ overflow: "hidden", width: "100%" }}>
 
+            {/* HABITACIONES Y FILTROS — SOLO MÓVIL */}
+            <div className="sh-mobile-only">
+              <HabitacionesYFiltros />
+            </div>
+
             {/* ORDENAR */}
             <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", padding: "12px 16px", marginBottom: "12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: "12px", color: "#888" }}>{filtrados.length} hoteles encontrados</span>
@@ -316,85 +396,25 @@ export default function SoloHoteles() {
                 </div>
               </button>
             ))}
+
+            {/* BOTÓN CONTINUAR MÓVIL */}
+            <div className="sh-mobile-only">
+              {hotelSeleccionado && (
+                <div style={{ background: "#f0f5ff", borderRadius: "13px", border: "1.5px solid #e0eaff", padding: "14px", marginBottom: "12px" }}>
+                  <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6", marginBottom: "4px" }}>Hotel seleccionado</div>
+                  <div style={{ fontWeight: "800", fontSize: "13px", color: "#0D0C56", marginBottom: "2px" }}>{hotelSeleccionado.nombre}</div>
+                  <div style={{ fontWeight: "800", fontSize: "16px", color: "#1667E6" }}>${hotelSeleccionado.precio} USD/noche</div>
+                </div>
+              )}
+              <button onClick={irAPasajeros} disabled={!seleccionado || totalHabitaciones === 0} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: (!seleccionado || totalHabitaciones === 0) ? 0.4 : 1, cursor: (!seleccionado || totalHabitaciones === 0) ? "not-allowed" : "pointer" }}>
+                Continuar → Pasajeros
+              </button>
+            </div>
           </div>
 
           {/* SIDEBAR DESKTOP */}
           <div className="sh-sidebar">
-            {/* HABITACIONES */}
-            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-              <div style={{ padding: "10px 14px", background: "#0D0C56", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Habitaciones · Total: {totalHabitaciones}</div>
-              </div>
-              <div className="sh-hab-grid">
-                {tiposHabitacion.map(t => (
-                  <div key={t.key} style={{ border: `1.5px solid ${habitaciones[t.key] > 0 ? "#1667E6" : "#e8edf8"}`, borderRadius: "10px", padding: "10px 8px", background: habitaciones[t.key] > 0 ? "#f0f5ff" : "#fff", textAlign: "center" }}>
-                    <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56", marginBottom: "2px" }}>{t.label}</div>
-                    <div style={{ fontSize: "10px", color: "#888", marginBottom: "4px" }}>{t.desc}</div>
-                    {t.extra > 0 && <div style={{ fontSize: "10px", color: "#1667E6", marginBottom: "4px" }}>+${t.extra}/noche</div>}
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                      <button onClick={() => actualizarHab(t.key, -1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>−</button>
-                      <span style={{ fontWeight: "800", fontSize: "13px", color: "#0D0C56" }}>{habitaciones[t.key]}</span>
-                      <button onClick={() => actualizarHab(t.key, 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>+</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* FILTROS */}
-              <div style={{ borderTop: "1px solid #f0f2fa" }}>
-                <button onClick={() => setMostrarFiltros(!mostrarFiltros)} style={{ width: "100%", padding: "10px 14px", background: "none", border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "Montserrat, sans-serif" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
-                    </svg>
-                    <span style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6" }}>Filtros</span>
-                    {filtrosActivos > 0 && <span style={{ background: "#1667E6", color: "#fff", borderRadius: "50%", width: "18px", height: "18px", fontSize: "10px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center" }}>{filtrosActivos}</span>}
-                  </div>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={mostrarFiltros ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}/>
-                  </svg>
-                </button>
-                {mostrarFiltros && (
-                  <div style={{ padding: "12px 14px", borderTop: "1px solid #f0f2fa" }}>
-                    <div style={{ marginBottom: "14px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                        <span style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px" }}>Precio máximo</span>
-                        <span style={{ fontSize: "11px", fontWeight: "700", color: "#0D0C56" }}>${precioMax} USD</span>
-                      </div>
-                      <input type="range" min={50} max={600} step={10} value={precioMax} onChange={e => setPrecioMax(Number(e.target.value))} style={{ width: "100%", accentColor: "#1667E6" }} />
-                    </div>
-                    <div style={{ marginBottom: "14px" }}>
-                      <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>Mínimo de estrellas</div>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                        {[{ v: 0, l: "Todos" }, { v: 3, l: "3★+" }, { v: 4, l: "4★+" }, { v: 5, l: "5★+" }].map(e => (
-                          <button key={e.v} onClick={() => setFiltroEstrellas(e.v)} style={{ padding: "5px 10px", border: `1.5px solid ${filtroEstrellas === e.v ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "11px", fontWeight: "600", cursor: "pointer", background: filtroEstrellas === e.v ? "#1667E6" : "#fff", color: filtroEstrellas === e.v ? "#fff" : "#888", fontFamily: "Montserrat, sans-serif" }}>
-                            {e.l}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div style={{ marginBottom: "14px" }}>
-                      <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>
-                        Servicios {serviciosSeleccionados.length > 0 && `· ${serviciosSeleccionados.length}`}
-                      </div>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                        {serviciosDisponibles.map(s => (
-                          <button key={s} onClick={() => toggleServicio(s)} style={{ padding: "4px 10px", border: `1.5px solid ${serviciosSeleccionados.includes(s) ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "10px", fontWeight: "600", cursor: "pointer", background: serviciosSeleccionados.includes(s) ? "#1667E6" : "#fff", color: serviciosSeleccionados.includes(s) ? "#fff" : "#888", fontFamily: "Montserrat, sans-serif" }}>
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    {filtrosActivos > 0 && (
-                      <button onClick={limpiarFiltros} style={{ padding: "8px 16px", background: "#fff", color: "#FF5C00", border: "1.5px solid #FF5C00", borderRadius: "8px", fontSize: "12px", fontWeight: "700", cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>
-                        Limpiar filtros
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
+            <HabitacionesYFiltros />
             {hotelSeleccionado && (
               <div style={{ background: "#f0f5ff", borderRadius: "13px", border: "1.5px solid #e0eaff", padding: "14px", marginBottom: "12px" }}>
                 <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6", marginBottom: "6px" }}>Hotel seleccionado</div>
@@ -403,97 +423,6 @@ export default function SoloHoteles() {
                 <div style={{ fontWeight: "800", fontSize: "16px", color: "#1667E6" }}>${hotelSeleccionado.precio} USD/noche</div>
               </div>
             )}
-
-            <button onClick={irAPasajeros} disabled={!seleccionado || totalHabitaciones === 0} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: (!seleccionado || totalHabitaciones === 0) ? 0.4 : 1, cursor: (!seleccionado || totalHabitaciones === 0) ? "not-allowed" : "pointer" }}>
-              Continuar → Pasajeros
-            </button>
-          </div>
-
-          {/* SIDEBAR MÓVIL */}
-          <div className="sh-sidebar-mobile">
-            {/* HABITACIONES MÓVIL */}
-            <div style={{ background: "#fff", borderRadius: "13px", border: "1.5px solid #e8edf8", overflow: "hidden", marginBottom: "12px" }}>
-              <div style={{ padding: "10px 14px", background: "#0D0C56" }}>
-                <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "12px", color: "#fff" }}>Habitaciones · Total: {totalHabitaciones}</div>
-              </div>
-              <div className="sh-hab-grid">
-                {tiposHabitacion.map(t => (
-                  <div key={t.key} style={{ border: `1.5px solid ${habitaciones[t.key] > 0 ? "#1667E6" : "#e8edf8"}`, borderRadius: "10px", padding: "10px 8px", background: habitaciones[t.key] > 0 ? "#f0f5ff" : "#fff", textAlign: "center" }}>
-                    <div style={{ fontWeight: "700", fontSize: "11px", color: "#0D0C56", marginBottom: "2px" }}>{t.label}</div>
-                    <div style={{ fontSize: "10px", color: "#888", marginBottom: "4px" }}>{t.desc}</div>
-                    {t.extra > 0 && <div style={{ fontSize: "10px", color: "#1667E6", marginBottom: "4px" }}>+${t.extra}/noche</div>}
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                      <button onClick={() => actualizarHab(t.key, -1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>−</button>
-                      <span style={{ fontWeight: "800", fontSize: "13px", color: "#0D0C56" }}>{habitaciones[t.key]}</span>
-                      <button onClick={() => actualizarHab(t.key, 1)} style={{ width: "24px", height: "24px", borderRadius: "50%", border: "1.5px solid #e8edf8", background: "#fff", cursor: "pointer", fontSize: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Montserrat, sans-serif" }}>+</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* FILTROS MÓVIL */}
-              <div style={{ borderTop: "1px solid #f0f2fa" }}>
-                <button onClick={() => setMostrarFiltros(!mostrarFiltros)} style={{ width: "100%", padding: "10px 14px", background: "none", border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "Montserrat, sans-serif" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
-                    </svg>
-                    <span style={{ fontSize: "12px", fontWeight: "700", color: "#1667E6" }}>Filtros</span>
-                    {filtrosActivos > 0 && <span style={{ background: "#1667E6", color: "#fff", borderRadius: "50%", width: "18px", height: "18px", fontSize: "10px", fontWeight: "800", display: "flex", alignItems: "center", justifyContent: "center" }}>{filtrosActivos}</span>}
-                  </div>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d={mostrarFiltros ? "M18 15l-6-6-6 6" : "M6 9l6 6 6-6"}/>
-                  </svg>
-                </button>
-                {mostrarFiltros && (
-                  <div style={{ padding: "12px 14px", borderTop: "1px solid #f0f2fa" }}>
-                    <div style={{ marginBottom: "14px" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                        <span style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px" }}>Precio máximo</span>
-                        <span style={{ fontSize: "11px", fontWeight: "700", color: "#0D0C56" }}>${precioMax} USD</span>
-                      </div>
-                      <input type="range" min={50} max={600} step={10} value={precioMax} onChange={e => setPrecioMax(Number(e.target.value))} style={{ width: "100%", accentColor: "#1667E6" }} />
-                    </div>
-                    <div style={{ marginBottom: "14px" }}>
-                      <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>Mínimo de estrellas</div>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                        {[{ v: 0, l: "Todos" }, { v: 3, l: "3★+" }, { v: 4, l: "4★+" }, { v: 5, l: "5★+" }].map(e => (
-                          <button key={e.v} onClick={() => setFiltroEstrellas(e.v)} style={{ padding: "5px 10px", border: `1.5px solid ${filtroEstrellas === e.v ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "11px", fontWeight: "600", cursor: "pointer", background: filtroEstrellas === e.v ? "#1667E6" : "#fff", color: filtroEstrellas === e.v ? "#fff" : "#888", fontFamily: "Montserrat, sans-serif" }}>
-                            {e.l}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    <div style={{ marginBottom: "14px" }}>
-                      <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "8px" }}>
-                        Servicios {serviciosSeleccionados.length > 0 && `· ${serviciosSeleccionados.length}`}
-                      </div>
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                        {serviciosDisponibles.map(s => (
-                          <button key={s} onClick={() => toggleServicio(s)} style={{ padding: "4px 10px", border: `1.5px solid ${serviciosSeleccionados.includes(s) ? "#1667E6" : "#e8edf8"}`, borderRadius: "50px", fontSize: "10px", fontWeight: "600", cursor: "pointer", background: serviciosSeleccionados.includes(s) ? "#1667E6" : "#fff", color: serviciosSeleccionados.includes(s) ? "#fff" : "#888", fontFamily: "Montserrat, sans-serif" }}>
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    {filtrosActivos > 0 && (
-                      <button onClick={limpiarFiltros} style={{ padding: "8px 16px", background: "#fff", color: "#FF5C00", border: "1.5px solid #FF5C00", borderRadius: "8px", fontSize: "12px", fontWeight: "700", cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>
-                        Limpiar filtros
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {hotelSeleccionado && (
-              <div style={{ background: "#f0f5ff", borderRadius: "13px", border: "1.5px solid #e0eaff", padding: "14px", marginBottom: "12px" }}>
-                <div style={{ fontWeight: "700", fontSize: "12px", color: "#1667E6", marginBottom: "4px" }}>Hotel seleccionado</div>
-                <div style={{ fontWeight: "800", fontSize: "13px", color: "#0D0C56", marginBottom: "2px" }}>{hotelSeleccionado.nombre}</div>
-                <div style={{ fontWeight: "800", fontSize: "16px", color: "#1667E6" }}>${hotelSeleccionado.precio} USD/noche</div>
-              </div>
-            )}
-
             <button onClick={irAPasajeros} disabled={!seleccionado || totalHabitaciones === 0} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: (!seleccionado || totalHabitaciones === 0) ? 0.4 : 1, cursor: (!seleccionado || totalHabitaciones === 0) ? "not-allowed" : "pointer" }}>
               Continuar → Pasajeros
             </button>
