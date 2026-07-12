@@ -410,7 +410,7 @@ export default function SoloHoteles() {
                 </div>
               )}
               <button onClick={irAPasajeros} disabled={!seleccionado || totalHabitaciones === 0} style={{ width: "100%", padding: "13px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "13px", fontFamily: "sans-serif", fontWeight: "800", fontSize: "14px", opacity: (!seleccionado || totalHabitaciones === 0) ? 0.4 : 1, cursor: (!seleccionado || totalHabitaciones === 0) ? "not-allowed" : "pointer" }}>
-                Continuar → Pasajeros
+                Continuar → Huespedes
               </button>
             </div>
           </div>

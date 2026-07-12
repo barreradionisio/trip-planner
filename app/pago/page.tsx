@@ -26,7 +26,12 @@ function PagoContent() {
       setPrecioHotel((h.precio || 0) * (h.noches || 1));
     }
     const vuelo = sessionStorage.getItem("vuelo_seleccionado");
-    if (vuelo) setPrecioVuelo(JSON.parse(vuelo).precio || 0);
+    if (vuelo) {
+  const v = JSON.parse(vuelo);
+  const pas = sessionStorage.getItem("pasajeros");
+  const totalPas = pas ? Object.values(JSON.parse(pas)).reduce((a: any, b: any) => a + b, 0) : 1;
+  setPrecioVuelo((v.precio || 0) * (totalPas as number));
+}
   } catch {}
 }, []);
 
@@ -207,7 +212,7 @@ function PagoContent() {
                   </div>}
                   {tipo !== "vuelo" && <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "4px 0" }}>
                     <span style={{ color: "#888" }}>Hospedaje · 5 noches</span>
-                    <span style={{ fontWeight: "600", color: "#0D0C56" }}>{precioHotel > 0 ? `$${precioHotel} USD/noche` : "$1,636 USD"}</span>
+                    <span style={{ fontWeight: "600", color: "#0D0C56" }}>{precioHotel > 0 ? `$${precioHotel} USD` : "$1,636 USD"}</span>
                   </div>}
                 </div>
               </div>
@@ -352,7 +357,7 @@ function PagoContent() {
               <div style={{ padding: "12px 14px" }}>
                 {[
                   { label: "Vuelos · 3 tramos", value: precioVuelo > 0 ? `$${precioVuelo} USD` : "$2,080 USD", mostrar: tipo !== "hotel" },
-                  { label: "Hospedaje · 5 noches", value: precioHotel > 0 ? `$${precioHotel} USD/noche` : "$1,636 USD", mostrar: tipo !== "vuelo" },
+                  { label: "Hospedaje · 5 noches", value: precioHotel > 0 ? `$${precioHotel} USD` : "$1,636 USD", mostrar: tipo !== "vuelo" },
                   { label: "Comisión", value: "$0", green: true, mostrar: true },
                 ].filter(r => r.mostrar).map(r => (
                   <div key={r.label} style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", padding: "5px 0", borderBottom: "1px solid #f5f7ff" }}>
