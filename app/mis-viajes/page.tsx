@@ -102,6 +102,7 @@ export default function MisViajes() {
           gap: 12px;
           margin-bottom: 20px;
         }
+        .mv-nav-mobile { display: none; }
         .mv-filtros {
           display: flex;
           gap: 8px;
@@ -137,34 +138,40 @@ export default function MisViajes() {
         }
 
         @media (max-width: 768px) {
-          .mv-nav { padding: 12px 16px; }
-          .mv-nav-center { display: none; }
-          .mv-hero { padding: 20px 16px 40px; }
-          .mv-content { padding: 0 12px 24px; }
-          .mv-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-          .mv-card-info { gap: 8px; }
-          .mv-footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
-          .mv-footer { flex-direction: column; gap: 20px; padding: 24px 16px; align-items: flex-start; }
+  .mv-nav { padding: 12px 16px; }
+  .mv-nav-center { display: none; }
+  .mv-nav-mobile { display: flex; background: #1667E6; padding: 8px 16px; gap: 16px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .mv-hero { padding: 20px 16px 40px; }
+  .mv-content { padding: 0 12px 24px; }
+  .mv-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .mv-card-info { gap: 8px; }
+  .mv-footer-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+  .mv-footer { flex-direction: column; gap: 20px; padding: 24px 16px; align-items: flex-start; }
       `}</style>
 
       <div className="mv-wrap">
 
         {/* NAV */}
-        <nav className="mv-nav">
-          <Link href="/"><Logo variant="naranja" /></Link>
-          <div className="mv-nav-center">
-            <Link href="/mis-viajes" style={{ fontSize: "13px", color: "#fff", textDecoration: "none", fontWeight: "700" }}>Mis viajes</Link>
-            <Link href="/perfil" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Perfil</Link>
-            <Link href="/soporte" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
-          </div>
-          <Link href="/destinos" style={{ fontSize: "13px", background: "rgba(255,255,255,0.15)", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>+ Nuevo viaje</Link>
-        </nav>
+<nav className="mv-nav">
+  <Link href="/"><Logo variant="naranja" /></Link>
+  <div className="mv-nav-center">
+    <Link href="/mis-viajes" style={{ fontSize: "13px", color: "#fff", textDecoration: "none", fontWeight: "700" }}>Mis viajes</Link>
+    <Link href="/perfil" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Perfil</Link>
+    <Link href="/soporte" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+  </div>
+  <Link href="/destinos" style={{ fontSize: "13px", background: "rgba(255,255,255,0.15)", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>+ Nuevo viaje</Link>
+</nav>
+<div className="mv-nav-mobile">
+  <Link href="/mis-viajes" style={{ fontSize: "13px", color: "#fff", textDecoration: "none", fontWeight: "700" }}>Mis viajes</Link>
+  <Link href="/perfil" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Perfil</Link>
+  <Link href="/soporte" style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
+</div>
 
-        {/* HERO */}
-        <div className="mv-hero">
-          <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "24px", color: "#fff", marginBottom: "4px" }}>Mis viajes</h1>
-          <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>Gestiona tus reservas, itinerarios y documentos de viaje</p>
-        </div>
+{/* HERO */}
+<div className="mv-hero">
+  <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "24px", color: "#fff", marginBottom: "4px" }}>Mis viajes</h1>
+  <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>Gestiona tus reservas, itinerarios y documentos de viaje</p>
+</div>
 
         {/* CONTENIDO */}
         <div className="mv-content">
