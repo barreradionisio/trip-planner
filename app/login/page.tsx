@@ -79,7 +79,12 @@ export default function Login() {
         {/* HEADER MÓVIL */}
         <div className="login-mobile-header">
           <Logo variant="teal" />
-          <Link href="/" style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", textDecoration: "none" }}>← Volver</Link>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6"/>
+  </svg>
+  Volver
+</Link>
         </div>
 
         <div className="login-wrap">
