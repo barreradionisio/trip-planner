@@ -123,8 +123,8 @@ export default function Reserva() {
         <div className="res-hero">
           <div className="res-hero-inner">
             <div>
-              <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", marginBottom: "4px" }}>Reserva</div>
-              <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "24px", color: "#fff", marginBottom: "6px" }}>París · Roma</h1>
+              <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", marginBottom: "4px" }}>Reserva · TP-2024-8847</div>
+              <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "20px", color: "#fff", marginBottom: "6px" }}>París · Roma</h1>
               <div className="res-hero-info">
                 <span style={{ display: "inline-flex", alignItems: "center", gap: "5px" }}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3ED5A9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -152,12 +152,7 @@ export default function Reserva() {
                 </span>
               </div>
             </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: "10px", background: "#e8fff5", color: "#085041", padding: "3px 12px", borderRadius: "50px", fontWeight: "700", marginBottom: "8px", display: "inline-block" }}>Confirmado</div>
-              <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#fff" }}>$3,716 USD</div>
-              <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)" }}>TP-2024-8847</div>
-            </div>
-          </div>
+                      </div>
         </div>
 
         {/* BODY */}
