@@ -193,12 +193,19 @@ const totalMostrar = tipo === "vuelo"
         )}
 
         {/* NAV SOLO VUELOS/HOTELES */}
-        {tipo !== "completo" && (
-          <nav style={{ background: "#fff", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8" }}>
-            <Link href="/"><Logo variant="color" /></Link>
-            <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
-          </nav>
-        )}
+{tipo !== "completo" && (
+  <nav style={{ background: "#fff", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #e8edf8" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <button onClick={() => router.back()} style={{ background: "#f5f7ff", border: "none", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", width: "34px", height: "34px" }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D0C56" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <Link href="/"><Logo variant="color" /></Link>
+    </div>
+    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+  </nav>
+)}
 
         {/* BODY */}
         <div className="pago-body">
