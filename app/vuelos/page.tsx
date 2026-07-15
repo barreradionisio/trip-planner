@@ -116,7 +116,7 @@ export default function Vuelos() {
 
         {/* TOPBAR */}
 <div className="vuelos-topbar">
-  <Logo variant="teal" />
+  <Link href="/destinos"><Logo variant="teal" /></Link>
   <div className="vuelos-pasos">
     {["Destinos", "Vuelos", "Hospedaje", "Itinerario", "Pasajeros", "Pago"].map((s, i) => (
       <div key={s} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
