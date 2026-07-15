@@ -66,7 +66,7 @@ const [filtroEstado, setFiltroEstado] = useState("todos");
             <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "#1667E6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", fontSize: "12px", color: "#fff" }}>AD</div>
             <div>
               <div style={{ fontSize: "11px", fontWeight: "700", color: "#fff" }}>Administrador</div>
-              <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)" }}>admin@tripplanner.mx</div>
+              <div style={{ fontSize: "10px", color: "rgba(255,255,255,0.4)" }}>admin@tripplanner.com.mx</div>
             </div>
           </div>
         </div>

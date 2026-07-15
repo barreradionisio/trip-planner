@@ -171,7 +171,7 @@ export default function Home() {
       <footer style={{ background: "#0D0C56", padding: isMobile ? "32px 20px" : "48px 32px", display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center", justifyContent: "space-between", gap: isMobile ? "24px" : "0" }}>
         <div>
           <Logo variant="teal" />
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", marginTop: "12px" }}>© 2026 Trip Planner · no-reply@tripplanner.mx</p>
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", marginTop: "12px" }}>© 2026 Trip Planner · no-reply@tripplanner.com.mx</p>
         </div>
         <div style={{ display: "flex", gap: isMobile ? "32px" : "48px" }}>
           <div>
