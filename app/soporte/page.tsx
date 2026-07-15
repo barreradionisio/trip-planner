@@ -269,7 +269,11 @@ function SoporteContent() {
                 </>
               ) : (
                 <div style={{ padding: "48px 24px", textAlign: "center" }}>
-                  <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#e8fff5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "28px", margin: "0 auto 16px" }}>✅</div>
+                  <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: "#e8fff5", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#085041" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+</div>
                   <div style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "18px", color: "#0D0C56", marginBottom: "8px" }}>¡Ticket enviado!</div>
                   <div style={{ fontSize: "12px", color: "#888", lineHeight: "1.6", marginBottom: "20px" }}>Recibirás una respuesta en menos de 24 horas hábiles en tu correo registrado.</div>
                   <button onClick={() => { setTicketEnviado(false); setAsunto(""); setDescripcion(""); }} style={{ padding: "10px 24px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "700", fontSize: "12px", cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>Enviar otro ticket</button>
