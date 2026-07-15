@@ -319,12 +319,7 @@ export default function PasajerosFlujo() {
 
         </div>
 
-        {/* FOOTER */}
-        <footer style={{ background: "#0D0C56", padding: "24px 32px", display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: "auto", gap: "8px" }}>
-          <Logo variant="teal" />
-          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", margin: 0 }}>© 2026 Trip Planner · no-reply@tripplanner.com.mx</p>
-        </footer>
-      </div>
+        </div>
     </>
   );
 }
