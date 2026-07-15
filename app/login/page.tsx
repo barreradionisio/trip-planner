@@ -2,11 +2,29 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Logo from "../components/Logo";
+import { supabase } from "../../lib/supabase";
 
 export default function Login() {
+  const router = useRouter();
   const [tab, setTab] = useState<"login" | "registro">("login");
   const [pwdValue, setPwdValue] = useState("");
+
+  // Login
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPwd, setLoginPwd] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  // Registro
+  const [regNombre, setRegNombre] = useState("");
+  const [regApellido, setRegApellido] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPwd, setRegPwd] = useState("");
+  const [regError, setRegError] = useState("");
+  const [regLoading, setRegLoading] = useState(false);
+  const [regExito, setRegExito] = useState(false);
 
   const getPwdStrength = (pwd: string) => {
     if (pwd.length === 0) return null;
@@ -17,6 +35,55 @@ export default function Login() {
   };
 
   const strength = getPwdStrength(pwdValue);
+
+  const handleLogin = async () => {
+    setLoginError("");
+    setLoginLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: loginEmail,
+      password: loginPwd,
+    });
+    setLoginLoading(false);
+    if (error) {
+      setLoginError("Correo o contraseña incorrectos");
+    } else {
+      router.push("/mis-viajes");
+    }
+  };
+
+  const handleRegistro = async () => {
+    setRegError("");
+    if (!regNombre || !regApellido || !regEmail || !regPwd) {
+      setRegError("Completa todos los campos");
+      return;
+    }
+    if (regPwd.length < 8) {
+      setRegError("La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+    setRegLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: regEmail,
+      password: regPwd,
+      options: {
+        data: { nombre: regNombre, apellido: regApellido }
+      }
+    });
+    if (!error && data.user) {
+      await supabase.from("usuarios").insert({
+        id: data.user.id,
+        nombre: regNombre,
+        apellido: regApellido,
+        correo: regEmail,
+      });
+    }
+    setRegLoading(false);
+    if (error) {
+      setRegError(error.message.includes("already") ? "Este correo ya está registrado" : "Error al crear cuenta");
+    } else {
+      setRegExito(true);
+    }
+  };
 
   return (
     <>
@@ -80,11 +147,11 @@ export default function Login() {
         <div className="login-mobile-header">
           <Logo variant="teal" />
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "12px", color: "rgba(255,255,255,0.7)", textDecoration: "none", fontWeight: "600" }}>
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="15 18 9 12 15 6"/>
-  </svg>
-  Volver
-</Link>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+            Volver
+          </Link>
         </div>
 
         <div className="login-wrap">
@@ -129,16 +196,19 @@ export default function Login() {
                   <p style={{ fontSize: "12px", color: "#888", marginBottom: "24px" }}>Ingresa tus datos para continuar</p>
                   <div style={{ marginBottom: "14px" }}>
                     <label style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", display: "block", marginBottom: "4px" }}>Correo electrónico</label>
-                    <input type="email" placeholder="correo@email.com" className="login-input" />
+                    <input type="email" placeholder="correo@email.com" className="login-input" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} />
                   </div>
                   <div style={{ marginBottom: "20px" }}>
                     <label style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", display: "block", marginBottom: "4px" }}>Contraseña</label>
-                    <input type="password" placeholder="Tu contraseña" className="login-input" />
+                    <input type="password" placeholder="Tu contraseña" className="login-input" value={loginPwd} onChange={e => setLoginPwd(e.target.value)} onKeyDown={e => e.key === "Enter" && handleLogin()} />
                     <div style={{ textAlign: "right", marginTop: "6px" }}>
-                      <a href="/recuperar" style={{ fontSize: "11px", color: "#1667E6", textDecoration: "none", fontWeight: "600" }}>¿Olvidaste tu contraseña?</a>
+                      <Link href="/recuperar" style={{ fontSize: "11px", color: "#1667E6", textDecoration: "none", fontWeight: "600" }}>¿Olvidaste tu contraseña?</Link>
                     </div>
                   </div>
-                  <button style={{ width: "100%", padding: "12px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer", marginBottom: "16px", fontFamily: "Montserrat, sans-serif" }}>Iniciar sesión</button>
+                  {loginError && <div style={{ background: "#ffeaea", border: "1.5px solid #ffd0d0", borderRadius: "8px", padding: "10px 12px", fontSize: "12px", color: "#c0392b", marginBottom: "14px" }}>{loginError}</div>}
+                  <button onClick={handleLogin} disabled={loginLoading} style={{ width: "100%", padding: "12px", background: loginLoading ? "#aaa" : "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: loginLoading ? "not-allowed" : "pointer", marginBottom: "16px", fontFamily: "Montserrat, sans-serif" }}>
+                    {loginLoading ? "Entrando..." : "Iniciar sesión"}
+                  </button>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
                     <div style={{ flex: 1, height: "1px", background: "#e8edf8" }}/>
                     <span style={{ fontSize: "11px", color: "#aaa" }}>o continúa con</span>
@@ -161,27 +231,27 @@ export default function Login() {
               )}
 
               {/* REGISTRO */}
-              {tab === "registro" && (
+              {tab === "registro" && !regExito && (
                 <div>
                   <h3 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#0D0C56", marginBottom: "6px" }}>Crea tu cuenta</h3>
                   <p style={{ fontSize: "12px", color: "#888", marginBottom: "24px" }}>Es gratis y toma menos de 1 minuto</p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "14px" }}>
                     <div>
                       <label style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", display: "block", marginBottom: "4px" }}>Nombre</label>
-                      <input type="text" placeholder="Juan" className="login-input" />
+                      <input type="text" placeholder="Juan" className="login-input" value={regNombre} onChange={e => setRegNombre(e.target.value)} />
                     </div>
                     <div>
                       <label style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", display: "block", marginBottom: "4px" }}>Apellido</label>
-                      <input type="text" placeholder="García" className="login-input" />
+                      <input type="text" placeholder="García" className="login-input" value={regApellido} onChange={e => setRegApellido(e.target.value)} />
                     </div>
                   </div>
                   <div style={{ marginBottom: "14px" }}>
                     <label style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", display: "block", marginBottom: "4px" }}>Correo electrónico</label>
-                    <input type="email" placeholder="correo@email.com" className="login-input" />
+                    <input type="email" placeholder="correo@email.com" className="login-input" value={regEmail} onChange={e => setRegEmail(e.target.value)} />
                   </div>
                   <div style={{ marginBottom: "20px" }}>
                     <label style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", display: "block", marginBottom: "4px" }}>Contraseña</label>
-                    <input type="password" placeholder="Mínimo 8 caracteres" value={pwdValue} onChange={e => setPwdValue(e.target.value)} className="login-input" />
+                    <input type="password" placeholder="Mínimo 8 caracteres" value={regPwd} onChange={e => { setRegPwd(e.target.value); setPwdValue(e.target.value); }} className="login-input" />
                     {strength && (
                       <div style={{ marginTop: "6px" }}>
                         <div style={{ display: "flex", gap: "3px", marginBottom: "3px" }}>
@@ -193,15 +263,37 @@ export default function Login() {
                       </div>
                     )}
                   </div>
-                  <button style={{ width: "100%", padding: "12px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer", marginBottom: "16px", fontFamily: "Montserrat, sans-serif" }}>Crear cuenta</button>
+                  {regError && <div style={{ background: "#ffeaea", border: "1.5px solid #ffd0d0", borderRadius: "8px", padding: "10px 12px", fontSize: "12px", color: "#c0392b", marginBottom: "14px" }}>{regError}</div>}
+                  <button onClick={handleRegistro} disabled={regLoading} style={{ width: "100%", padding: "12px", background: regLoading ? "#aaa" : "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: regLoading ? "not-allowed" : "pointer", marginBottom: "16px", fontFamily: "Montserrat, sans-serif" }}>
+                    {regLoading ? "Creando cuenta..." : "Crear cuenta"}
+                  </button>
                   <div style={{ textAlign: "center", fontSize: "11px", color: "#aaa", marginBottom: "16px" }}>
-                    Al registrarte aceptas nuestros <a href="#" style={{ color: "#1667E6" }}>Términos</a> y <a href="#" style={{ color: "#1667E6" }}>Política de privacidad</a>
+                    Al registrarte aceptas nuestros <Link href="#" style={{ color: "#1667E6" }}>Términos</Link> y <Link href="/privacidad" style={{ color: "#1667E6" }}>Política de privacidad</Link>
                   </div>
                   <div style={{ textAlign: "center", fontSize: "12px", color: "#888" }}>
                     ¿Ya tienes cuenta? <span onClick={() => setTab("login")} style={{ color: "#1667E6", fontWeight: "700", cursor: "pointer" }}>Iniciar sesión</span>
                   </div>
                 </div>
               )}
+
+              {/* REGISTRO EXITOSO */}
+              {tab === "registro" && regExito && (
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ width: "72px", height: "72px", borderRadius: "50%", background: "#e8fff5", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#085041" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                  </div>
+                  <h3 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#0D0C56", marginBottom: "8px" }}>¡Cuenta creada!</h3>
+                  <p style={{ fontSize: "12px", color: "#888", lineHeight: "1.6", marginBottom: "24px" }}>
+                    Revisa tu correo <strong>{regEmail}</strong> y confirma tu cuenta para poder iniciar sesión.
+                  </p>
+                  <button onClick={() => { setTab("login"); setRegExito(false); }} style={{ width: "100%", padding: "12px", background: "#1667E6", color: "#fff", border: "none", borderRadius: "10px", fontWeight: "800", fontSize: "13px", cursor: "pointer", fontFamily: "Montserrat, sans-serif" }}>
+                    Ir a iniciar sesión
+                  </button>
+                </div>
+              )}
+
             </div>
           </div>
         </div>
