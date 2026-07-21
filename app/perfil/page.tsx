@@ -1,17 +1,48 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "../components/Logo";
+import { supabase } from "../../lib/supabase";
 
 export default function Perfil() {
   const [seccion, setSeccion] = useState("datos");
   const [guardado, setGuardado] = useState(false);
+  const [usuario, setUsuario] = useState<any>(null);
+  const [datos, setDatos] = useState({
+    nombre: "", apellido: "", correo: "", telefono: "",
+    pais: "", ciudad: "", fecha_nacimiento: "", nacionalidad: "", pasaporte: ""
+  });
 
-  const guardar = () => {
+  useEffect(() => {
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (data.user) {
+        setUsuario(data.user);
+        setDatos(prev => ({
+          ...prev,
+          correo: data.user.email || "",
+          nombre: data.user.user_metadata?.nombre || "",
+          apellido: data.user.user_metadata?.apellido || "",
+        }));
+        const { data: perfil } = await supabase
+          .from("usuarios")
+          .select("*")
+          .eq("id", data.user.id)
+          .single();
+        if (perfil) setDatos(prev => ({ ...prev, ...perfil }));
+      }
+    });
+  }, []);
+
+  const guardar = async () => {
+    if (usuario) {
+      await supabase.from("usuarios").upsert({ id: usuario.id, ...datos });
+    }
     setGuardado(true);
     setTimeout(() => setGuardado(false), 2000);
   };
+
+  const iniciales = (datos.nombre?.[0] || "") + (datos.apellido?.[0] || "");
 
   const secciones = [
     { key: "datos", label: "Datos" },
