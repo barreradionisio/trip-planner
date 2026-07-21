@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "../components/Logo";
+import NavUsuario from "../components/NavUsuario";
 
 function PagoContent() {
   const searchParams = useSearchParams();
@@ -203,7 +204,7 @@ const totalMostrar = tipo === "vuelo"
       </button>
       <Link href="/"><Logo variant="color" /></Link>
     </div>
-    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+    <NavUsuario />
   </nav>
 )}
 

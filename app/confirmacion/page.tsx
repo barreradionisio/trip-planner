@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Logo from "../components/Logo";
+import NavUsuario from "../components/NavUsuario";
 
 const IconEmail = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1667E6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -137,7 +138,7 @@ function ConfirmacionContent() {
             <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Hoteles</Link>
             <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
           </div>
-          <Link href="/mis-viajes" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Mi cuenta</Link>
+         <NavUsuario />
         </nav>
 
         {/* HERO */}
