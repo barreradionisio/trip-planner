@@ -3,6 +3,7 @@
 import Logo from "./components/Logo";
 import Link from "next/link";
 import { useIsMobile } from "./hooks/useIsMobile";
+import NavUsuario from "./components/NavUsuario";
 
 export default function Home() {
   const isMobile = useIsMobile();
@@ -28,9 +29,7 @@ export default function Home() {
             <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600", padding: "6px 14px", borderRadius: "50px" }}>Soporte</Link>
           </div>
         )}
-        <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>
-          {isMobile ? "Entrar" : "Iniciar sesión"}
-        </Link>
+        <NavUsuario />
       </nav>
 
       {/* HERO */}
