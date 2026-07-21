@@ -22,8 +22,9 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  const protectedRoutes = ['/mis-viajes', '/perfil', '/reserva']
+  const protectedRoutes = ['/mis-viajes', '/perfil', '/reserva', '/pasajeros']
   const isProtected = protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+
 
   if (isProtected && !user) {
     return NextResponse.redirect(new URL('/login', request.url))
@@ -33,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/mis-viajes/:path*', '/perfil/:path*', '/reserva/:path*']
+matcher: ['/mis-viajes/:path*', '/perfil/:path*', '/reserva/:path*', '/pasajeros/:path*']
 }
