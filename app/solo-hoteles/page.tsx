@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "../components/Logo";
+import NavUsuario from "../components/NavUsuario";
 
 const hotelesData = [
   { id: 1, nombre: "Hotel Le Marais", ciudad: "París", estrellas: 4, precio: 180, desc: "En el corazón de París, a pasos del Louvre.", servicios: ["WiFi", "Desayuno", "Gimnasio"], tipo: "Hotel" },
@@ -309,7 +310,7 @@ export default function SoloHoteles() {
             <Link href="/solo-hoteles" style={{ fontSize: "13px", color: "#1667E6", textDecoration: "none", fontWeight: "700", padding: "6px 14px", borderRadius: "50px", background: "#f0f5ff" }}>Hoteles</Link>
             <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600", padding: "6px 14px", borderRadius: "50px" }}>Soporte</Link>
           </div>
-          <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+          <NavUsuario />
         </nav>
 
         {/* BUSCADOR */}
