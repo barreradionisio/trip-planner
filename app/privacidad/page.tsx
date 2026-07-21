@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Logo from "../components/Logo";
+import NavUsuario from "../components/NavUsuario";
 
 const secciones = [
   {
@@ -135,7 +136,7 @@ export default function Privacidad() {
             <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
             <Link href="/privacidad" style={{ fontSize: "13px", color: "#1667E6", textDecoration: "none", fontWeight: "700", background: "#f0f5ff", padding: "6px 14px", borderRadius: "50px" }}>Privacidad</Link>
           </div>
-          <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+          <NavUsuario />
         </nav>
 
         {/* HERO */}

@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "../components/Logo";
+import NavUsuario from "../components/NavUsuario";
 
 interface Pasajero {
   nombre: string;
@@ -161,7 +162,7 @@ function PasajerosContent() {
             <Link href="/solo-hoteles" style={{ fontSize: "13px", color: esHotel ? "#1667E6" : "#0D0C56", textDecoration: "none", fontWeight: esHotel ? "700" : "600", padding: "6px 14px", borderRadius: "50px", background: esHotel ? "#f0f5ff" : "transparent" }}>Hoteles</Link>
             <Link href="/soporte" style={{ fontSize: "13px", color: "#0D0C56", textDecoration: "none", fontWeight: "600" }}>Soporte</Link>
           </div>
-          <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>Iniciar sesión</Link>
+          <NavUsuario />
         </nav>
 
         {/* BODY */}
