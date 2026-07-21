@@ -202,18 +202,18 @@ export default function Perfil() {
                 <div style={{ padding: "18px" }}>
                   <div className="prf-form-grid">
                     {[
-                      { label: "Nombre", value: "Juan", type: "text" },
-                      { label: "Apellido", value: "García López", type: "text" },
-                      { label: "Correo electrónico", value: "juan@email.com", type: "email" },
-                      { label: "Teléfono", value: "+52 55 1234 5678", type: "tel" },
-                      { label: "País", value: "México", type: "text" },
-                      { label: "Ciudad", value: "Ciudad de México", type: "text" },
-                      { label: "Fecha de nacimiento", value: "15/03/1990", type: "text" },
-                      { label: "Nacionalidad", value: "Mexicana", type: "text" },
+  { label: "Nombre", value: datos.nombre, key: "nombre", type: "text" },
+  { label: "Apellido", value: datos.apellido, key: "apellido", type: "text" },
+  { label: "Correo electrónico", value: datos.correo, key: "correo", type: "email" },
+  { label: "Teléfono", value: datos.telefono, key: "telefono", type: "tel" },
+  { label: "País", value: datos.pais, key: "pais", type: "text" },
+  { label: "Ciudad", value: datos.ciudad, key: "ciudad", type: "text" },
+  { label: "Fecha de nacimiento", value: datos.fecha_nacimiento, key: "fecha_nacimiento", type: "text" },
+  { label: "Nacionalidad", value: datos.nacionalidad, key: "nacionalidad", type: "text" },
                     ].map(f => (
                       <div key={f.label}>
                         <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>{f.label}</div>
-                        <input defaultValue={f.value} type={f.type} style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 11px", fontSize: "12px", outline: "none", boxSizing: "border-box", color: "#0D0C56" }} />
+                        <input value={f.value} onChange={e => setDatos(prev => ({ ...prev, [f.key]: e.target.value }))} type={f.type} style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 11px", fontSize: "12px", outline: "none", boxSizing: "border-box", color: "#0D0C56" }} />
                       </div>
                     ))}
                   </div>
