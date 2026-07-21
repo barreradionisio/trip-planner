@@ -214,12 +214,21 @@ export default function Perfil() {
   { label: "Teléfono", value: datos.telefono, key: "telefono", type: "tel" },
   { label: "País", value: datos.pais, key: "pais", type: "text" },
   { label: "Ciudad", value: datos.ciudad, key: "ciudad", type: "text" },
-  { label: "Fecha de nacimiento", value: datos.fecha_nacimiento, key: "fecha_nacimiento", type: "text" },
-  { label: "Nacionalidad", value: datos.nacionalidad, key: "nacionalidad", type: "text" },
+  { label: "Fecha de nacimiento", value: datos.fecha_nacimiento, key: "fecha_nacimiento", type: "date" },
+{ label: "Nacionalidad", value: datos.nacionalidad, key: "nacionalidad", type: "select" },
                     ].map(f => (
                       <div key={f.label}>
                         <div style={{ fontSize: "10px", fontWeight: "700", color: "#1667E6", textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "4px" }}>{f.label}</div>
-                        <input value={f.value} onChange={e => setDatos(prev => ({ ...prev, [f.key]: e.target.value }))} type={f.type} style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 11px", fontSize: "12px", outline: "none", boxSizing: "border-box", color: "#0D0C56" }} />
+                      {f.type === "select" ? (
+  <select value={f.value} onChange={e => setDatos(prev => ({ ...prev, [f.key]: e.target.value }))} style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 11px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const, color: "#0D0C56", background: "#fff" }}>
+    <option value="">Selecciona</option>
+    {["Mexicana","Estadounidense","Canadiense","Española","Argentina","Colombiana","Chilena","Peruana","Venezolana","Cubana","Guatemalteca","Hondureña","Salvadoreña","Nicaragüense","Costarricense","Panameña","Ecuatoriana","Boliviana","Paraguaya","Uruguaya","Brasileña","Francesa","Alemana","Italiana","Inglesa","Portuguesa","Japonesa","China","Coreana","India"].map(n => (
+      <option key={n} value={n}>{n}</option>
+    ))}
+  </select>
+) : (
+  <input value={f.value} onChange={e => setDatos(prev => ({ ...prev, [f.key]: e.target.value }))} type={f.type} style={{ width: "100%", border: "1.5px solid #e8edf8", borderRadius: "8px", padding: "9px 11px", fontSize: "12px", outline: "none", boxSizing: "border-box" as const, color: "#0D0C56" }} />
+)}
                       </div>
                     ))}
                   </div>
