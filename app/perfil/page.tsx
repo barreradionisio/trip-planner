@@ -155,14 +155,20 @@ export default function Perfil() {
 
         {/* HERO */}
         <div className="prf-hero">
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#fff", flexShrink: 0 }}>JG</div>
-            <div>
-              <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#fff", marginBottom: "2px" }}>Juan García López</h1>
-              <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>juan@email.com · Miembro desde 2024</p>
-            </div>
-          </div>
-        </div>
+  <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+    <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#fff", flexShrink: 0 }}>
+      {iniciales.toUpperCase() || "?"}
+    </div>
+    <div>
+      <h1 style={{ fontFamily: "sans-serif", fontWeight: "800", fontSize: "22px", color: "#fff", marginBottom: "2px" }}>
+        {datos.nombre} {datos.apellido}
+      </h1>
+      <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>
+        {datos.correo} · Miembro desde {usuario ? new Date(usuario.created_at).getFullYear() : ""}
+      </p>
+    </div>
+  </div>
+</div>
 
         {/* TABS MÓVIL */}
         <div className="prf-sidebar-mobile">
