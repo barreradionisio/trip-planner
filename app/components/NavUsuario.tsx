@@ -8,12 +8,14 @@ import { useRouter } from "next/navigation";
 export default function NavUsuario() {
   const router = useRouter();
   const [usuario, setUsuario] = useState<any>(null);
-  const [menuAbierto, setMenuAbierto] = useState(false);
+const [cargando, setCargando] = useState(true);
+const [menuAbierto, setMenuAbierto] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      setUsuario(data.user);
-    });
+  setUsuario(data.user);
+  setCargando(false);
+});
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUsuario(session?.user ?? null);
     });
@@ -29,9 +31,11 @@ export default function NavUsuario() {
     ? (usuario.user_metadata?.nombre?.[0] || "") + (usuario.user_metadata?.apellido?.[0] || "")
     : "";
 
-  if (!usuario) {
-    return (
-      <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>
+  if (cargando) return <div style={{ width: "36px", height: "36px" }} />;
+
+if (!usuario) {
+  return (
+    <Link href="/login" style={{ fontSize: "13px", background: "#1667E6", color: "#fff", textDecoration: "none", fontWeight: "700", padding: "8px 18px", borderRadius: "50px" }}>
         Iniciar sesión
       </Link>
     );
