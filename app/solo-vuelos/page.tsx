@@ -340,32 +340,47 @@ export default function SoloVuelos() {
             </div>
 
             {/* VUELOS */}
-            {vuelosData.map(v => (
-              <button key={v.id} className="sv-card" onClick={() => setSeleccionado(v.id)}
-                style={{ background: seleccionado === v.id ? "#f8faff" : "#fff", border: `1.5px solid ${seleccionado === v.id ? "#1667E6" : "#e8edf8"}` }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
-                    <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#f5f7ff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", fontSize: "11px", color: "#1667E6" }}>{v.codigo}</div>
-                    <div>
-                      <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{v.aerolinea}</div>
-                      <div style={{ fontSize: "10px", color: v.escala === "Directo" ? "#3ED5A9" : "#F5A623", fontWeight: "600" }}>{v.escala}</div>
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, justifyContent: "center" }}>
-                    <div style={{ fontWeight: "800", fontSize: "14px", color: "#0D0C56" }}>{v.salida}</div>
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                      <div style={{ fontSize: "10px", color: "#888" }}>{v.duracion}</div>
-                      <div style={{ width: "100%", height: "1px", background: "#e8edf8" }} />
-                    </div>
-                    <div style={{ fontWeight: "800", fontSize: "14px", color: "#0D0C56" }}>{v.llegada}</div>
-                  </div>
-                  <div style={{ textAlign: "right", flexShrink: 0 }}>
-                    <div style={{ fontWeight: "800", fontSize: "16px", color: "#1667E6" }}>${v.precio}</div>
-                    <div style={{ fontSize: "10px", color: "#888" }}>USD/persona</div>
-                  </div>
-                </div>
-              </button>
-            ))}
+{buscando && (
+  <div style={{ textAlign: "center", padding: "40px 0", color: "#888", fontSize: "13px" }}>
+    Buscando vuelos...
+  </div>
+)}
+{errorBusqueda && (
+  <div style={{ background: "#ffeaea", border: "1.5px solid #ffd0d0", borderRadius: "13px", padding: "14px 18px", fontSize: "12px", color: "#c0392b", marginBottom: "12px" }}>
+    {errorBusqueda}
+  </div>
+)}
+{!buscando && vuelosData.length === 0 && !errorBusqueda && (
+  <div style={{ textAlign: "center", padding: "40px 0", color: "#888", fontSize: "13px" }}>
+    Ingresa origen, destino y fecha para buscar vuelos
+  </div>
+)}
+{vuelosData.map(v => (
+  <button key={v.id} className="sv-card" onClick={() => setSeleccionado(v.id)}
+    style={{ background: seleccionado === v.id ? "#f8faff" : "#fff", border: `1.5px solid ${seleccionado === v.id ? "#1667E6" : "#e8edf8"}` }}>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+        <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "#f5f7ff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", fontSize: "11px", color: "#1667E6" }}>{v.aerolinea?.substring(0,2).toUpperCase()}</div>
+        <div>
+          <div style={{ fontWeight: "700", fontSize: "12px", color: "#0D0C56" }}>{v.aerolinea}</div>
+          <div style={{ fontSize: "10px", color: v.escalas === 0 ? "#3ED5A9" : "#F5A623", fontWeight: "600" }}>{v.escalas === 0 ? "Directo" : `${v.escalas} escala${v.escalas > 1 ? "s" : ""}`}</div>
+        </div>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, justifyContent: "center" }}>
+        <div style={{ fontWeight: "800", fontSize: "14px", color: "#0D0C56" }}>{v.salida ? new Date(v.salida).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) : ""}</div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div style={{ fontSize: "10px", color: "#888" }}>{v.duracion}</div>
+          <div style={{ width: "100%", height: "1px", background: "#e8edf8" }} />
+        </div>
+        <div style={{ fontWeight: "800", fontSize: "14px", color: "#0D0C56" }}>{v.llegada ? new Date(v.llegada).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }) : ""}</div>
+      </div>
+      <div style={{ textAlign: "right", flexShrink: 0 }}>
+        <div style={{ fontWeight: "800", fontSize: "16px", color: "#1667E6" }}>${v.precio} {v.moneda}</div>
+        <div style={{ fontSize: "10px", color: "#888" }}>por persona</div>
+      </div>
+    </div>
+  </button>
+))}
           </div>
 
           {/* SIDEBAR DESKTOP */}
