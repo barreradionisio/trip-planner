@@ -282,9 +282,9 @@ export default function SoloVuelos() {
                 </div>
               </div>
             )}
-            <button style={{ padding: "10px 24px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "800", fontSize: "13px", cursor: "pointer", height: "40px", whiteSpace: "nowrap", fontFamily: "Montserrat, sans-serif" }}>
-              Buscar
-            </button>
+            <button onClick={buscarVuelos} disabled={buscando} style={{ padding: "10px 24px", backgroundColor: "#FF5C00", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "800", fontSize: "13px", cursor: buscando ? "not-allowed" : "pointer", height: "40px", whiteSpace: "nowrap", fontFamily: "Montserrat, sans-serif", opacity: buscando ? 0.7 : 1 }}>
+  {buscando ? "Buscando..." : "Buscar"}
+</button>
           </div>
         </div>
 
