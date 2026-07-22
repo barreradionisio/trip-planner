@@ -6,9 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "../components/Logo";
 
-const [vuelosData, setVuelosData] = useState<any[]>([]);
-const [buscando, setBuscando] = useState(false);
-const [errorBusqueda, setErrorBusqueda] = useState("");
+
 
 const IconCalendar = ({ color = "#888" }: { color?: string }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
