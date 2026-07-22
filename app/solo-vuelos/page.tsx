@@ -1,18 +1,14 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import NavUsuario from "../components/NavUsuario";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "../components/Logo";
-import NavUsuario from "../components/NavUsuario";
 
-const vuelosData = [
-  { id: 1, aerolinea: "Aeroméxico", codigo: "AM", salida: "06:30", llegada: "14:45", duracion: "8h 15m", escala: "1 escala", precio: 420 },
-  { id: 2, aerolinea: "Air France", codigo: "AF", salida: "09:15", llegada: "20:30", duracion: "11h 15m", escala: "Directo", precio: 680 },
-  { id: 3, aerolinea: "Iberia", codigo: "IB", salida: "11:00", llegada: "22:10", duracion: "11h 10m", escala: "Directo", precio: 590 },
-  { id: 4, aerolinea: "Volaris", codigo: "Y4", salida: "14:20", llegada: "23:55", duracion: "9h 35m", escala: "1 escala", precio: 310 },
-  { id: 5, aerolinea: "British Airways", codigo: "BA", salida: "22:00", llegada: "15:30+1", duracion: "17h 30m", escala: "1 escala", precio: 750 },
-];
+const [vuelosData, setVuelosData] = useState<any[]>([]);
+const [buscando, setBuscando] = useState(false);
+const [errorBusqueda, setErrorBusqueda] = useState("");
 
 const IconCalendar = ({ color = "#888" }: { color?: string }) => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -25,6 +21,9 @@ const IconCalendar = ({ color = "#888" }: { color?: string }) => (
 
 export default function SoloVuelos() {
   const router = useRouter();
+  const [vuelosData, setVuelosData] = useState<any[]>([]);
+  const [buscando, setBuscando] = useState(false);
+  const [errorBusqueda, setErrorBusqueda] = useState("");
   const [seleccionado, setSeleccionado] = useState<number | null>(null);
   const [tipo, setTipo] = useState("ida-vuelta");
   const [clase, setClase] = useState("Económica");
@@ -32,6 +31,8 @@ export default function SoloVuelos() {
   const [pasajeros, setPasajeros] = useState({ adultos: 1, ninos: 0, bebes: 0 });
   const [fechaIda, setFechaIda] = useState("");
   const [fechaVuelta, setFechaVuelta] = useState("");
+  const [origen, setOrigen] = useState("");
+  const [destino, setDestino] = useState("");
 
   const idaRef = useRef<HTMLInputElement>(null);
   const vueltaRef = useRef<HTMLInputElement>(null);
@@ -46,6 +47,30 @@ export default function SoloVuelos() {
     return `${d} ${meses[parseInt(m)-1]} ${y}`;
   };
 
+  const buscarVuelos = async () => {
+  if (!origen || !destino || !fechaIda) return;
+  setBuscando(true);
+  setErrorBusqueda("");
+  try {
+    const res = await fetch("/api/vuelos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        origen,
+        destino,
+        fecha: fechaIda,
+        pasajeros: pasajeros.adultos + pasajeros.ninos,
+      }),
+    });
+    const data = await res.json();
+    if (data.error) setErrorBusqueda("No se encontraron vuelos");
+    else setVuelosData(data.vuelos);
+  } catch {
+    setErrorBusqueda("Error al buscar vuelos");
+  }
+  setBuscando(false);
+};
+  
   const irAPasajeros = () => {
     if (!seleccionado) return;
     sessionStorage.setItem("pasajeros", JSON.stringify(pasajeros));
