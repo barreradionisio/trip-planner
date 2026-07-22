@@ -253,13 +253,13 @@ export default function SoloVuelos() {
           </div>
           <div className="sv-buscador-grid">
             <div>
-              <label className="sv-label">Origen</label>
-              <input placeholder="Ciudad de México" className="sv-input" />
-            </div>
-            <div>
-              <label className="sv-label">Destino</label>
-              <input placeholder="¿A dónde vas?" className="sv-input" />
-            </div>
+  <label className="sv-label">Origen</label>
+  <input placeholder="MEX" value={origen} onChange={e => setOrigen(e.target.value.toUpperCase())} className="sv-input" maxLength={3} />
+</div>
+<div>
+  <label className="sv-label">Destino</label>
+  <input placeholder="CDG" value={destino} onChange={e => setDestino(e.target.value.toUpperCase())} className="sv-input" maxLength={3} />
+</div>
             <div>
               <label className="sv-label">Fecha de ida</label>
               <div className="sv-fecha-wrap">
